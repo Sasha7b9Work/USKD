@@ -6,7 +6,7 @@
   <Header>### uVision Project, (C) Keil Software</Header>
 
   <PrjGuiSettings>
-    <LastAddFilePath>C:\My\GitHub\_work\USKD\sources\common\Modem</LastAddFilePath>
+    <LastAddFilePath>C:\My\GitHub\_work\USKD\sources\common\Modem\MQTT\Sender</LastAddFilePath>
   </PrjGuiSettings>
 
   <ViewPool/>

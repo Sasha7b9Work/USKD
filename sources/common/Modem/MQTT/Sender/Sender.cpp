@@ -2,6 +2,7 @@
 #include "defines.h"
 #include "Modem/MQTT/Sender/Sender.h"
 #include "Modem/MQTT/Sender/Counter.h"
+#include "Modem/MQTT/Sender/GPRS.h"
 #include "Modem/MQTT/MQTT.h"
 #include "Hardware/Timer.h"
 #include "Hardware/HAL/HAL.h"
@@ -96,6 +97,10 @@ bool Sender::SendAll(pchar answer)
             sending = true;
         }
         else if (Sender::StringState::SendToSIM800())
+        {
+            sending = true;
+        }
+        else if (Sender::GPRS::SendToSIM868())
         {
             sending = true;
         }

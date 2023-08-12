@@ -754,6 +754,16 @@
               <FileType>5</FileType>
               <FilePath>..\common\Modem\MQTT\Sender\StringState.h</FilePath>
             </File>
+            <File>
+              <FileName>GPRS.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\common\Modem\MQTT\Sender\GPRS.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>GPRS.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\common\Modem\MQTT\Sender\GPRS.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
