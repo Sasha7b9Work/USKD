@@ -1,0 +1,12 @@
+#pragma once
+
+
+namespace std
+{
+#include "stdio.h"
+
+    int sprintf(char *, char *, ...);
+    int snprintf(char *, int, const char *, ...);
+    int sscanf(void *, void *, ...);
+}
+

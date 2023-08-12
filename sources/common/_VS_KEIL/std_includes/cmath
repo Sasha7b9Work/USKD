@@ -1,0 +1,15 @@
+#pragma once
+
+
+bool isnan(float);
+bool isinf(float);
+
+
+namespace std
+{
+    double sin(double);
+    float floor(float);
+    float sqrtf(float);
+
+#include "math.h"
+}
