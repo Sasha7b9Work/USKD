@@ -72,12 +72,7 @@ void MQTT::Update(pchar answer)
         {
             char *MQTT_type = "MQTT";
 
-            char guid[32];
-            char MQTT_CID[32];
-
-            HAL::GetUID(guid);
-
-            std::sprintf(MQTT_CID, "pks-%d%02d-%s", 4, 16, guid);
+            char *MQTT_CID = "pks-444-A996C55A";
 
             LOG_WRITE(MQTT_CID);            // WARNING без этого не соединяется
 
