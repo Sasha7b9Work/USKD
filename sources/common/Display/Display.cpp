@@ -65,7 +65,7 @@ void Display::Update()
         WriteString(5, 5, "POW");
     }
 
-    if (SIM800::IsRegistered())
+    if (SIM868::IsRegistered())
     {
         WriteString(35, 5, "REG");
     }
@@ -74,7 +74,7 @@ void Display::Update()
     {
         WriteString(65, 5, "MQTT");
 
-        WriteString(100, 5, SIM800::LevelSignal());
+        WriteString(100, 5, SIM868::LevelSignal());
     }
 
     SSD1306::WriteBuffer(buffer);

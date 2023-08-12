@@ -71,7 +71,7 @@ namespace Modem
 
     State::E State::state = State::IDLE;
 
-    // Данные, получаемые от SIM800
+    // Данные, получаемые от SIM868
     namespace InData
     {
         static Buffer<256> main;
@@ -106,7 +106,7 @@ namespace Modem
 
             if (buffer.Size() == 0)
             {
-                SIM800::Update("");
+                SIM868::Update("");
             }
             else
             {
@@ -155,7 +155,7 @@ namespace Modem
                         }
                     }
 
-                    SIM800::Update(answer_exist ? answer.Data() : "");
+                    SIM868::Update(answer_exist ? answer.Data() : "");
 
                 } while (answer_exist);
             }
@@ -253,7 +253,7 @@ void Modem::Update()
     {
     case State::IDLE:
         LOG_WRITE("Modem : State::IDLE");
-        SIM800::Reset();
+        SIM868::Reset();
 #ifdef DEVICE
         MQTT::Reset();
 #endif

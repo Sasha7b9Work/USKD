@@ -88,8 +88,8 @@ bool Sender::SendAll(pchar answer)
         {
             sending = true;
             need_ping = false;
-            SIM800::Transmit::UINT8(0xC0);
-            SIM800::Transmit::UINT8(0x00);
+            SIM868::Transmit::UINT8(0xC0);
+            SIM868::Transmit::UINT8(0x00);
         }
         else if (Sender::SendToSIM800())
         {
@@ -104,11 +104,11 @@ bool Sender::SendAll(pchar answer)
             sending = true;
         }
 
-        SIM800::Transmit::UINT8(sending ? (uint8)0x1A : (uint8)0x1B);
+        SIM868::Transmit::UINT8(sending ? (uint8)0x1A : (uint8)0x1B);
 
         if (sending)
         {
-            SIM800::Transmit::With0D("AT+CIPSEND");
+            SIM868::Transmit::With0D("AT+CIPSEND");
         }
 
         return true;
@@ -117,7 +117,7 @@ bool Sender::SendAll(pchar answer)
     {
         if (meter.IsFinished())
         {
-            SIM800::Transmit::With0D("AT+CIPSEND");
+            SIM868::Transmit::With0D("AT+CIPSEND");
 
             meter.SetResponseTime(1000);
         }

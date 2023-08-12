@@ -62,7 +62,7 @@ void MQTT::Update(pchar answer)
     case State::IDLE:
         Sender::Reset();
         LOG_WRITE("+++ MQTT::IDLE +++");
-        SIM800::Transmit::With0D("AT+CIPSEND");
+        SIM868::Transmit::With0D("AT+CIPSEND");
         meter.Reset();
         state = State::WAIT_RESPONSE_CIPSEND;
         break;
@@ -81,25 +81,25 @@ void MQTT::Update(pchar answer)
 
             LOG_WRITE(MQTT_CID);            // WARNING без этого не соединяется
 
-            SIM800::Transmit::UINT8(0x10);   // маркер пакета на установку соединения
-            SIM800::Transmit::UINT8((uint8)(std::strlen(MQTT_type) + std::strlen(MQTT_CID) + 8));
+            SIM868::Transmit::UINT8(0x10);   // маркер пакета на установку соединения
+            SIM868::Transmit::UINT8((uint8)(std::strlen(MQTT_type) + std::strlen(MQTT_CID) + 8));
 
             // тип протокола
-            SIM800::Transmit::UINT8(0x00);
-            SIM800::Transmit::UINT8((uint8)std::strlen(MQTT_type));
-            SIM800::Transmit::RAW(MQTT_type);
+            SIM868::Transmit::UINT8(0x00);
+            SIM868::Transmit::UINT8((uint8)std::strlen(MQTT_type));
+            SIM868::Transmit::RAW(MQTT_type);
 
             // просто так нужно
-            SIM800::Transmit::UINT8(0x04);    // версия протокола
-            SIM800::Transmit::UINT8(0x02);    // connect flag
-            SIM800::Transmit::UINT8(0x00);    // \ keep alive 
-            SIM800::Transmit::UINT8(0x3c);    // /
+            SIM868::Transmit::UINT8(0x04);    // версия протокола
+            SIM868::Transmit::UINT8(0x02);    // connect flag
+            SIM868::Transmit::UINT8(0x00);    // \ keep alive 
+            SIM868::Transmit::UINT8(0x3c);    // /
 
-            SIM800::Transmit::UINT8(0x00);    // property lenth
-            SIM800::Transmit::UINT8((uint8)std::strlen(MQTT_CID));
-            SIM800::Transmit::RAW(MQTT_CID);
+            SIM868::Transmit::UINT8(0x00);    // property lenth
+            SIM868::Transmit::UINT8((uint8)std::strlen(MQTT_CID));
+            SIM868::Transmit::RAW(MQTT_CID);
 
-            SIM800::Transmit::UINT8(0x1A);
+            SIM868::Transmit::UINT8(0x1A);
 
             state = State::RUNNING;
 
@@ -123,12 +123,12 @@ void MQTT::Update(pchar answer)
 
 void  MQTT::Packet::Publish(pchar MQTT_topic, pchar MQTT_messege)
 {
-    SIM800::Transmit::UINT8(0x30);
-    SIM800::Transmit::UINT8((uint8)(std::strlen(MQTT_topic) + std::strlen(MQTT_messege) + 2));
-    SIM800::Transmit::UINT8(0);
-    SIM800::Transmit::UINT8((uint8)(std::strlen(MQTT_topic)));
-    SIM800::Transmit::RAW(MQTT_topic);
-    SIM800::Transmit::RAW(MQTT_messege);
+    SIM868::Transmit::UINT8(0x30);
+    SIM868::Transmit::UINT8((uint8)(std::strlen(MQTT_topic) + std::strlen(MQTT_messege) + 2));
+    SIM868::Transmit::UINT8(0);
+    SIM868::Transmit::UINT8((uint8)(std::strlen(MQTT_topic)));
+    SIM868::Transmit::RAW(MQTT_topic);
+    SIM868::Transmit::RAW(MQTT_messege);
 
 //    LOG_WRITE("publish %s : %s", MQTT_topic, MQTT_messege);
 }

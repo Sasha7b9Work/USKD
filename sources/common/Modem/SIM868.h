@@ -2,7 +2,7 @@
 #pragma once
 
 
-namespace SIM800
+namespace SIM868
 {
     void Reset();
 

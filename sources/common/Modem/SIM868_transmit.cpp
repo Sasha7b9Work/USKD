@@ -7,7 +7,7 @@
 #include <cstring>
 
 
-void SIM800::Transmit::With0D(pchar message)
+void SIM868::Transmit::With0D(pchar message)
 {
     if (std::strlen(message) > 2
 #ifdef DEVICE
@@ -26,29 +26,29 @@ void SIM800::Transmit::With0D(pchar message)
 }
 
 
-void SIM800::Transmit::RAW(pchar message)
+void SIM868::Transmit::RAW(pchar message)
 {
     HAL_USART_GPRS::Transmit(message);
 }
 
 
-void SIM800::Transmit::UINT8(uint8 byte)
+void SIM868::Transmit::UINT8(uint8 byte)
 {
     HAL_USART_GPRS::Transmit(&byte, 1);
 }
 
 
-void SIM800::Transmit::Format(pchar format, pchar param)
+void SIM868::Transmit::Format(pchar format, pchar param)
 {
     char buffer[64];
     std::sprintf(buffer, (char *)format, param);
-    SIM800::Transmit::With0D(buffer);
+    SIM868::Transmit::With0D(buffer);
 }
 
 
-void SIM800::Transmit::Format(pchar format, int param)
+void SIM868::Transmit::Format(pchar format, int param)
 {
     char buffer[64];
     std::sprintf(buffer, (char *)format, param);
-    SIM800::Transmit::With0D(buffer);
+    SIM868::Transmit::With0D(buffer);
 }
