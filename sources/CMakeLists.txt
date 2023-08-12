@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.14)
 
-project (Meter)
+project (USKD)
 
 set (TARGET_NAME )
 
@@ -11,5 +11,3 @@ if(${CMAKE_BUILD_TYPE} STREQUAL Debug)
 endif()
 
 add_subdirectory(Device)
-add_subdirectory(Loader)
-add_subdirectory(TesterRele)

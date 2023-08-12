@@ -58,6 +58,5 @@ void Timer::DelayMS(uint ms)
 
     while (TimeMS() < time_end)
     {
-        HAL_FWDGT::Update();
     }
 }

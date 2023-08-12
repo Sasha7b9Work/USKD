@@ -565,11 +565,6 @@
           <GroupName>Hardware/HAL</GroupName>
           <Files>
             <File>
-              <FileName>HAL_ROM.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL_ROM.cpp</FilePath>
-            </File>
-            <File>
               <FileName>HAL_PINS.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\common\Hardware\HAL\HAL_PINS.cpp</FilePath>
@@ -613,26 +608,6 @@
               <FileName>HAL.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\common\Hardware\HAL\HAL.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>HAL_ADC.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\common\Hardware\HAL\HAL_ADC.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>HAL_FWDGT.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\common\Hardware\HAL\HAL_FWDGT.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>HAL_I2C.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\common\Hardware\HAL\HAL_I2C.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>HAL_SPI2.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\common\Hardware\HAL\HAL_SPI2.cpp</FilePath>
             </File>
           </Files>
         </Group>
@@ -692,73 +667,8 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Measurer</GroupName>
-          <Files>
-            <File>
-              <FileName>Calculator.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\common\Measurer\Calculator.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Contactors.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\common\Measurer\Contactors.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Contactors.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\common\Measurer\Contactors.h</FilePath>
-            </File>
-            <File>
-              <FileName>Measurer.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\common\Measurer\Measurer.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Measurer.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\common\Measurer\Measurer.h</FilePath>
-            </File>
-            <File>
-              <FileName>Averager.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\common\Measurer\Averager.h</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>Memory</GroupName>
-          <Files>
-            <File>
-              <FileName>M25P80.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\common\Memory\M25P80.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>M25P80.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\common\Memory\M25P80.h</FilePath>
-            </File>
-            <File>
-              <FileName>Memory.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\common\Memory\Memory.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Memory.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\common\Memory\Memory.h</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>Modem</GroupName>
           <Files>
-            <File>
-              <FileName>SIM800.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Modem\SIM800.cpp</FilePath>
-            </File>
             <File>
               <FileName>Parser.cpp</FileName>
               <FileType>8</FileType>
@@ -780,14 +690,19 @@
               <FilePath>..\common\Modem\Modem.cpp</FilePath>
             </File>
             <File>
-              <FileName>SIM800.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\common\Modem\SIM800.h</FilePath>
+              <FileName>SIM868.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Modem\SIM868.cpp</FilePath>
             </File>
             <File>
-              <FileName>SIM800_transmit.cpp</FileName>
+              <FileName>SIM868.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\common\Modem\SIM868.h</FilePath>
+            </File>
+            <File>
+              <FileName>SIM868_transmit.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>..\common\Modem\SIM800_transmit.cpp</FilePath>
+              <FilePath>..\common\Modem\SIM868_transmit.cpp</FilePath>
             </File>
           </Files>
         </Group>
@@ -820,36 +735,6 @@
               <FilePath>..\common\Modem\MQTT\Sender\Counter.h</FilePath>
             </File>
             <File>
-              <FileName>GP.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\common\Modem\MQTT\Sender\GP.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>GP.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\common\Modem\MQTT\Sender\GP.h</FilePath>
-            </File>
-            <File>
-              <FileName>LevelContactors.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\common\Modem\MQTT\Sender\LevelContactors.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>LevelContactors.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\common\Modem\MQTT\Sender\LevelContactors.h</FilePath>
-            </File>
-            <File>
-              <FileName>Measure.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\common\Modem\MQTT\Sender\Measure.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Measure.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\common\Modem\MQTT\Sender\Measure.h</FilePath>
-            </File>
-            <File>
               <FileName>Sender.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\common\Modem\MQTT\Sender\Sender.cpp</FilePath>
@@ -868,31 +753,6 @@
               <FileName>StringState.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\common\Modem\MQTT\Sender\StringState.h</FilePath>
-            </File>
-            <File>
-              <FileName>StateContactors.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\common\Modem\MQTT\Sender\StateContactors.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>StateContactors.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\common\Modem\MQTT\Sender\StateContactors.h</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>Settings</GroupName>
-          <Files>
-            <File>
-              <FileName>Settings.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\common\Settings\Settings.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Settings.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\common\Settings\Settings.h</FilePath>
             </File>
           </Files>
         </Group>

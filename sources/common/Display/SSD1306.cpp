@@ -10,8 +10,8 @@
 
 namespace SSD1306
 {
-    static const uint8 COMMAND        = 0x00;   // Continuation bit=1, D/C=0; 1000 0000
-    static const uint8 DATA           = 0x40;   // Continuation bit=1, D/C=1; 1100 0000
+//    static const uint8 COMMAND        = 0x00;   // Continuation bit=1, D/C=0; 1000 0000
+//    static const uint8 DATA           = 0x40;   // Continuation bit=1, D/C=1; 1100 0000
 
     static bool SendCommand(uint8);
 }
@@ -59,7 +59,7 @@ void SSD1306::Init()
 }
 
 
-void SSD1306::WriteBuffer(uint8 buffer[1024])
+void SSD1306::WriteBuffer(uint8 /*buffer*/[1024])
 {
     // Write data to each page of RAM. Number of pages
     // depends on the screen height:
@@ -76,15 +76,16 @@ void SSD1306::WriteBuffer(uint8 buffer[1024])
         SendCommand((uint8)(0x00));
         SendCommand((uint8)(0x10));
 
-        if (!HAL_I2C::Write(DATA, &buffer[Display::WIDTH * i], Display::WIDTH))
-        {
-            break;
-        }
+//        if (!HAL_I2C::Write(DATA, &buffer[Display::WIDTH * i], Display::WIDTH))
+//        {
+//            break;
+//        }
     };
 }
 
 
-bool SSD1306::SendCommand(uint8 command)
+bool SSD1306::SendCommand(uint8 /*command*/)
 {
-    return HAL_I2C::Write(COMMAND, &command, 1);
+//    return HAL_I2C::Write(COMMAND, &command, 1);
+    return true;
 }

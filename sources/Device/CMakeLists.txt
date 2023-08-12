@@ -2,7 +2,7 @@
 
 project (Device)
 
-set(CMAKE_UNITY_BUILD OFF)
+set(CMAKE_UNITY_BUILD ON)
 
 message("------------------------------------------------------------------------ ${PROJECT_NAME}")
 
@@ -41,14 +41,11 @@ file(GLOB HARDWARE                       src/Hardware/*.*
 file(GLOB HARDWARE_CMSIS                 src/Hardware/CMSIS/*.*)
 file(GLOB HARDWARE_HAL                   src/Hardware/HAL/*.*
                                    ../common/Hardware/HAL/*.*)
-file(GLOB MEMORY                   ../common/Memory/*.*)
-file(GLOB MEASURER                 ../common/Measurer/*.*)
 file(GLOB MODEM                          src/Modem/*.*
                                    ../common/Modem/*.*)
 file(GLOB MODEM_MQTT               ../common/Modem/MQTT/*.*)
 file(GLOB MODEM_MQTT_SENDER        ../common/Modem/MQTT/Sender/*.*)
 file(GLOB MODEM_SENDER             ../common/Modem/Sender/*.*)
-file(GLOB SETTINGS                 ../common/Settings/*.*)
 file(GLOB UTILS                    ../common/Utils/*.*)
 
 source_group(GD32F3                   FILES ${GD32F3})
@@ -58,12 +55,9 @@ source_group(Display/Font             FILES ${DISPLAY_FONT})
 source_group(Hardware                 FILES ${HARDWARE})
 source_group(Hardware/CMSIS           FILES ${HARDWARE_CMSIS})
 source_group(Hardware/HAL             FILES ${HARDWARE_HAL})
-source_group(Memory                   FILES ${MEMORY})
-source_group(Measurer                 FILES ${MEASURER})
 source_group(Modem                    FILES ${MODEM})
 source_group(Modem/MQTT               FILES ${MODEM_MQTT})
 source_group(Modem/MQTT/Sender        FILES ${MODEM_MQTT_SENDER})
-source_group(Settings                 FILES ${SETTINGS})
 source_group(Utils                    FILES ${UTILS})
 
 set_source_files_properties(${STM32F3} ${HARDWARE_CMSIS} ../common/Hardware/HAL/systick.c
@@ -77,11 +71,8 @@ add_library(${PROJECT_NAME}
             ${HARDWARE}
             ${HARDWARE_CMSIS}
             ${HARDWARE_HAL}
-            ${MEMORY}
-            ${MEASURER}
             ${MODEM}
             ${MODEM_MQTT}
             ${MODEM_MQTT_SENDER}
-            ${SETTINGS}
             ${UTILS}
             )

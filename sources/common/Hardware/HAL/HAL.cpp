@@ -33,11 +33,8 @@ void HAL::Init()
     rcu_periph_clock_enable(RCU_GPIOE);
     rcu_periph_clock_enable(RCU_GPIOF);
 
-    rcu_periph_clock_enable(RCU_ADC0);      // Сбор информации
-    rcu_periph_clock_enable(RCU_DMA0);      // Сбор информации
     rcu_periph_clock_enable(RCU_I2C0);      // Display
     rcu_periph_clock_enable(RCU_I2C1);
-    rcu_periph_clock_enable(RCU_SPI2);      // Ext Flash  M25P80
     rcu_periph_clock_enable(RCU_TIMER0);    // ADC
     rcu_periph_clock_enable(RCU_USART1);    // Log
     rcu_periph_clock_enable(RCU_UART3);     // GPRS
@@ -54,18 +51,8 @@ void HAL::Init()
 
     rcu_periph_clock_enable(RCU_WWDGT);
 
-    HAL_I2C::Init();
-
-    HAL_ADC::Init();
-
     HAL_USART_GPRS::Init();
-
-    HAL_SPI2::Init();
     
-    HAL_PINS::Init();
-
-    HAL_FWDGT::Init();
-
 #ifdef ENABLE_LOG
     HAL_USART_LOG::Init();
 #endif
@@ -75,8 +62,6 @@ void HAL::Init()
 void HAL::DeInit()
 {
     HAL_USART_GPRS::DeInit();
-
-    HAL_ADC::DeInit();
 }
 
 

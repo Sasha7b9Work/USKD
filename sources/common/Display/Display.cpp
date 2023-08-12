@@ -2,13 +2,11 @@
 #include "defines.h"
 #include "Display/Display.h"
 #include "Display/SSD1306.h"
-#include "Measurer/Measurer.h"
 #include "Modem/Modem.h"
 #include "Modem/MQTT/MQTT.h"
-#include "Modem/SIM800.h"
 #include "Hardware/HAL/HAL.h"
-#include "Settings/Settings.h"
 #include "Hardware/Timer.h"
+#include "Modem/SIM868.h"
 #include <cstring>
 #include <cstdio>
 #include <cstdlib>
@@ -25,10 +23,6 @@ namespace Display
     static int cursorY = 0;
 
     static FontDef font_10x7 = { 7, 10, Font10x7 };
-
-    static void WriteVoltage(int i);
-
-    static void WriteAmpere(int i);
 }
 
 
@@ -58,22 +52,11 @@ void Display::Init()
 
 void Display::Update()
 {
-    FullMeasure measure = Measurer::LastMeasure();
-
     BeginScene();
-
-    for (int i = 0; i < 3; i++)
-    {
-        WriteVoltage(i);
-
-        WriteAmpere(i);
-    }
 
     char message[32];
 
     WriteString(70, 51, HAL::GetUID(message));
-
-    std::sprintf(message, "v%d:%d", gset.GetNumberSteps(), gset.GetKoeffCurrent());
 
     WriteString(5, 51, message);
 
@@ -95,30 +78,6 @@ void Display::Update()
     }
 
     SSD1306::WriteBuffer(buffer);
-}
-
-
-void Display::WriteVoltage(int i)
-{
-    FullMeasure measure = Measurer::LastMeasure();
-
-    char message[30];
-
-    std::sprintf(message, "%4.1f", measure.measures[i].voltage);
-
-    WriteString(10, 17 + i * 11, message);
-}
-
-
-void Display::WriteAmpere(int i)
-{
-    FullMeasure measure = Measurer::LastMeasure();
-
-    char message[30];
-
-    std::sprintf(message, "%4.1f", measure.measures[i].current);
-
-    WriteString(80, 17 + i * 11, message);
 }
 
 

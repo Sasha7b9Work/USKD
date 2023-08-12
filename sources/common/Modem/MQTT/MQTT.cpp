@@ -5,9 +5,8 @@
 #include "Hardware/Timer.h"
 #include "Hardware/HAL/HAL.h"
 #include "Modem/Parser.h"
-#include "Modem/SIM800.h"
+#include "Modem/SIM868.h"
 #include "Modem/MQTT/Sender/Sender.h"
-#include "Settings/Settings.h"
 #include <cstring>
 #include <cstdlib>
 #include <cstdio>
@@ -76,7 +75,9 @@ void MQTT::Update(pchar answer)
             char guid[32];
             char MQTT_CID[32];
 
-            std::sprintf(MQTT_CID, "pks-%d%02d-%s", gset.GetNumberSteps(), gset.GetKoeffCurrent(), HAL::GetUID(guid));
+            HAL::GetUID(guid);
+
+            std::sprintf(MQTT_CID, "pks-%d%02d-%s", 4, 16, guid);
 
             LOG_WRITE(MQTT_CID);            // WARNING без этого не соединяется
 
@@ -103,8 +104,6 @@ void MQTT::Update(pchar answer)
             state = State::RUNNING;
 
             meterLastData.Reset();
-
-            HAL_PINS::SendState();
         }
         break;
 

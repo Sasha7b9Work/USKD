@@ -1,2 +1,2 @@
 @echo on
-start ..\..\generated\Keil\Meter.sln
+start ..\..\generated\Keil\USKD.sln

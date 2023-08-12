@@ -3,6 +3,7 @@
 #include "Modem/MQTT/Sender/Sender.h"
 #include "Modem/Modem.h"
 #include "Hardware/Timer.h"
+#include "Modem/MQTT/MQTT.h"
 
 
 namespace Sender
@@ -29,9 +30,9 @@ void Sender::StringState::Send(pchar _state, bool now)
     {
         Sender::ResetMeter();
 
-        TimeMeterMS meter;
+        TimeMeterMS met;
 
-        while (need_send && meter.ElapsedTime() < 10000)
+        while (need_send && met.ElapsedTime() < 10000)
         {
             Modem::Update();
         }
@@ -41,9 +42,9 @@ void Sender::StringState::Send(pchar _state, bool now)
 
 bool Sender::StringState::SendToSIM800()
 {
-    static TimeMeterMS meter;
+    static TimeMeterMS met;
 
-    if (meter.ElapsedTime() > 1000)
+    if (met.ElapsedTime() > 1000)
     {
         if (need_send)
         {

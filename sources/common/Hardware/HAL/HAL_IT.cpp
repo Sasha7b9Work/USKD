@@ -1,7 +1,6 @@
 // 2022/6/10 9:08:02 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
 #include "Hardware/HAL/HAL.h"
-#include "Measurer/Measurer.h"
 #include "Hardware/Timer.h"
 #include <gd32f30x.h>
 #include <systick.h>
@@ -121,26 +120,12 @@ extern "C" {
         delay_decrement();
     }
 
-    void ADC0_1_IRQHandler(void)
-    {
-        HAL_ADC::Callback();
-
-        adc_interrupt_flag_clear(ADC0, ADC_INT_FLAG_EOC);
-        adc_interrupt_flag_clear(ADC0, ADC_INT_FLAG_EOIC);
-    }
-
     void UART3_IRQHandler(void)
     {
         if (RESET != usart_interrupt_flag_get(USART_GPRS_ADDR, USART_INT_FLAG_RBNE)) {
 
             HAL_USART_GPRS::CallbackOnReceive((char)usart_data_receive(USART_GPRS_ADDR));
         }
-    }
-
-    void WWDGT_IRQHandler(void)
-    {
-        uint time = Timer::TimeMS();
-        time = time;
     }
 
 #ifdef __cplusplus

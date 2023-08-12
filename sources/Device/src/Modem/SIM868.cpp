@@ -1,7 +1,7 @@
 // 2023/5/3 11:29:56 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
 #include "Modem/Modem.h"
-#include "Modem/SIM800.h"
+#include "Modem/SIM868.h"
 #include "Hardware/Timer.h"
 #include "Hardware/HAL/HAL.h"
 #include "Modem/Parser.h"
@@ -117,8 +117,6 @@ bool SIM800::ProcessUnsolicited(pchar answer)
         {
             if (answer[18] == 1 && answer[17] == 'e' && answer[16] == 't' && answer[15] == 'a')
             {
-                HAL_FWDGT::ToUpgradeMode();
-
                 Sender::StringState::Send("Upgrade software", true);
 
                 Bootloader::Run();

@@ -25,33 +25,6 @@ namespace HAL
 }
 
 
-namespace HAL_ADC
-{
-    void Init();
-    void DeInit();
-    // Вызывать, когда считаны новые значения
-    void Callback();
-}
-
-
-// Для дисплея
-namespace HAL_I2C
-{
-    void Init();
-    bool Write(uint8 command, uint8 *data, int size);
-}
-
-
-// Для внешней памяти
-namespace HAL_SPI2
-{
-    void Init();
-    void Write(uint8);
-    void Write(const void *buffer, int size);
-    void WriteRead(const void *out, void *in, int size);
-}
-
-
 // Таймер для опроса состояния контакторов
 namespace HAL_TIM1
 {
@@ -97,20 +70,6 @@ namespace HAL_ROM
 }
 
 
-namespace HAL_FWDGT
-{
-    void Init();
-
-    // Установить рабочий режим
-    void ToRunningMode();
-
-    // Установить режим обновления
-    void ToUpgradeMode();
-
-    void Update();
-}
-
-
 
 #ifdef __cplusplus
 extern "C" {
@@ -136,11 +95,7 @@ extern "C" {
     /* this function handles SysTick exception */
     void SysTick_Handler(void);
 
-    void ADC0_1_IRQHandler(void);
-
     void UART3_IRQHandler(void);
-
-    void WWDGT_IRQHandler(void);
 
 #ifdef __cplusplus
 }
