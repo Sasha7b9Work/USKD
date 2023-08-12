@@ -106,7 +106,31 @@ bool SIM868::ProcessUnsolicited(pchar answer)
     }
     else if (strcmp(first_word, "+UGNSINF") == 0)
     {
-        int i = 0;
+        int number_commas = NumberSymbols(answer, ',');
+
+        if (number_commas > 4)
+        {
+            float altitude = 0.0f;
+            float longitude = 0.0f;
+
+            int position1 = PositionSymbol(answer, ',', 3) + 1;
+            int position2 = PositionSymbol(answer, ',', 4);
+
+            if (position2 - position1 > 1)
+            {
+                altitude = SymbolsToFloat(answer, position1, position2);
+            }
+
+            position1 = PositionSymbol(answer, ',', 4) + 1;
+            position2 = PositionSymbol(answer, ',', 5);
+
+            if (position2 - position1 > 1)
+            {
+                longitude = SymbolsToFloat(answer, position1, position2);
+            }
+
+            Sender::GPRS::SendCoordinates(altitude, longitude);
+        }
     }
     else if (strcmp(answer, "SEND FAIL") == 0)
     {

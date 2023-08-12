@@ -13,8 +13,9 @@ namespace Parser
 
     // num начинаетс€ с единицы
     int PositionSymbol(pchar, char symbol, int num);
-    int PositionSymbol(pchar, char symbol, int num);
 
     //  опирует в out символы, расположенные между позици€ми start и end
     pchar GetWord(pchar, int start, int end, char out[32]);
+
+    float SymbolsToFloat(pchar, int pos_start, int pos_end);
 }

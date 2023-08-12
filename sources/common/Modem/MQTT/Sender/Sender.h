@@ -2,6 +2,7 @@
 #pragma once
 #include "Modem/MQTT/Sender/StringState.h"
 #include "Modem/SIM868.h"
+#include "Modem/MQTT/Sender/GPRS.h"
 
 
 namespace Sender

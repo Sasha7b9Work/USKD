@@ -2,6 +2,7 @@
 #include "defines.h"
 #include "Modem/Parser.h"
 #include <cstring>
+#include <cstdlib>
 
 
 using namespace std;
@@ -212,4 +213,21 @@ int Parser::NumSeparators(pchar string, int pos[10])
     pos[num_sep++] = size;
 
     return num_sep;
+}
+
+
+float Parser::SymbolsToFloat(pchar string, int pos_start, int pos_end)
+{
+    char buffer[32];
+
+    char *pointer = buffer;
+
+    for (int i = pos_start; i < pos_end; i++)
+    {
+        *pointer++ = string[i];
+    }
+
+    *pointer = '\0';
+
+    return std::atof(buffer);
 }
