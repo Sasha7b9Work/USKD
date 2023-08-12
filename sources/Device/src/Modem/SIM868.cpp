@@ -38,6 +38,8 @@ namespace SIM868
             WAIT_IP_STATUS,
             WAIT_TCP_CONNECT,
             WAIT_CIPHEAD,
+            WAIT_CGNSPWR,           // Ожидание включения навигационной части
+            WAIT_CGNSURC,           // Ожидание включения автоматической выдачи URC-сообщений
             RUNNING_MQTT
         };
 
@@ -101,6 +103,10 @@ bool SIM868::ProcessUnsolicited(pchar answer)
     {
         GetWord(answer, 2, levelSignal);
         return true;
+    }
+    else if (strcmp(first_word, "+UGNSINF") == 0)
+    {
+        int i = 0;
     }
     else if (strcmp(answer, "SEND FAIL") == 0)
     {
@@ -325,13 +331,37 @@ void SIM868::Update(pchar answer)
         {
             if (strcmp(answer, "OK") == 0)
             {
-                State::Set(State::RUNNING_MQTT);
+                SIM868::Transmit::With0D("AT+CGNSPWR=1");
+                State::Set(State::WAIT_CGNSPWR);
             }
             else if (strcmp(answer, "ERROR") == 0)
             {
                 Modem::Reset();
             }
         }
+        break;
+
+    case State::WAIT_CGNSPWR:
+        if (MeterIsRunning(DEFAULT_TIME))
+        {
+            if (strcmp(answer, "OK") == 0)
+            {
+                SIM868::Transmit::With0D("AT+CGNSURC=5");
+                State::Set(State::WAIT_CGNSURC);
+            }
+        }
+
+        break;
+
+    case State::WAIT_CGNSURC:
+        if (MeterIsRunning(DEFAULT_TIME))
+        {
+            if (strcmp(answer, "OK") == 0)
+            {
+                State::Set(State::RUNNING_MQTT);
+            }
+        }
+
         break;
 
     case State::RUNNING_MQTT:

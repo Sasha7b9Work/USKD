@@ -74,9 +74,9 @@ namespace Modem
     // Данные, получаемые от SIM868
     namespace InData
     {
-        static Buffer<256> main;
-        static Buffer<256> addit;
-        static Buffer<256> buffer;
+        static Buffer<512> main;
+        static Buffer<512> addit;
+        static Buffer<512> buffer;
 
 //        static void Clear()
 //        {
@@ -110,7 +110,7 @@ namespace Modem
             }
             else
             {
-                Buffer<64> answer;
+                Buffer<512> answer;
 
                 bool answer_exist = false;
 
