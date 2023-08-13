@@ -50,7 +50,7 @@ bool Sender::SendToSIM800()
 
             char buffer[32];
 
-            std::sprintf(buffer, "v%d:%d:%d", VERSION, 4, 16);
+            std::sprintf(buffer, "v %d", VERSION);
 
             MQTT::Packet::Publish("/versionSW", buffer);
             versionSW_is_sended = true;
