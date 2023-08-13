@@ -114,50 +114,43 @@ namespace Modem
 
                 bool answer_exist = false;
 
-                do
+                for (int i = 0; i < buffer.Size(); i++)
                 {
-                    answer.Clear();
-                    answer_exist = false;
+                    char symbol = buffer[i];
 
-                    for (int i = 0; i < buffer.Size(); i++)
+                    if (symbol == 0x0a)
                     {
-                        char symbol = buffer[i];
-
-                        if (symbol == 0x0a)
+                        continue;
+                    }
+                    else if (symbol == 0x0d)
+                    {
+                        if (answer.Size() == 0)
                         {
                             continue;
                         }
-                        else if (symbol == 0x0d)
+                        else
                         {
-                            if (answer.Size() == 0)
-                            {
-                                continue;
-                            }
-                            else
-                            {
-                                answer.Append('\0');
-                                answer_exist = true;
-                                buffer.RemoveFirst(i + 1);
-                                break;
-                            }
-                        }
-                        else if (symbol == '>')
-                        {
-                            answer.Append('>');
                             answer.Append('\0');
                             answer_exist = true;
                             buffer.RemoveFirst(i + 1);
                             break;
                         }
-                        else
-                        {
-                            answer.Append(symbol);
-                        }
                     }
+                    else if (symbol == '>')
+                    {
+                        answer.Append('>');
+                        answer.Append('\0');
+                        answer_exist = true;
+                        buffer.RemoveFirst(i + 1);
+                        break;
+                    }
+                    else
+                    {
+                        answer.Append(symbol);
+                    }
+                }
 
-                    SIM868::Update(answer_exist ? answer.Data() : "");
-
-                } while (answer_exist);
+                SIM868::Update(answer_exist ? answer.Data() : "");
             }
         }
     }
