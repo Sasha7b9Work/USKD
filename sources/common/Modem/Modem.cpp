@@ -78,6 +78,13 @@ namespace Modem
         static Buffer<512> addit;
         static Buffer<512> buffer;
 
+//        static void Clear()
+//        {
+//            main.Clear();
+//            addit.Clear();
+//            buffer.Clear();
+//        }
+
         void Update()
         {
             main.mutex.Try();
@@ -97,7 +104,7 @@ namespace Modem
 
             main.mutex.Release();
 
-            if (!buffer.ConsistSymbol(0x0d))
+            if (buffer.Size() == 0)
             {
                 SIM868::Update("");
             }
@@ -107,43 +114,50 @@ namespace Modem
 
                 bool answer_exist = false;
 
-                for (int i = 0; i < buffer.Size(); i++)
+                do
                 {
-                    char symbol = buffer[i];
+                    answer.Clear();
+                    answer_exist = false;
 
-                    if (symbol == 0x0a)
+                    for (int i = 0; i < buffer.Size(); i++)
                     {
-                        continue;
-                    }
-                    else if (symbol == 0x0d)
-                    {
-                        if (answer.Size() == 0)
+                        char symbol = buffer[i];
+
+                        if (symbol == 0x0a)
                         {
                             continue;
                         }
-                        else
+                        else if (symbol == 0x0d)
                         {
+                            if (answer.Size() == 0)
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                answer.Append('\0');
+                                answer_exist = true;
+                                buffer.RemoveFirst(i + 1);
+                                break;
+                            }
+                        }
+                        else if (symbol == '>')
+                        {
+                            answer.Append('>');
                             answer.Append('\0');
                             answer_exist = true;
                             buffer.RemoveFirst(i + 1);
                             break;
                         }
+                        else
+                        {
+                            answer.Append(symbol);
+                        }
                     }
-                    else if (symbol == '>')
-                    {
-                        answer.Append('>');
-                        answer.Append('\0');
-                        answer_exist = true;
-                        buffer.RemoveFirst(i + 1);
-                        break;
-                    }
-                    else
-                    {
-                        answer.Append(symbol);
-                    }
-                }
 
-                SIM868::Update(answer_exist ? answer.Data() : "");
+                    SIM868::Update(answer_exist ? answer.Data() : "");
+
+                } while (answer_exist);
             }
         }
     }
