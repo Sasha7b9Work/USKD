@@ -72,7 +72,7 @@ void MQTT::Update(pchar answer)
         {
             char *MQTT_type = "MQTT";
 
-            char *MQTT_CID = "pks-444-A996C55A";
+            char *MQTT_CID = "mqtt-uskdserver-l4z6kt";
 
             LOG_WRITE(MQTT_CID);            // WARNING без этого не соединяется
 
