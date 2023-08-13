@@ -88,6 +88,19 @@ public:
         return null;
     }
 
+    bool ConsistSymbol(char symbol) const
+    {
+        for (int i = 0; i < size; i++)
+        {
+            if (buffer[i] == symbol)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     Mutex mutex;
 
 protected:

@@ -78,13 +78,6 @@ namespace Modem
         static Buffer<512> addit;
         static Buffer<512> buffer;
 
-//        static void Clear()
-//        {
-//            main.Clear();
-//            addit.Clear();
-//            buffer.Clear();
-//        }
-
         void Update()
         {
             main.mutex.Try();
@@ -104,7 +97,7 @@ namespace Modem
 
             main.mutex.Release();
 
-            if (buffer.Size() == 0)
+            if (buffer.Size() == 0 || !buffer.ConsistSymbol(0x0d))
             {
                 SIM868::Update("");
             }
