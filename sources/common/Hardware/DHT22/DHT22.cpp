@@ -21,22 +21,27 @@ static void goToInput(DHT_sensor *sensor)
     gpio_init(sensor->DHT_Port, GPIO_MODE_IPU, GPIO_OSPEED_50MHZ, sensor->DHT_Pin);
 }
 
-DHT_data DHT_getData(DHT_sensor *sensor) {
+DHT_data DHT_getData(DHT_sensor *sensor)
+{
     DHT_data data = { -128.0f, -128.0f };
 
 #if DHT_POLLING_CONTROL == 1
     /* Ограничение по частоте опроса датчика */
     //Определение интервала опроса в зависимости от датчика
     uint16_t pollingInterval;
-    if (sensor->type == DHT11) {
+
+    if (sensor->type == DHT11)
+    {
         pollingInterval = DHT_POLLING_INTERVAL_DHT11;
     }
-    else {
+    else
+    {
         pollingInterval = DHT_POLLING_INTERVAL_DHT22;
     }
 
     //Если интервал маленький, то возврат последнего удачного значения
-    if ((Timer::TimeMS() - sensor->lastPollingTime < pollingInterval) && sensor->lastPollingTime != 0) {
+    if ((Timer::TimeMS() - sensor->lastPollingTime < pollingInterval) && sensor->lastPollingTime != 0)
+    {
         data.hum = sensor->lastHum;
         data.temp = sensor->lastTemp;
         return data;
@@ -62,9 +67,11 @@ DHT_data DHT_getData(DHT_sensor *sensor) {
     /* Ожидание ответа от датчика */
     uint16_t timeout = 0;
     //Ожидание спада
-    while (getLine()) {
+    while (getLine())
+    {
         timeout++;
-        if (timeout > DHT_TIMEOUT) {
+        if (timeout > DHT_TIMEOUT)
+        {
 #ifdef DHT_IRQ_CONTROL
             __enable_irq();
 #endif
@@ -77,11 +84,15 @@ DHT_data DHT_getData(DHT_sensor *sensor) {
             return data;
         }
     }
+
     timeout = 0;
+
     //Ожидание подъёма
-    while (!getLine()) {
+    while (!getLine())
+    {
         timeout++;
-        if (timeout > DHT_TIMEOUT) {
+        if (timeout > DHT_TIMEOUT)
+        {
 #ifdef DHT_IRQ_CONTROL
             __enable_irq();
 #endif
@@ -94,11 +105,15 @@ DHT_data DHT_getData(DHT_sensor *sensor) {
             return data;
         }
     }
+
     timeout = 0;
+
     //Ожидание спада
-    while (getLine()) {
+    while (getLine())
+    {
         timeout++;
-        if (timeout > DHT_TIMEOUT) {
+        if (timeout > DHT_TIMEOUT)
+        {
 #ifdef DHT_IRQ_CONTROL
             __enable_irq();
 #endif
@@ -108,8 +123,10 @@ DHT_data DHT_getData(DHT_sensor *sensor) {
 
     /* Чтение ответа от датчика */
     uint8_t rawData[5] = { 0,0,0,0,0 };
-    for (uint8_t a = 0; a < 5; a++) {
-        for (uint8_t b = 7; b != 255; b--) {
+    for (uint8_t a = 0; a < 5; a++)
+    {
+        for (uint8_t b = 7; b != 255; b--)
+        {
             uint16_t hT = 0, lT = 0;
             //Пока линия в низком уровне, инкремент переменной lT
             while (!getLine() && lT != 65535) lT++;
@@ -127,20 +144,26 @@ DHT_data DHT_getData(DHT_sensor *sensor) {
 #endif
 
     /* Проверка целостности данных */
-    if ((uint8_t)(rawData[0] + rawData[1] + rawData[2] + rawData[3]) == rawData[4]) {
+    if ((uint8_t)(rawData[0] + rawData[1] + rawData[2] + rawData[3]) == rawData[4])
+    {
         //Если контрольная сумма совпадает, то конвертация и возврат полученных значений
-        if (sensor->type == DHT22) {
+        if (sensor->type == DHT22)
+        {
             data.hum = (float)(((uint16_t)rawData[0] << 8) | rawData[1]) * 0.1f;
             //Проверка на отрицательность температуры
-            if (!(rawData[2] & (1 << 7))) {
+            if (!(rawData[2] & (1 << 7)))
+            {
                 data.temp = (float)(((uint16_t)rawData[2] << 8) | rawData[3]) * 0.1f;
             }
-            else {
+            else
+            {
                 rawData[2] &= ~(1 << 7);
                 data.temp = (float)(((uint16_t)rawData[2] << 8) | rawData[3]) * -0.1f;
             }
         }
-        if (sensor->type == DHT11) {
+
+        if (sensor->type == DHT11)
+        {
             data.hum = (float)rawData[0];
             data.temp = (float)rawData[2];
         }
