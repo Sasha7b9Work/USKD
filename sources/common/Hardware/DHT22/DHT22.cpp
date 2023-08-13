@@ -1,33 +1,24 @@
+#include "defines.h"
 #include "DHT22.h"
+#include "Hardware/Timer.h"
+#include <gd32f30x.h>
 
-#define lineDown() 		HAL_GPIO_WritePin(sensor->DHT_Port, sensor->DHT_Pin, GPIO_PIN_RESET)
-#define lineUp()		HAL_GPIO_WritePin(sensor->DHT_Port, sensor->DHT_Pin, GPIO_PIN_SET)
-#define getLine()		(HAL_GPIO_ReadPin(sensor->DHT_Port, sensor->DHT_Pin) == GPIO_PIN_SET)
-#define Delay(d)		HAL_Delay(d)
 
-static void goToOutput(DHT_sensor *sensor) {
-    GPIO_InitTypeDef GPIO_InitStruct = { 0 };
+#define lineDown()      GPIO_BC(sensor->DHT_Port) = sensor->DHT_Pin
+#define lineUp()        GPIO_BOP(sensor->DHT_Port) = sensor->DHT_Pin
+#define getLine()       (gpio_input_bit_get(sensor->DHT_Port, sensor->DHT_Pin) != RESET)
 
-    //По умолчанию на линии высокий уровень
-    lineUp();
 
-    //Настройка порта на выход 
-    GPIO_InitStruct.Pin = sensor->DHT_Pin;
-    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD; 	//Открытый сток
-    GPIO_InitStruct.Pull = sensor->pullUp;		//Подтяжка к питанию
+static void goToOutput(DHT_sensor *sensor)
+{
+    lineUp();                   //По умолчанию на линии высокий уровень
 
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH; //Высокая скорость работы порта
-    HAL_GPIO_Init(sensor->DHT_Port, &GPIO_InitStruct);
+    gpio_init(sensor->DHT_Port, GPIO_MODE_OUT_OD, GPIO_OSPEED_50MHZ, sensor->DHT_Pin);
 }
 
-static void goToInput(DHT_sensor *sensor) {
-    GPIO_InitTypeDef GPIO_InitStruct = { 0 };
-
-    //Настройка порта на вход 
-    GPIO_InitStruct.Pin = sensor->DHT_Pin;
-    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-    GPIO_InitStruct.Pull = sensor->pullUp;		//Подтяжка к питанию
-    HAL_GPIO_Init(sensor->DHT_Port, &GPIO_InitStruct);
+static void goToInput(DHT_sensor *sensor)
+{
+    gpio_init(sensor->DHT_Port, GPIO_MODE_IPU, GPIO_OSPEED_50MHZ, sensor->DHT_Pin);
 }
 
 DHT_data DHT_getData(DHT_sensor *sensor) {
@@ -45,12 +36,12 @@ DHT_data DHT_getData(DHT_sensor *sensor) {
     }
 
     //Если интервал маленький, то возврат последнего удачного значения
-    if ((HAL_GetTick() - sensor->lastPollingTime < pollingInterval) && sensor->lastPollingTime != 0) {
+    if ((Timer::TimeMS() - sensor->lastPollingTime < pollingInterval) && sensor->lastPollingTime != 0) {
         data.hum = sensor->lastHum;
         data.temp = sensor->lastTemp;
         return data;
     }
-    sensor->lastPollingTime = HAL_GetTick() + 1;
+    sensor->lastPollingTime = Timer::TimeMS() + 1;
 #endif
 
     /* Запрос данных у датчика */
@@ -58,7 +49,7 @@ DHT_data DHT_getData(DHT_sensor *sensor) {
     goToOutput(sensor);
     //Опускание линии данных на 18 мс
     lineDown();
-    Delay(18);
+    Timer::DelayMS(18);
     //Подъём линии, перевод порта "на вход"
     lineUp();
     goToInput(sensor);
