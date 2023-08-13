@@ -150,7 +150,16 @@ namespace Modem
                     }
                 }
 
-                SIM868::Update(answer_exist ? answer.Data() : "");
+                const char *_data_ = answer.DataConst();
+
+                if (!answer_exist)
+                {
+                    answer_exist = true;
+
+                    answer.Append('\0');
+                }
+
+                SIM868::Update(answer_exist ? _data_ : "");
             }
             else
             {
