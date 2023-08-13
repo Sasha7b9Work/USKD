@@ -108,66 +108,68 @@ namespace Modem
             {
                 SIM868::Update("");
             }
-
-            while (buffer.Size() && (buffer[0] == 0x0a || buffer[0] == 0x0d))
-            {
-                buffer.RemoveFirst(1);
-            }
-
-            if (buffer.ConsistSymbol(0x0d))
-            {
-                Buffer<512> answer;
-
-                bool answer_exist = false;
-
-                for (int i = 0; i < buffer.Size(); i++)
-                {
-                    char symbol = buffer[i];
-
-                    if (symbol == 0x0a)
-                    {
-                        continue;
-                    }
-                    else if (symbol == 0x0d)
-                    {
-                        answer.Append('\0');
-                        answer_exist = true;
-                        buffer.RemoveFirst(i + 1);
-                        break;
-                    }
-                    else if (symbol == '>')
-                    {
-                        answer.Append('>');
-                        answer.Append('\0');
-                        answer_exist = true;
-                        buffer.RemoveFirst(i + 1);
-                        break;
-                    }
-                    else
-                    {
-                        answer.Append(symbol);
-                    }
-                }
-
-                const char *_data_ = answer.DataConst();
-
-                if (!answer_exist)
-                {
-                    answer_exist = true;
-
-                    answer.Append('\0');
-
-                    if (std::strlen(_data_))
-                    {
-                        int i = 0;
-                    }
-                }
-
-                SIM868::Update(answer_exist ? _data_ : "");
-            }
             else
             {
-                SIM868::Update("");
+                while (buffer.Size() && (buffer[0] == 0x0a || buffer[0] == 0x0d))
+                {
+                    buffer.RemoveFirst(1);
+                }
+
+                if (buffer.ConsistSymbol(0x0d))
+                {
+                    Buffer<512> answer;
+
+                    bool answer_exist = false;
+
+                    for (int i = 0; i < buffer.Size(); i++)
+                    {
+                        char symbol = buffer[i];
+
+                        if (symbol == 0x0a)
+                        {
+                            continue;
+                        }
+                        else if (symbol == 0x0d)
+                        {
+                            answer.Append('\0');
+                            answer_exist = true;
+                            buffer.RemoveFirst(i + 1);
+                            break;
+                        }
+                        else if (symbol == '>')
+                        {
+                            answer.Append('>');
+                            answer.Append('\0');
+                            answer_exist = true;
+                            buffer.RemoveFirst(i + 1);
+                            break;
+                        }
+                        else
+                        {
+                            answer.Append(symbol);
+                        }
+                    }
+
+                    const char *_data_ = answer.DataConst();
+
+                    if (!answer_exist)
+                    {
+                        answer_exist = true;
+
+                        answer.Append('\0');
+
+                        if (std::strlen(_data_))
+                        {
+                            int i = 0;
+                        }
+                    }
+
+                    SIM868::Update(answer_exist ? _data_ : "");
+                }
+                else
+                {
+                    SIM868::Update("");
+                }
             }
         }
     }
