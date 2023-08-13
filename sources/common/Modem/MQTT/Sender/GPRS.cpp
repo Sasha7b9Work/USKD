@@ -41,8 +41,6 @@ bool Sender::GPRS::SendToSIM868()
 
         MQTT::Packet::Publish("/longitude", buffer);
 
-        Sender::Counter::SendToSIM800();
-
         return true;
     }
 
