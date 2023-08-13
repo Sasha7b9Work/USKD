@@ -7,6 +7,9 @@
 #include "Modem/Parser.h"
 #include "Utils/Buffer.h"
 #include "Modem/MQTT/MQTT.h"
+#ifdef LOADER
+#include "Modem/Updater.h"
+#endif
 #include <gd32f30x.h>
 #include <cstring>
 
