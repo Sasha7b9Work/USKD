@@ -5,6 +5,7 @@
 #include "Modem/Modem.h"
 #include "Modem/MQTT/MQTT.h"
 #include "Hardware/HAL/HAL.h"
+#include "Modem/MQTT/Sender/Sender.h"
 #include "Hardware/Timer.h"
 #include "Modem/SIM868.h"
 #include <cstring>
@@ -58,7 +59,13 @@ void Display::Update()
 
     WriteString(70, 51, HAL::GetUID(message));
 
-    WriteString(5, 51, message);
+    std::sprintf(message, "ALT = %f", Sender::GPRS::GetAltitude());
+
+    WriteString(10, 20, message);
+
+    std::sprintf(message, "LON = %f", Sender::GPRS::GetLongitude());
+
+    WriteString(10, 40, message);
 
     if (Modem::Mode::Power())
     {

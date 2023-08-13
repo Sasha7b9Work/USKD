@@ -46,3 +46,15 @@ bool Sender::GPRS::SendToSIM868()
 
     return false;
 }
+
+
+float Sender::GPRS::GetAltitude()
+{
+    return altitude;
+}
+
+
+float Sender::GPRS::GetLongitude()
+{
+    return longitude;
+}

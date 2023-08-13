@@ -9,5 +9,9 @@ namespace Sender
         void SendCoordinates(float, float);
 
         bool SendToSIM868();
+
+        float GetAltitude();
+
+        float GetLongitude();
     }
 }
