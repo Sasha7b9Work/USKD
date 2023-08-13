@@ -78,6 +78,13 @@ namespace Modem
         static Buffer<512> addit;
         static Buffer<512> buffer;
 
+//        static void Clear()
+//        {
+//            main.Clear();
+//            addit.Clear();
+//            buffer.Clear();
+//        }
+
         void Update()
         {
             main.mutex.Try();
@@ -97,7 +104,7 @@ namespace Modem
 
             main.mutex.Release();
 
-            if (!buffer.ConsistSymbol(0x0d))
+            if (buffer.Size() == 0)
             {
                 SIM868::Update("");
             }
@@ -105,9 +112,12 @@ namespace Modem
             {
                 Buffer<512> answer;
 
-                while (buffer.ConsistSymbol(0x0d))
+                bool answer_exist = false;
+
+                do
                 {
                     answer.Clear();
+                    answer_exist = false;
 
                     for (int i = 0; i < buffer.Size(); i++)
                     {
@@ -126,6 +136,7 @@ namespace Modem
                             else
                             {
                                 answer.Append('\0');
+                                answer_exist = true;
                                 buffer.RemoveFirst(i + 1);
                                 break;
                             }
@@ -134,6 +145,7 @@ namespace Modem
                         {
                             answer.Append('>');
                             answer.Append('\0');
+                            answer_exist = true;
                             buffer.RemoveFirst(i + 1);
                             break;
                         }
@@ -143,10 +155,9 @@ namespace Modem
                         }
                     }
 
-                    answer.Append('\0');
+                    SIM868::Update(answer_exist ? answer.Data() : "");
 
-                    SIM868::Update(answer.Data());
-                }
+                } while (answer_exist);
             }
         }
     }
