@@ -2,6 +2,8 @@
 #include "defines.h"
 #include "Modem/MQTT/Sender/GPRS.h"
 #include "Modem/MQTT/MQTT.h"
+#include "Modem/MQTT/Sender/Counter.h"
+#include <cstdio>
 
 
 namespace Sender
@@ -29,8 +31,17 @@ bool Sender::GPRS::SendToSIM868()
     {
         need_send = false;
 
-        MQTT::Packet::Publish("/altitude", (int)altitude);
-        MQTT::Packet::Publish("/longitude", (int)longitude);
+        char buffer[32];
+
+        std::sprintf(buffer, "%f", altitude);
+
+        MQTT::Packet::Publish("/altitude", buffer);
+
+        std::sprintf(buffer, "%f", longitude);
+
+        MQTT::Packet::Publish("/longitude", buffer);
+
+        Sender::Counter::SendToSIM800();
 
         return true;
     }

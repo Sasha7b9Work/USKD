@@ -23,7 +23,7 @@ namespace Sender
 
             if (meter.IsFinished())
             {
-                meter.SetResponseTime(60000);
+                meter.SetResponseTime(5000);
 
                 MQTT::Packet::Publish("base/state/counter", value++);
 
