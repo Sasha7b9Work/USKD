@@ -38,7 +38,7 @@ private:
 struct PinI2C
 {
     PinI2C() : port(0), pin(0) { }
-    void _Init(uint port, uint pin);
+    void Init(uint port, uint pin);
 private:
     uint port;
     uint pin;

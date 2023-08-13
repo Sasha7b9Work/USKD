@@ -131,7 +131,7 @@ bool PinIN::IsHi()
 }
 
 
-void PinI2C::_Init(uint _port, uint _pin)
+void PinI2C::Init(uint _port, uint _pin)
 {
     port = _port;
     pin = _pin;

@@ -52,6 +52,8 @@ void HAL::Init()
     rcu_periph_clock_enable(RCU_WWDGT);
 
     HAL_USART_GPRS::Init();
+
+    HAL_I2C::Init();
     
 #ifdef ENABLE_LOG
     HAL_USART_LOG::Init();
