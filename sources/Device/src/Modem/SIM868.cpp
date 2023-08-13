@@ -151,6 +151,8 @@ bool SIM868::ProcessUnsolicited(pchar answer)
         {
             if (answer[18] == 1 && answer[17] == 'e' && answer[16] == 't' && answer[15] == 'a')
             {
+                HAL_FWDGT::ToUpgradeMode();
+
                 Sender::StringState::Send("Upgrade software", true);
 
                 Bootloader::Run();

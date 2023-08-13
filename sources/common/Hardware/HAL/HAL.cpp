@@ -54,6 +54,8 @@ void HAL::Init()
     HAL_USART_GPRS::Init();
 
     HAL_I2C::Init();
+
+    HAL_FWDGT::Init();
     
 #ifdef ENABLE_LOG
     HAL_USART_LOG::Init();

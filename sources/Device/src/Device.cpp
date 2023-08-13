@@ -20,6 +20,8 @@ void Device::Init()
 
 void Device::Update()
 {
+    HAL_FWDGT::Update();
+
     Display::Update();
 
     Modem::Update();
