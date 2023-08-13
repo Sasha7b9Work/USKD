@@ -82,8 +82,8 @@
           <AfterMake>
             <RunUserProg1>1</RunUserProg1>
             <RunUserProg2>1</RunUserProg2>
-            <UserProg1Name>c:\Keil_v5\ARM\ARMCC\bin\fromelf.exe --bin Objects-Debug\ElectricityMeter.axf --output Meter.bin</UserProg1Name>
-            <UserProg2Name>HandlerBIN.exe Meter.bin</UserProg2Name>
+            <UserProg1Name>c:\Keil_v5\ARM\ARMCC\bin\fromelf.exe --bin Objects-Debug\ElectricityMeter.axf --output USKD.bin</UserProg1Name>
+            <UserProg2Name>HandlerBIN.exe USKD.bin</UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
             <nStopA1X>0</nStopA1X>
@@ -613,6 +613,11 @@
               <FileName>HAL_I2C.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\common\Hardware\HAL\HAL_I2C.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>HAL_FWDGT.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\common\Hardware\HAL\HAL_FWDGT.cpp</FilePath>
             </File>
           </Files>
         </Group>

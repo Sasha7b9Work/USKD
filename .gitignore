@@ -10,7 +10,7 @@ sources/Device/Listings-Debug/*
 sources/Device/Objects/*
 sources/Device/Objects-Debug/*
 
-sources/Device/Meter.bin
+sources/Device/USKD.bin
 
 sources/Loader/Listings/*
 sources/Loader/Listings-Debug/*

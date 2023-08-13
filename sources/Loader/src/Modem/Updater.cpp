@@ -88,7 +88,7 @@ namespace Updater
     static pchar password("Qwerty123!");
     static pchar directory("/");
 
-    static pchar file_firmware("Meter.frm");
+    static pchar file_firmware("USKD.frm");
 
     void Update(const pchar);
 
