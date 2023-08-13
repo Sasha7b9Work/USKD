@@ -75,7 +75,7 @@ void MQTT::Update(pchar answer)
             char MQTT_CID[32];
             char GUID[32];
 
-            std::sprintf("uskd-----%08F", HAL::GetUID(GUID));
+            std::sprintf("-uskd----%08X", HAL::GetUID(GUID));
 
             LOG_WRITE(MQTT_CID);            // WARNING без этого не соединяется
 
