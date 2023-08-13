@@ -91,10 +91,11 @@ namespace Modem
 
             if (main.Size())
             {
-                for (int i = 0; i < main.Size(); i++)
-                {
-                    Log::ReceiveFromSIM800(main[i]);
-                }
+//                for (int i = 0; i < main.Size(); i++)
+//                {
+//                    Log::ReceiveFromSIM800(main[i]);
+//                }
+
                 if (!buffer.Append(main.Data(), main.Size()))
                 {
                     buffer.Clear();
