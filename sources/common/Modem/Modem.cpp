@@ -91,11 +91,10 @@ namespace Modem
 
             if (main.Size())
             {
-//                for (int i = 0; i < main.Size(); i++)
-//                {
-//                    Log::ReceiveFromSIM800(main[i]);
-//                }
-
+                for (int i = 0; i < main.Size(); i++)
+                {
+                    Log::ReceiveFromSIM800(main[i]);
+                }
                 if (!buffer.Append(main.Data(), main.Size()))
                 {
                     buffer.Clear();
@@ -109,71 +108,63 @@ namespace Modem
             {
                 SIM868::Update("");
             }
-            else
+            else if(buffer.ConsistSymbol(0x0d))
             {
-                while (buffer.Size() && (buffer[0] == 0x0a || buffer[0] == 0x0d))
+                Buffer<512> answer;
+
+                bool answer_exist = false;
+
+                for (int i = 0; i < buffer.Size(); i++)
                 {
-                    buffer.RemoveFirst(1);
-                }
+                    char symbol = buffer[i];
 
-                if (buffer.ConsistSymbol(0x0d))
-                {
-                    Buffer<512> answer;
-
-                    bool answer_exist = false;
-
-                    for (int i = 0; i < buffer.Size(); i++)
+                    if (symbol == 0x0a)
                     {
-                        char symbol = buffer[i];
-
-                        if (symbol == 0x0a)
+                        continue;
+                    }
+                    else if (symbol == 0x0d)
+                    {
+                        if (answer.Size() == 0)
                         {
                             continue;
                         }
-                        else if (symbol == 0x0d)
-                        {
-                            answer.Append('\0');
-                            answer_exist = true;
-                            buffer.RemoveFirst(i + 1);
-                            break;
-                        }
-                        else if (symbol == '>')
-                        {
-                            answer.Append('>');
-                            answer.Append('\0');
-                            answer_exist = true;
-                            buffer.RemoveFirst(i + 1);
-                            break;
-                        }
                         else
                         {
-                            answer.Append(symbol);
+                            answer.Append('\0');
+                            answer_exist = true;
+                            buffer.RemoveFirst(i + 1);
+                            break;
                         }
                     }
-
-                    const char *_data_ = answer.DataConst();
-
-                    if (!answer_exist)
+                    else if (symbol == '>')
                     {
-                        answer_exist = true;
-
+                        answer.Append('>');
                         answer.Append('\0');
-
-                        if (std::strlen(_data_))
-                        {
-                            int i = 0;
-                        }
+                        answer_exist = true;
+                        buffer.RemoveFirst(i + 1);
+                        break;
                     }
-
-                    SIM868::Update(answer_exist ? _data_ : "");
+                    else
+                    {
+                        answer.Append(symbol);
+                    }
                 }
-                else
+
+                const char *_data_ = answer.DataConst();
+
+                if (!answer_exist)
                 {
-                    SIM868::Update("");
-                }
-            }
+                    answer_exist = true;
 
-            Timer::DelayMS(1);
+                    answer.Append('\0');
+                }
+
+                SIM868::Update(answer_exist ? _data_ : "");
+            }
+            else
+            {
+                SIM868::Update("");
+            }
         }
     }
 
