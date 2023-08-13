@@ -84,10 +84,6 @@ bool SIM868::ProcessUnsolicited(pchar answer)
     {
         LOG_WRITE("<<< %s", answer);
     }
-    else
-    {
-        return false;
-    }
 
     char first_word[32];
 
