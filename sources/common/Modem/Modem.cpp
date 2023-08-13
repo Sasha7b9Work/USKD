@@ -165,6 +165,8 @@ namespace Modem
             {
                 SIM868::Update("");
             }
+
+            Timer::DelayMS(1);
         }
     }
 
