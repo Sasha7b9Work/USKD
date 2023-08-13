@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
     int version = atoi(line.c_str());
 
     ofstream out_file;
-    out_file.open("Meter.frm", ios_base::out | ios_base::binary | ios_base::trunc);
+    out_file.open("USKD.frm", ios_base::out | ios_base::binary | ios_base::trunc);
 
     out_file.write((const char *)&version, 4);
 
