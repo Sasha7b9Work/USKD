@@ -108,7 +108,7 @@ namespace Modem
             {
                 SIM868::Update("");
             }
-            else
+            else if(buffer.ConsistSymbol(0x0d))
             {
                 Buffer<512> answer;
 
