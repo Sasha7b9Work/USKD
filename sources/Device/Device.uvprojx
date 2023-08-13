@@ -617,6 +617,21 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>Hardware/DHT22</GroupName>
+          <Files>
+            <File>
+              <FileName>DHT22.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\common\Hardware\DHT22\DHT22.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>DHT22.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\common\Hardware\DHT22\DHT22.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>Display</GroupName>
           <Files>
             <File>
@@ -815,5 +830,14 @@
     <components/>
     <files/>
   </RTE>
+
+  <LayerInfo>
+    <Layers>
+      <Layer>
+        <LayName>Device</LayName>
+        <LayPrjMark>1</LayPrjMark>
+      </Layer>
+    </Layers>
+  </LayerInfo>
 
 </Project>
