@@ -35,6 +35,16 @@ private:
 };
 
 
+struct PinI2C
+{
+    PinI2C() : port(0), pin(0) { }
+    void _Init(uint port, uint pin);
+private:
+    uint port;
+    uint pin;
+};
+
+
 struct PinIN
 {
     PinIN() : port(0), pin(0) { }
@@ -47,6 +57,10 @@ private:
     uint pin;
 };
 
+
+extern const uint I2C_ADDR;
+extern PinI2C pinI2C_SCL;
+extern PinI2C pinI2C_SDA;
 
 extern const uint USART_GPRS_ADDR;
 extern PinUSART_TX pinUSART_GPRS_TX;

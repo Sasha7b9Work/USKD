@@ -15,6 +15,10 @@ const uint USART_LOG_ADDR = USART1;
 PinUSART_TX pinUSART_LOG_TX;
 PinUSART_RX pinUSART_LOG_RX;
 
+const uint I2C_ADDR = I2C0;
+PinI2C pinI2C_SCL;
+PinI2C pinI2C_SDA;
+
 PinOUT pinGSM_PWR;
 PinOUT pinGSM_PWRKEY;
 PinIN  pinGSM_STATUS;
@@ -124,4 +128,15 @@ bool PinIN::IsLow()
 bool PinIN::IsHi()
 {
     return !IsLow();
+}
+
+
+void PinI2C::_Init(uint _port, uint _pin)
+{
+    port = _port;
+    pin = _pin;
+
+    gpio_pin_remap_config(GPIO_I2C0_REMAP, ENABLE);
+
+    gpio_init(port, GPIO_MODE_AF_OD, GPIO_OSPEED_50MHZ, pin);
 }

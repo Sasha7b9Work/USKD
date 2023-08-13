@@ -609,6 +609,11 @@
               <FileType>8</FileType>
               <FilePath>..\common\Hardware\HAL\HAL.cpp</FilePath>
             </File>
+            <File>
+              <FileName>HAL_I2C.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\common\Hardware\HAL\HAL_I2C.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
