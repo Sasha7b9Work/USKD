@@ -52,13 +52,6 @@ namespace HAL_USART_GPRS
 }
 
 
-namespace HAL_USART_LOG
-{
-    void Init();
-    void Transmit(pchar);
-}
-
-
 namespace HAL_FWDGT
 {
     void Init();

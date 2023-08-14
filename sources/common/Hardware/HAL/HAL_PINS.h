@@ -80,10 +80,6 @@ extern const uint USART_GPRS_ADDR;
 extern PinUSART_TX pinUSART_GPRS_TX;
 extern PinUSART_RX pinUSART_GPRS_RX;
 
-extern const uint USART_LOG_ADDR;
-extern PinUSART_TX pinUSART_LOG_TX;
-extern PinUSART_RX pinUSART_LOG_RX;
-
 extern PinOUT pinGSM_PWR;
 extern PinOUT pinGSM_PWRKEY;
 extern PinIN  pinGSM_STATUS;

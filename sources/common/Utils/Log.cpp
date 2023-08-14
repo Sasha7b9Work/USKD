@@ -67,12 +67,4 @@ void Log::Write(char *format, ...)
     pointer += size;
 
 #endif
-
-    char buffer[300];
-
-    static int counter = 0;
-
-    std::sprintf(buffer, "%d : %s", counter++, message);
-
-    HAL_USART_LOG::Transmit(buffer);
 }

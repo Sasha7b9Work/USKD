@@ -66,22 +66,19 @@ static void goToInput(DHT_sensor *sensor)
 }
 
 
-namespace DHT
+void DHT::GetMeasures(float *_temperature, float *_humidity)
 {
-    static float temperature = 0.0f;
-    static float humidity = 0.0f;
-}
+    static DHT_sensor sensor =
+    {
+        GPIOB,
+        GPIO_PIN_6,
+        DHT22
+    };
 
+    DHT_data data = DHT_getData(&sensor);
 
-float DHT::GetTemperature()
-{
-    return temperature;
-}
-
-
-float DHT::GetHumidity()
-{
-    return humidity;
+    *_temperature = data.temp;
+    *_humidity = data.hum;
 }
 
 
