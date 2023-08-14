@@ -24,6 +24,9 @@ namespace Display
     static int cursorY = 0;
 
     static FontDef font_10x7 = { 7, 10, Font10x7 };
+
+    // Возвращает координату Y строки
+    static int Y(int);
 }
 
 
@@ -57,31 +60,31 @@ void Display::Update()
 
     char message[32];
 
-    WriteString(70, 51, HAL::GetUID(message));
+    WriteString(70, Y(4), HAL::GetUID(message));
 
     std::sprintf(message, "ALT = %f", Sender::GPRS::GetAltitude());
 
-    WriteString(10, 20, message);
+    WriteString(10, Y(1), message);
 
     std::sprintf(message, "LON = %f", Sender::GPRS::GetLongitude());
 
-    WriteString(10, 40, message);
+    WriteString(10, Y(2), message);
 
     if (Modem::Mode::Power())
     {
-        WriteString(5, 5, "POW");
+        WriteString(5, Y(0), "POW");
     }
 
     if (SIM868::IsRegistered())
     {
-        WriteString(35, 5, "REG");
+        WriteString(35, Y(0), "REG");
     }
 
     if (MQTT::InStateRunning())
     {
-        WriteString(65, 5, "MQTT");
+        WriteString(65, Y(0), "MQTT");
 
-        WriteString(100, 5, SIM868::LevelSignal());
+        WriteString(100, Y(0), SIM868::LevelSignal());
     }
 
     SSD1306::WriteBuffer(buffer);
@@ -208,4 +211,10 @@ char Display::WriteChar(char ch)
     }
 
     return ch;
+}
+
+
+int Display::Y(int row)
+{
+    return (int)(64.0f / 5.0f * (float)row);
 }
