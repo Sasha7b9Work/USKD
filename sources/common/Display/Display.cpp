@@ -28,6 +28,8 @@ namespace Display
 
     // Возвращает координату Y строки
     static int Y(int);
+
+    static void WriteFormatFloat(int x, int y, char *format, float value);
 }
 
 
@@ -65,23 +67,15 @@ void Display::Update()
 
     if ((Timer::TimeMS() / 5000) % 2)
     {
-        std::sprintf(message, "ALT = %f", Sender::GPRS::GetAltitude());
+        WriteFormatFloat(10, Y(1), "ALT = %f", Sender::GPRS::GetAltitude());
 
-        WriteString(10, Y(1), message);
-
-        std::sprintf(message, "LON = %f", Sender::GPRS::GetLongitude());
-
-        WriteString(10, Y(2), message);
+        WriteFormatFloat(10, Y(2), "LON = %f", Sender::GPRS::GetLongitude());
     }
     else
     {
-        std::sprintf(message, "Temp = %f", Sender::Environment::GetTemperature());
+        WriteFormatFloat(10, Y(1), "Temp = %f", Sender::Environment::GetTemperature());
 
-        WriteString(10, Y(1), message);
-
-        std::sprintf(message, "Hum = %f", Sender::Environment::GetHumidity());
-
-        WriteString(10, Y(2), message);
+        WriteFormatFloat(10, Y(2), "Hum = %f", Sender::Environment::GetHumidity());
     }
 
     if (Modem::Mode::Power())
@@ -102,6 +96,16 @@ void Display::Update()
     }
 
     SSD1306::WriteBuffer(buffer);
+}
+
+
+void Display::WriteFormatFloat(int x, int y, char *format, float value)
+{
+    char message[64];
+
+    std::sprintf(message, format, value);
+
+    WriteString(x, y, message);
 }
 
 
