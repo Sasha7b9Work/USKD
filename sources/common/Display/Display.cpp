@@ -8,6 +8,7 @@
 #include "Modem/MQTT/Sender/Sender.h"
 #include "Hardware/Timer.h"
 #include "Modem/SIM868.h"
+#include "Hardware/DHT22/DHT22.h"
 #include <cstring>
 #include <cstdio>
 #include <cstdlib>
@@ -62,13 +63,31 @@ void Display::Update()
 
     WriteString(70, Y(4), HAL::GetUID(message));
 
-    std::sprintf(message, "ALT = %f", Sender::GPRS::GetAltitude());
+    if ((Timer::TimeMS() / 5000) % 2)
+    {
+        std::sprintf(message, "ALT = %f", Sender::GPRS::GetAltitude());
 
-    WriteString(10, Y(1), message);
+        WriteString(10, Y(1), message);
 
-    std::sprintf(message, "LON = %f", Sender::GPRS::GetLongitude());
+        std::sprintf(message, "LON = %f", Sender::GPRS::GetLongitude());
 
-    WriteString(10, Y(2), message);
+        WriteString(10, Y(2), message);
+    }
+    else
+    {
+        float temp = 0.0f;
+        float hum = 0.0f;
+
+        DHT::GetMeasures(&temp, &hum);
+
+        std::sprintf(message, "Temp = %f", temp);
+
+        WriteString(10, Y(1), message);
+
+        std::sprintf(message, "Hum = %f", hum);
+
+        WriteString(10, Y(2), message);
+    }
 
     if (Modem::Mode::Power())
     {
