@@ -135,7 +135,7 @@ void  MQTT::Packet::Publish(pchar MQTT_topic, pchar MQTT_messege)
 void MQTT::Packet::Publish(pchar topic, int value)
 {
     char buffer[32];
-    sprintf(buffer, "%d", value);
+    std::sprintf(buffer, "%d", value);
     Publish(topic, buffer);
 }
 
@@ -146,11 +146,11 @@ void MQTT::Packet::PublishF(pchar topic, float value)
 
     if (value < 10.0f)
     {
-        sprintf(buffer, "%2.1f", value);
+        std::sprintf(buffer, "%2.1f", value);
     }
     else
     {
-        sprintf(buffer, "%d", (int)(value + 0.5f));
+        std::sprintf(buffer, "%d", (int)(value + 0.5f));
     }
 
     Publish(topic, buffer);

@@ -2,7 +2,10 @@
 
 namespace std
 {
+    unsigned int  strlen(const char *);
+    float   atof(char *);
+    void *memmove(void *destptr, const void *srcptr, size_t num);
+    void    memcpy(void *dest, const void *src, unsigned int);
 
     #include "string.h"
-
 }

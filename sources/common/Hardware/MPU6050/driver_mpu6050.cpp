@@ -34,10 +34,12 @@
  * </table>
  */
 
-#include "driver_mpu6050.h"
-#include "driver_mpu6050_code.h"
+#include "defines.h"
+#include "Hardware/MPU6050/driver_mpu6050.h"
+#include "Hardware/MPU6050/driver_mpu6050_code.h"
 #include <math.h>
 #include <stdlib.h>
+
 
 /**
  * @brief chip information definition
@@ -244,8 +246,8 @@ static uint8_t a_mpu6050_write_mem(mpu6050_handle_t *handle, uint16_t addr, uint
 {
     uint8_t tmp[2];
 
-    tmp[0] = (uint8))(addr >> 8) & 0xFF;)                                                         /* set the addr high */
-    tmp[1] = (addr >> 0) & 0xFF;                                                                  /* set the addr low */
+    tmp[0] = (uint8)((addr >> 8) & 0xFF);                                                         /* set the addr high */
+    tmp[1] = (uint8)((addr >> 0) & 0xFF);                                                         /* set the addr low */
 
     if (tmp[1] + len > 256)                                                                       /* check the range */
     {
@@ -280,8 +282,8 @@ static uint8_t a_mpu6050_read_mem(mpu6050_handle_t *handle, uint16_t addr, uint8
 {
     uint8_t tmp[2];
 
-    tmp[0] = (addr >> 8) & 0xFF;                                                                  /* set the addr high */
-    tmp[1] = (addr >> 0) & 0xFF;                                                                  /* set the addr low */
+    tmp[0] = (uint8)((addr >> 8) & 0xFF);                                                         /* set the addr high */
+    tmp[1] = (uint8)((addr >> 0) & 0xFF);                                                         /* set the addr low */
 
     if (tmp[1] + len > 256)                                                                       /* check the range */
     {
@@ -474,14 +476,14 @@ static void a_mpu6050_dmp_decode_gesture(mpu6050_handle_t *handle, uint8_t gestu
     uint8_t tap;
     uint8_t orient;
 
-    orient = gesture[3] & 0xC0;                                /* set the orient */
-    tap = 0x3F & gesture[3];                                   /* set the tap */
+    orient = (uint8)(gesture[3] & 0xC0);                       /* set the orient */
+    tap = (uint8)(0x3F & gesture[3]);                          /* set the tap */
     if ((gesture[1] & MPU6050_DMP_INT_SRC_TAP) != 0)           /* check the tap output */
     {
         uint8_t direction, count;
 
-        direction = tap >> 3;                                  /* get the direction */
-        count = (tap % 8) + 1;                                 /* get the count */
+        direction = (uint8)(tap >> 3);                         /* get the direction */
+        count = (uint8)((tap % 8) + 1);                        /* get the count */
         if (handle->dmp_tap_callback != NULL)                  /* check the dmp tap callback */
         {
             handle->dmp_tap_callback(direction, count);        /* run the dmp tap callback */
@@ -491,7 +493,7 @@ static void a_mpu6050_dmp_decode_gesture(mpu6050_handle_t *handle, uint8_t gestu
     {
         if (handle->dmp_orient_callback != NULL)               /* check the dmp orient callback */
         {
-            handle->dmp_orient_callback(orient >> 6);          /* run the dmp orient callback */
+            handle->dmp_orient_callback((uint8)(orient >> 6)); /* run the dmp orient callback */
         }
     }
 }
@@ -518,10 +520,10 @@ static uint8_t a_mpu6050_get_accel_prod_shift(mpu6050_handle_t *handle, float *s
         return 1;                                                           /* return error */
     }
 
-    shift_code[0] = ((tmp[0] & 0xE0) >> 3) | ((tmp[3] & 0x30) >> 4);        /* shift code 0 */
-    shift_code[1] = ((tmp[1] & 0xE0) >> 3) | ((tmp[3] & 0x0C) >> 2);        /* shift code 1 */
-    shift_code[2] = ((tmp[2] & 0xE0) >> 3) | (tmp[3] & 0x03);               /* shift code 2 */
-    for (i = 0; i < 3; i++)                                                 /* 3 times */
+    shift_code[0] = (uint8)(((tmp[0] & 0xE0) >> 3) | ((tmp[3] & 0x30) >> 4));   /* shift code 0 */
+    shift_code[1] = (uint8)(((tmp[1] & 0xE0) >> 3) | ((tmp[3] & 0x0C) >> 2));   /* shift code 1 */
+    shift_code[2] = (uint8)(((tmp[2] & 0xE0) >> 3) | (tmp[3] & 0x03));          /* shift code 2 */
+    for (i = 0; i < 3; i++)                                                     /* 3 times */
     {
         if (!shift_code[i])                                                 /* check the shift code */
         {
@@ -560,7 +562,7 @@ static uint8_t a_mpu6050_accel_self_test(mpu6050_handle_t *handle, int32_t *bias
     }
     for (j = 0; j < 3; j++)                                                  /* 3 times */
     {
-        st_shift_cust = labs(bias_regular[j] - bias_st[j]) / 65536.f;        /* get the st shift cust */
+        st_shift_cust = (float)labs(bias_regular[j] - bias_st[j]) / 65536.f; /* get the st shift cust */
         if (fabsf(st_shift[j] - 0.0f) > 1e-6f)                               /* check the st shift */
         {
             st_shift_var = st_shift_cust / st_shift[j] - 1.f;                /* get the st shift var */
@@ -610,7 +612,7 @@ static uint8_t a_mpu6050_gyro_self_test(mpu6050_handle_t *handle, int32_t *bias_
     tmp[2] &= 0x1F;                                                          /* set part 2 */
     for (j = 0; j < 3; j++)                                                  /* 3 times */
     {
-        st_shift_cust = labs(bias_regular[j] - bias_st[j]) / 65536.f;        /* get the st shift cust */
+        st_shift_cust = (float)labs(bias_regular[j] - bias_st[j]) / 65536.f; /* get the st shift cust */
         if (tmp[j] != 0)                                                     /* check the zero */
         {
             st_shift = 3275.f / (32768 / 250);                               /* set the shift */
@@ -768,8 +770,8 @@ static uint8_t a_mpu6050_get_st_biases(mpu6050_handle_t *handle,
     {
         return 1;                                                                                   /* return error */
     }
-    cnt = ((uint16_t)data[0] << 8) | data[1];                                                       /* set the counter */
-    pack_cnt = cnt / 12;                                                                            /* set the packet counter */
+    cnt = (uint16)(((uint16_t)data[0] << 8) | data[1]);                                             /* set the counter */
+    pack_cnt = (uint16)(cnt / 12);                                                                  /* set the packet counter */
 
     gyro_offset[0] = 0;                                                                             /* gyro offset 0 */
     gyro_offset[1] = 0;                                                                             /* gyro offset 1 */
@@ -802,12 +804,12 @@ static uint8_t a_mpu6050_get_st_biases(mpu6050_handle_t *handle,
         gyro_offset[2] += (int32_t)gyro_cur[2];                                                     /* gyro offset 2 */
     }
 
-    gyro_offset[0] = (int32_t)(((int64_t)gyro_offset[0] << 16) / (32768 / 250) / pack_cnt);         /* set the gyro offset 0 */
-    gyro_offset[1] = (int32_t)(((int64_t)gyro_offset[1] << 16) / (32768 / 250) / pack_cnt);         /* set the gyro offset 1 */
-    gyro_offset[2] = (int32_t)(((int64_t)gyro_offset[2] << 16) / (32768 / 250) / pack_cnt);         /* set the gyro offset 2 */
-    accel_offset[0] = (int32_t)(((int64_t)accel_offset[0] << 16) / (32768 / 16) / pack_cnt);        /* set the accel offset 0 */
-    accel_offset[1] = (int32_t)(((int64_t)accel_offset[1] << 16) / (32768 / 16) / pack_cnt);        /* set the accel offset 1 */
-    accel_offset[2] = (int32_t)(((int64_t)accel_offset[2] << 16) / (32768 / 16) / pack_cnt);        /* set the accel offset 2 */
+    gyro_offset[0] = (int32_t)(((int64)gyro_offset[0] << 16) / (32768 / 250) / pack_cnt);           /* set the gyro offset 0 */
+    gyro_offset[1] = (int32_t)(((int64)gyro_offset[1] << 16) / (32768 / 250) / pack_cnt);           /* set the gyro offset 1 */
+    gyro_offset[2] = (int32_t)(((int64)gyro_offset[2] << 16) / (32768 / 250) / pack_cnt);           /* set the gyro offset 2 */
+    accel_offset[0] = (int32_t)(((int64)accel_offset[0] << 16) / (32768 / 16) / pack_cnt);          /* set the accel offset 0 */
+    accel_offset[1] = (int32_t)(((int64)accel_offset[1] << 16) / (32768 / 16) / pack_cnt);          /* set the accel offset 1 */
+    accel_offset[2] = (int32_t)(((int64)accel_offset[2] << 16) / (32768 / 16) / pack_cnt);          /* set the accel offset 2 */
     if (accel_offset[2] > 0L)                                                                       /* check the accel offset */
     {
         accel_offset[2] -= 65536L;                                                                  /* -65536 */
@@ -1982,9 +1984,9 @@ uint8_t mpu6050_dmp_set_gyro_bias(mpu6050_handle_t *handle, int32_t bias[3])
         gyro_bias_body[2] *= -1;                                                                    /* *(-1) */
     }
 
-    gyro_bias_body[0] = (int32_t)(((int64_t)gyro_bias_body[0] * MPU6050_DMP_GYRO_SF) >> 30);        /* set body 0 */
-    gyro_bias_body[1] = (int32_t)(((int64_t)gyro_bias_body[1] * MPU6050_DMP_GYRO_SF) >> 30);        /* set body 1 */
-    gyro_bias_body[2] = (int32_t)(((int64_t)gyro_bias_body[2] * MPU6050_DMP_GYRO_SF) >> 30);        /* set body 2 */
+    gyro_bias_body[0] = (int32_t)(((int64)gyro_bias_body[0] * MPU6050_DMP_GYRO_SF) >> 30);          /* set body 0 */
+    gyro_bias_body[1] = (int32_t)(((int64)gyro_bias_body[1] * MPU6050_DMP_GYRO_SF) >> 30);          /* set body 1 */
+    gyro_bias_body[2] = (int32_t)(((int64)gyro_bias_body[2] * MPU6050_DMP_GYRO_SF) >> 30);          /* set body 2 */
 
     regs[0] = (uint8_t)((gyro_bias_body[0] >> 24) & 0xFF);                                          /* set part 0 */
     regs[1] = (uint8_t)((gyro_bias_body[0] >> 16) & 0xFF);                                          /* set part 1 */
@@ -2042,7 +2044,7 @@ uint8_t mpu6050_dmp_set_accel_bias(mpu6050_handle_t *handle, int32_t bias[3])
     uint8_t range;
     int32_t accel_bias_body[3];
     uint8_t regs[12];
-    int64_t accel_sf;
+    int64   accel_sf;
 
     if (handle == NULL)                                                                     /* check handle */
     {
@@ -2069,19 +2071,19 @@ uint8_t mpu6050_dmp_set_accel_bias(mpu6050_handle_t *handle, int32_t bias[3])
     range = ((prev >> 3) & 0x3);                                                            /* get the range */
     if (range == 0)                                                                         /* if 2g */
     {
-        accel_sf = (int64_t)16384 << 15;                                                    /* set the accel sf */
+        accel_sf = (int64)16384 << 15;                                                    /* set the accel sf */
     }
     else if (range == 1)                                                                    /* if 4g */
     {
-        accel_sf = (int64_t)8192 << 15;                                                     /* set the accel sf */
+        accel_sf = (int64)8192 << 15;                                                     /* set the accel sf */
     }
     else if (range == 2)                                                                    /* if 8g */
     {
-        accel_sf = (int64_t)4096 << 15;                                                     /* set the accel sf */
+        accel_sf = (int64)4096 << 15;                                                     /* set the accel sf */
     }
     else                                                                                    /* if 16g */
     {
-        accel_sf = (int64_t)2048 << 15;                                                     /* set the accel sf */
+        accel_sf = (int64)2048 << 15;                                                     /* set the accel sf */
     }
 
     accel_bias_body[0] = bias[handle->orient & 3];                                          /* set the bias body 0 */
@@ -2100,9 +2102,9 @@ uint8_t mpu6050_dmp_set_accel_bias(mpu6050_handle_t *handle, int32_t bias[3])
         accel_bias_body[2] *= -1;                                                           /* *(-1) */
     }
 
-    accel_bias_body[0] = (int32_t)(((int64_t)accel_bias_body[0] * accel_sf) >> 30);         /* set the bias body 0 */
-    accel_bias_body[1] = (int32_t)(((int64_t)accel_bias_body[1] * accel_sf) >> 30);         /* set the bias body 1 */
-    accel_bias_body[2] = (int32_t)(((int64_t)accel_bias_body[2] * accel_sf) >> 30);         /* set the bias body 2 */
+    accel_bias_body[0] = (int32_t)(((int64)accel_bias_body[0] * accel_sf) >> 30);         /* set the bias body 0 */
+    accel_bias_body[1] = (int32_t)(((int64)accel_bias_body[1] * accel_sf) >> 30);         /* set the bias body 1 */
+    accel_bias_body[2] = (int32_t)(((int64)accel_bias_body[2] * accel_sf) >> 30);         /* set the bias body 2 */
     regs[0] = (uint8_t)((accel_bias_body[0] >> 24) & 0xFF);                                 /* set reg 0 */
     regs[1] = (uint8_t)((accel_bias_body[0] >> 16) & 0xFF);                                 /* set reg 1 */
     regs[2] = (uint8_t)((accel_bias_body[0] >> 8) & 0xFF);                                  /* set reg 2 */

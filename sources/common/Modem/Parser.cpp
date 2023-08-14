@@ -80,7 +80,7 @@ pchar Parser::GetWord(pchar string, int pos_start, int pos_end, char out[32])
 
 pchar Parser::GetWordInQuotes(pchar string, int num, char out[32])
 {
-    int size = (int)strlen(string);
+    int size = (int)std::strlen(string);
     const char *buffer = string;
 
     int quote1 = num * 2;
@@ -195,7 +195,7 @@ pchar Parser::GetWord(pchar string, int num, char out[32])
 
 int Parser::NumSeparators(pchar string, int pos[10])
 {
-    int size = (int)strlen(string);
+    int size = (int)std::strlen(string);
 
     const char *p = string;
 

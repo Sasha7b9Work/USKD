@@ -6,6 +6,7 @@ void free(void *);
 void srand(unsigned int);
 unsigned int rand(void);
 int atoi(const char *str);
+long labs(long x);
 
 
 #define __disable_irq()

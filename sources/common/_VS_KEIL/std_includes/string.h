@@ -3,6 +3,7 @@
 
 char   *strcat(char *, const char * );
 char   *strcpy(void *dest, const char * src);
+char   *strncpy(char *dest, const char *source, size_t count);
 char   *strlcat(char *dest, const char * src, unsigned int size);
 int     strcmp(const void *, const void *);
 float   atof(char *);
