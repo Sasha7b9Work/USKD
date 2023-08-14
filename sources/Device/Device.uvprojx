@@ -49,7 +49,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\Objects-Debug\</OutputDirectory>
-          <OutputName>ElectricityMeter</OutputName>
+          <OutputName>USDK</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>1</CreateHexFile>
@@ -82,7 +82,7 @@
           <AfterMake>
             <RunUserProg1>1</RunUserProg1>
             <RunUserProg2>1</RunUserProg2>
-            <UserProg1Name>c:\Keil_v5\ARM\ARMCC\bin\fromelf.exe --bin Objects-Debug\ElectricityMeter.axf --output USKD.bin</UserProg1Name>
+            <UserProg1Name>c:\Keil_v5\ARM\ARMCC\bin\fromelf.exe --bin Objects-Debug\USDK.axf --output USKD.bin</UserProg1Name>
             <UserProg2Name>HandlerBIN.exe USKD.bin</UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
