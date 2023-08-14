@@ -7,6 +7,8 @@
 #include <cstdlib>
 
 
+PinADC pinBAT(GPIOA, GPIO_PIN_1, ADC_CHANNEL_1);
+
 const uint USART_GPRS_ADDR = UART3;
 PinUSART_TX pinUSART_GPRS_TX;
 PinUSART_RX pinUSART_GPRS_RX;
@@ -56,7 +58,7 @@ private:
 };
 
 
-void PinUSART_TX::_Init(uint _port, uint _pin)
+void PinUSART_TX::Init(uint _port, uint _pin)
 {
     port = _port;
     pin = _pin;
@@ -65,7 +67,7 @@ void PinUSART_TX::_Init(uint _port, uint _pin)
 }
 
 
-void PinUSART_RX::_Init(uint _port, uint _pin)
+void PinUSART_RX::Init(uint _port, uint _pin)
 {
     port = _port;
     pin = _pin;
@@ -74,7 +76,7 @@ void PinUSART_RX::_Init(uint _port, uint _pin)
 }
 
 
-void PinOUT::_Init(uint _port, uint _pin)
+void PinOUT::Init(uint _port, uint _pin)
 {
     port = _port;
     pin = _pin;
@@ -101,7 +103,7 @@ void PinOUT::SetState(bool state)
 }
 
 
-void PinIN::_Init(uint _port, uint _pin, uint input_mode)
+void PinIN::Init(uint _port, uint _pin, uint input_mode)
 {
     port = _port;
     pin = _pin;
@@ -139,4 +141,10 @@ void PinI2C::Init(uint _port, uint _pin)
     gpio_pin_remap_config(GPIO_I2C0_REMAP, ENABLE);
 
     gpio_init(port, GPIO_MODE_AF_OD, GPIO_OSPEED_50MHZ, pin);
+}
+
+
+void PinADC::Init()
+{
+    gpio_init(port, GPIO_MODE_AIN, GPIO_OSPEED_MAX, pin);
 }

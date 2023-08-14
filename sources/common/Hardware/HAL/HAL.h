@@ -25,10 +25,10 @@ namespace HAL
 }
 
 
-// Таймер для опроса состояния контакторов
-namespace HAL_TIM1
+namespace HAL_ADC
 {
     void Init();
+    float GetVoltage();
 }
 
 

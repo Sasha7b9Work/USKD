@@ -6,7 +6,7 @@
   <Header>### uVision Project, (C) Keil Software</Header>
 
   <PrjGuiSettings>
-    <LastAddFilePath>C:\My\GitHub\_work\USKD\sources\common\Hardware\HAL</LastAddFilePath>
+    <LastAddFilePath>D:\Projects\USKD\sources\common\Hardware\HAL</LastAddFilePath>
   </PrjGuiSettings>
 
   <ViewPool/>
@@ -15,7 +15,7 @@
     <View>
       <WinId>38003</WinId>
       <ViewName>Registers</ViewName>
-      <TableColWidths>158 144</TableColWidths>
+      <TableColWidths>151 151</TableColWidths>
     </View>
     <View>
       <WinId>346</WinId>
@@ -40,7 +40,7 @@
       <WinId>1506</WinId>
       <ViewName>Symbols</ViewName>
       <UserString></UserString>
-      <TableColWidths>106 106 106</TableColWidths>
+      <TableColWidths>70 70 70</TableColWidths>
     </View>
     <View>
       <WinId>1936</WinId>
@@ -101,10 +101,10 @@
         <yPos>-1</yPos>
       </MaxPosition>
       <NormalPosition>
-        <Top>351</Top>
-        <Left>739</Left>
-        <Right>1431</Right>
-        <Bottom>1305</Bottom>
+        <Top>182</Top>
+        <Left>377</Left>
+        <Right>1636</Right>
+        <Bottom>918</Bottom>
       </NormalPosition>
     </WindowPosition>
     <MDIClientArea>

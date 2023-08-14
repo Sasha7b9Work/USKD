@@ -33,13 +33,13 @@ void HAL::Init()
     rcu_periph_clock_enable(RCU_GPIOE);
     rcu_periph_clock_enable(RCU_GPIOF);
 
+    rcu_periph_clock_enable(RCU_ADC0);
     rcu_periph_clock_enable(RCU_I2C0);      // Display
     rcu_periph_clock_enable(RCU_I2C1);
     rcu_periph_clock_enable(RCU_TIMER0);    // ADC
     rcu_periph_clock_enable(RCU_USART1);    // Log
     rcu_periph_clock_enable(RCU_UART3);     // GPRS
     rcu_periph_clock_enable(RCU_AF);
-    rcu_periph_clock_enable(RCU_TIMER1);    // Для опроса контакторв
     rcu_periph_clock_enable(RCU_TIMER5);
 
     GL::_RCU_RSTSCK = *((uint *)(0x40021000 + 0x24));
@@ -56,6 +56,8 @@ void HAL::Init()
     HAL_I2C::Init();
 
     HAL_FWDGT::Init();
+
+    HAL_ADC::Init();
     
 #ifdef ENABLE_LOG
     HAL_USART_LOG::Init();

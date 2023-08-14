@@ -2,10 +2,24 @@
 #pragma once
 
 
+struct PinADC
+{
+    PinADC(uint _port, uint _pin, uint8 _channel) :
+        port(_port), pin(_pin), channel(_channel)
+    { }
+    void Init();
+    uint8 Channel() const { return channel; }
+private:
+    uint port;
+    uint pin;
+    uint8 channel;
+};
+
+
 struct PinUSART_TX
 {
     PinUSART_TX() : port(0), pin(0) { }
-    void _Init(uint port, uint pin);
+    void Init(uint port, uint pin);
 private:
     uint port;
     uint pin;
@@ -15,7 +29,7 @@ private:
 struct PinUSART_RX
 {
     PinUSART_RX() : port(0), pin(0) { }
-    void _Init(uint port, uint pin);
+    void Init(uint port, uint pin);
 private:
     uint port;
     uint pin;
@@ -25,7 +39,7 @@ private:
 struct PinOUT
 {
     PinOUT() : port(0), pin(0) { }
-    void _Init(uint port, uint pin);
+    void Init(uint port, uint pin);
     void Set();
     void Reset();
     void SetState(bool);
@@ -48,7 +62,7 @@ private:
 struct PinIN
 {
     PinIN() : port(0), pin(0) { }
-    void _Init(uint port, uint pin, uint input_mode);
+    void Init(uint port, uint pin, uint input_mode);
     bool IsLow();
     bool IsHi();
     void DeInit();
@@ -73,3 +87,5 @@ extern PinUSART_RX pinUSART_LOG_RX;
 extern PinOUT pinGSM_PWR;
 extern PinOUT pinGSM_PWRKEY;
 extern PinIN  pinGSM_STATUS;
+
+extern PinADC pinBAT;                 // Для измерения напряжения АКБ

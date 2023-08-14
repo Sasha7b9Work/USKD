@@ -226,13 +226,13 @@ void Modem::CallbackOnReceive(char symbol)
 
 void Modem::Init()
 {
-    pinGSM_PWR._Init(GPIOA, GPIO_PIN_12);
+    pinGSM_PWR.Init(GPIOA, GPIO_PIN_12);
     pinGSM_PWR.Set();
 
-    pinGSM_PWRKEY._Init(GPIOA, GPIO_PIN_11);
+    pinGSM_PWRKEY.Init(GPIOA, GPIO_PIN_11);
     pinGSM_PWRKEY.Reset();
 
-    pinGSM_STATUS._Init(GPIOA, GPIO_PIN_10, GPIO_MODE_IPD);
+    pinGSM_STATUS.Init(GPIOA, GPIO_PIN_10, GPIO_MODE_IPD);
 
     pinGSM_STATUS.DeInit();
 
@@ -283,7 +283,7 @@ void Modem::Update()
         {
             meter.Reset();
             State::Set(State::WAIT_500_MS);
-            pinGSM_STATUS._Init(GPIOA, GPIO_PIN_10, GPIO_MODE_IPD);
+            pinGSM_STATUS.Init(GPIOA, GPIO_PIN_10, GPIO_MODE_IPD);
             HAL_USART_GPRS::Init();
         }
         if (meter.ElapsedTime() > 100)
