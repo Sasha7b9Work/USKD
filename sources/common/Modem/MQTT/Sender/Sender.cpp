@@ -104,7 +104,7 @@ bool Sender::SendAll(pchar answer)
         {
             sending = true;
         }
-        else if (Sender::GPRS::SendToSIM868())
+        else if (Sender::Environment::SendToSIM868())
         {
             sending = true;
         }
