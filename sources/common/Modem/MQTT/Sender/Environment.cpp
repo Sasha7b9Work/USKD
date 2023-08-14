@@ -28,11 +28,11 @@ bool Sender::Environment::SendToSIM868()
 {
     static TimeMeterMS meter;
 
-    if (need_send && (meter.ElapsedTime() > 30000))
+    if (need_send && meter.IsFinished())
     {
         need_send = false;
 
-        meter.Reset();
+        meter.SetResponseTime(30000);
 
         MQTT::Packet::Publish("/temperature", (int)temperature);
 

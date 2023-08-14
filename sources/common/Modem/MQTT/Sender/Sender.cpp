@@ -92,23 +92,23 @@ bool Sender::SendAll(pchar answer)
             SIM868::Transmit::UINT8(0xC0);
             SIM868::Transmit::UINT8(0x00);
         }
-        else if (Sender::SendToSIM800())
+        if (Sender::SendToSIM800())
         {
             sending = true;
         }
-        else if (Sender::StringState::SendToSIM800())
+        if (Sender::StringState::SendToSIM800())
         {
             sending = true;
         }
-        else if (Sender::GPRS::SendToSIM868())
+        if (Sender::GPRS::SendToSIM868())
         {
             sending = true;
         }
-        else if (Sender::Environment::SendToSIM868())
+        if (Sender::Environment::SendToSIM868())
         {
             sending = true;
         }
-        else if (Sender::Counter::SendToSIM800())
+        if (Sender::Counter::SendToSIM800())
         {
             sending = true;
         }
