@@ -43,6 +43,7 @@ file(GLOB HARDWARE_CMSIS                 src/Hardware/CMSIS/*.*)
 file(GLOB HARDWARE_HAL                   src/Hardware/HAL/*.*
                                    ../common/Hardware/HAL/*.*)
 file(GLOB HARDWARE_DHT22           ../common/Hardware/DHT22/*.*)
+file(GLOB HARDWARE_MPU6050         ../common/Hardware/MPU6050/*.*)
 file(GLOB MODEM                          src/Modem/*.*
                                    ../common/Modem/*.*)
 file(GLOB MODEM_MQTT               ../common/Modem/MQTT/*.*)
@@ -58,6 +59,7 @@ source_group(Hardware                 FILES ${HARDWARE})
 source_group(Hardware/CMSIS           FILES ${HARDWARE_CMSIS})
 source_group(Hardware/HAL             FILES ${HARDWARE_HAL})
 source_group(Hardware/DHT22           FILES ${HARDWARE_DHT22})
+source_group(Hardware/MPU6050         FILES ${HARDWARE_MPU6050})
 source_group(Modem                    FILES ${MODEM})
 source_group(Modem/MQTT               FILES ${MODEM_MQTT})
 source_group(Modem/MQTT/Sender        FILES ${MODEM_MQTT_SENDER})
@@ -75,6 +77,7 @@ add_library(${PROJECT_NAME}
             ${HARDWARE_CMSIS}
             ${HARDWARE_HAL}
             ${HARDWARE_DHT22}
+            ${HARDWARE_MPU6050}
             ${MODEM}
             ${MODEM_MQTT}
             ${MODEM_MQTT_SENDER}
