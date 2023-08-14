@@ -814,6 +814,16 @@
               <FileType>5</FileType>
               <FilePath>..\common\Modem\MQTT\Sender\GPRS.h</FilePath>
             </File>
+            <File>
+              <FileName>Environment.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\common\Modem\MQTT\Sender\Environment.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Environment.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\common\Modem\MQTT\Sender\Environment.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

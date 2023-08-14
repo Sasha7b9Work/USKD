@@ -4,6 +4,7 @@
 #include "Hardware/HAL/HAL.h"
 #include "Modem/Modem.h"
 #include "Display/Display.h"
+#include "Hardware/DHT22/DHT22.h"
 
 
 void Device::Init()
@@ -21,6 +22,8 @@ void Device::Init()
 void Device::Update()
 {
     HAL_FWDGT::Update();
+
+    DHT::Update();
 
     Display::Update();
 

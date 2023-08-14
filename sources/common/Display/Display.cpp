@@ -75,16 +75,11 @@ void Display::Update()
     }
     else
     {
-        float temp = 0.0f;
-        float hum = 0.0f;
-
-        DHT::GetMeasures(&temp, &hum);
-
-        std::sprintf(message, "Temp = %f", temp);
+        std::sprintf(message, "Temp = %f", Sender::Environment::GetTemperature());
 
         WriteString(10, Y(1), message);
 
-        std::sprintf(message, "Hum = %f", hum);
+        std::sprintf(message, "Hum = %f", Sender::Environment::GetHumidity());
 
         WriteString(10, Y(2), message);
     }

@@ -3,6 +3,7 @@
 #include "Modem/MQTT/Sender/StringState.h"
 #include "Modem/SIM868.h"
 #include "Modem/MQTT/Sender/GPRS.h"
+#include "Modem/MQTT/Sender/Environment.h"
 
 
 namespace Sender

@@ -3,5 +3,5 @@
 
 namespace DHT
 {
-    void GetMeasures(float *temperature, float *humidity);
+    void Update();
 }

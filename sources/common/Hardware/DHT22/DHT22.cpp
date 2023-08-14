@@ -1,6 +1,7 @@
 #include "defines.h"
 #include "DHT22.h"
 #include "Hardware/Timer.h"
+#include "Modem/MQTT/Sender/Environment.h"
 #include <gd32f30x.h>
 
 
@@ -66,7 +67,7 @@ static void goToInput(DHT_sensor *sensor)
 }
 
 
-void DHT::GetMeasures(float *_temperature, float *_humidity)
+void DHT::Update()
 {
     static DHT_sensor sensor =
     {
@@ -77,8 +78,7 @@ void DHT::GetMeasures(float *_temperature, float *_humidity)
 
     DHT_data data = DHT_getData(&sensor);
 
-    *_temperature = data.temp;
-    *_humidity = data.hum;
+    Sender::Environment::SendMeasuremets(data.temp, data.hum);
 }
 
 
