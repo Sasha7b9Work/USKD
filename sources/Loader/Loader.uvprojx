@@ -623,6 +623,11 @@
               <FileType>8</FileType>
               <FilePath>..\common\Hardware\HAL\HAL_FWDGT.cpp</FilePath>
             </File>
+            <File>
+              <FileName>HAL_ADC.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\common\Hardware\HAL\HAL_ADC.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

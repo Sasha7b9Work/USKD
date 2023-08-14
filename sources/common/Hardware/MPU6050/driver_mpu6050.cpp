@@ -41,6 +41,12 @@
 #include <stdlib.h>
 
 
+#ifdef WIN32
+#pragma warning(push)
+#pragma warning(disable : 4365 5219)
+#endif
+
+
 /**
  * @brief chip information definition
  */
@@ -862,7 +868,7 @@ uint8_t mpu6050_dmp_load_firmware(mpu6050_handle_t *handle)
     size = MPU6050_DMP_CODE_SIZE;                                                        /* set the code size */
     for (i = 0; i < size; i += this_write)                                               /* code size times */
     {
-        this_write = MIN(16, size - i);                                                  /* get the written size */
+        this_write = (uint16)(MIN(16, size - i));                                        /* get the written size */
 
         res = a_mpu6050_write_mem(handle, i, (uint8_t *)(gs_mpu6050_dmp_code + i),
                                   this_write);                                           /* write data */
@@ -1121,8 +1127,8 @@ uint8_t mpu6050_dmp_set_shake_reject_timeout(mpu6050_handle_t *handle, uint16_t 
     }
 
     ms /= (1000 / MPU6050_DMP_SAMPLE_RATE);                                    /* convert time */
-    tmp[0] = (ms >> 8) & 0xFF;                                                 /* set part 0 */
-    tmp[1] = (ms >> 0) & 0xFF;                                                 /* set part 1 */
+    tmp[0] = (uint8)((ms >> 8) & 0xFF);                                        /* set part 0 */
+    tmp[1] = (uint8)((ms >> 0) & 0xFF);                                        /* set part 1 */
 
     res = a_mpu6050_write_mem(handle, MPU6050_DMP_D_1_88, tmp, 2);             /* write data */
     if (res != 0)                                                              /* check result */
@@ -10667,3 +10673,8 @@ uint8_t mpu6050_info(mpu6050_info_t *info)
 
     return 0;                                                       /* success return 0 */
 }
+
+
+#ifdef WIN32
+#pragma warning(pop)
+#endif

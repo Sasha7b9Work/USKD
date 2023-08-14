@@ -3,10 +3,7 @@
 #include "Utils/Debug.h"
 
 
-void Debug::Point(pchar file, int line)
+void Debug::Point(pchar /*file*/, int /*line*/)
 {
-    (void)line;
-    (void *)file;
-
     LOG_WRITE("%s : %d", file, line);
 }

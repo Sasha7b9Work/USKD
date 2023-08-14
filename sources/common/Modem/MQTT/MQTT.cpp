@@ -157,10 +157,8 @@ void MQTT::Packet::PublishF(pchar topic, float value)
 }
 
 
-void MQTT::CallbackOnReceiveData(pchar answer)
+void MQTT::CallbackOnReceiveData(pchar /*answer*/)
 {
-    (void *)answer;
-
     meterLastData.Reset();
 
     LOG_WRITE((char *)answer);

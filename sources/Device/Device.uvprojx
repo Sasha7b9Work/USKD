@@ -641,6 +641,26 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>Hardware/MPU6050</GroupName>
+          <Files>
+            <File>
+              <FileName>driver_mpu6050.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\common\Hardware\MPU6050\driver_mpu6050.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>driver_mpu6050.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\common\Hardware\MPU6050\driver_mpu6050.h</FilePath>
+            </File>
+            <File>
+              <FileName>driver_mpu6050_code.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\common\Hardware\MPU6050\driver_mpu6050_code.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>Display</GroupName>
           <Files>
             <File>
