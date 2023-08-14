@@ -1,0 +1,5 @@
+Level1 - кнопка
+Level2 - красный led
+Level3 - желтый led
+Level4 - зеленый led
+Акселерометр MPU-6050
