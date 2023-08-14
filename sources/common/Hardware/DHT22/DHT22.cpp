@@ -189,7 +189,7 @@ DHT_data DHT_getData(DHT_sensor *sensor)
     uint8_t rawData[5] = { 0,0,0,0,0 };
     for (uint8_t a = 0; a < 5; a++)
     {
-        for (uint8_t b = 7; b != 255; b--)
+        for (uint8_t b = 7; b != 255; b--) //-V621
         {
             uint16_t hT = 0, lT = 0;
             //Пока линия в низком уровне, инкремент переменной lT

@@ -136,10 +136,6 @@ bool SIM868::ProcessUnsolicited(pchar answer)
             Sender::GPRS::SendCoordinates(altitude, longitude);
         }
     }
-    else if (strcmp(answer, "SEND FAIL") == 0)
-    {
-        return true;
-    }
     else if (strcmp(answer, "SEND OK") == 0)
     {
         return true;

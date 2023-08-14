@@ -621,7 +621,7 @@ static uint8_t a_mpu6050_gyro_self_test(mpu6050_handle_t *handle, int32_t *bias_
         st_shift_cust = (float)labs(bias_regular[j] - bias_st[j]) / 65536.f; /* get the st shift cust */
         if (tmp[j] != 0)                                                     /* check the zero */
         {
-            st_shift = 3275.f / (32768 / 250);                               /* set the shift */
+            st_shift = 3275.f / (32768 / 250);                               /* set the shift */ //-V636
             while ((--tmp[j]) != 0)                                          /* check the zero */
             {
                 st_shift *= 1.046f;                                          /* *1.046f */
@@ -2270,7 +2270,7 @@ uint8_t mpu6050_dmp_set_feature(mpu6050_handle_t *handle, uint16_t mask)
         return 4;                                                                        /* return error */
     }
 
-    tmp[0] = (uint8_t)((MPU6050_DMP_GYRO_SF >> 24) & 0xFF);                              /* set the param 0 */
+    tmp[0] = (uint8_t)((MPU6050_DMP_GYRO_SF >> 24) & 0xFF);                              /* set the param 0 */ //-V525
     tmp[1] = (uint8_t)((MPU6050_DMP_GYRO_SF >> 16) & 0xFF);                              /* set the param 1 */
     tmp[2] = (uint8_t)((MPU6050_DMP_GYRO_SF >> 8) & 0xFF);                               /* set the param 2 */
     tmp[3] = (uint8_t)(MPU6050_DMP_GYRO_SF & 0xFF);                                      /* set the param 3 */
@@ -2543,7 +2543,7 @@ uint8_t mpu6050_dmp_set_feature(mpu6050_handle_t *handle, uint16_t mask)
             return 1;                                                                    /* return error */
         }
 
-        ms = MPU6050_DMP_SHAKE_REJECT_TIME;                                              /* set the reject time */
+        ms = MPU6050_DMP_SHAKE_REJECT_TIME;                                              /* set the reject time */ //-V1048
         ms /= (1000 / MPU6050_DMP_SAMPLE_RATE);                                          /* convert time */
         tmp[0] = (ms >> 8) & 0xFF;                                                       /* set part 0 */
         tmp[1] = (ms >> 0) & 0xFF;                                                       /* set part 1 */
@@ -3313,7 +3313,7 @@ uint8_t mpu6050_dmp_read(mpu6050_handle_t *handle,
 
                 return 5;                                                                                                 /* return error */
             }
-            q0 = quat[j][0] / 1073741824.0f;                                                                              /* set q0 */
+            q0 = quat[j][0] / 1073741824.0f;                                                                              /* set q0 */ //-V519
             q1 = quat[j][1] / 1073741824.0f;                                                                              /* set q1 */
             q2 = quat[j][2] / 1073741824.0f;                                                                              /* set q2 */
             q3 = quat[j][3] / 1073741824.0f;                                                                              /* set q3 */
@@ -3616,7 +3616,7 @@ uint8_t mpu6050_dmp_gyro_accel_raw_offset_convert(mpu6050_handle_t *handle,
     }
     accel_conf = (accel_conf >> 3) & 0x3;                                                         /* get the accel conf */
     gyro_conf = (gyro_conf >> 3) & 0x3;                                                           /* get the gyro conf */
-    if (accel_conf == 0)                                                                          /* ±2g */
+    if (accel_conf == 0)                                                                          /* ±2g */ //-V1051
     {
         accel_offset[0] = (int32_t)(accel_offset_raw[0] * 16384.0f);                              /* set accel offset 0 */
         accel_offset[1] = (int32_t)(accel_offset_raw[1] * 16384.0f);                              /* set accel offset 1 */

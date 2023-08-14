@@ -341,6 +341,7 @@ void Updater::Update(pchar answer)
 
                 if (crc == source_crc)
                 {
+                    do 
                     {
                         Programmer::CopyFirmware();
 
