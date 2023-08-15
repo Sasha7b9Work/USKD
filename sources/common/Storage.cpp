@@ -2,6 +2,7 @@
 #include "defines.h"
 #include "Storage.h"
 #include "Hardware/Timer.h"
+#include "Modem/Modem.h"
 
 
 namespace Storage
@@ -22,7 +23,9 @@ void Storage::Update()
 
     if (meter.IsFinished())
     {
+        meter.SetResponseTime(30000);
 
+        Modem::SendMeasuremets(measures);
     }
 }
 

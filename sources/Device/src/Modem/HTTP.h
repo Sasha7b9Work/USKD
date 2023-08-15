@@ -2,7 +2,7 @@
 #pragma once
 
 
-namespace Updater
+namespace HTTP
 {
     void Update(pchar);
 

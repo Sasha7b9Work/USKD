@@ -37,7 +37,7 @@ using namespace Parser;
 using namespace std;
 
 
-namespace Updater
+namespace HTTP
 {
     struct State
     {
@@ -98,7 +98,7 @@ namespace Updater
 }
 
 
-void Updater::Update(pchar answer)
+void HTTP::Update(pchar answer)
 {
     const uint DEFAULT_TIME = 10000;
 
@@ -224,12 +224,15 @@ void Updater::Update(pchar answer)
 }
 
 
-void Updater::SendMeasuremets(float meas[TypeMeasure::Count])
+void HTTP::SendMeasuremets(float meas[TypeMeasure::Count])
 {
     for (int i = 0; i < TypeMeasure::Count; i++)
     {
         measurements[i] = meas[i];
     }
 
-    SetState(State::NEED_SEND);
+    if (state == State::WAIT_COMMANDS)
+    {
+        SetState(State::NEED_SEND);
+    }
 }

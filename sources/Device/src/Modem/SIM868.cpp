@@ -389,7 +389,7 @@ void SIM868::Update(pchar answer)
 
     case State::RUNNING:
 
-        Updater::Update(answer);
+        HTTP::Update(answer);
 
         if (meterCSQ.ElapsedTime() > 5000)
         {
@@ -416,5 +416,5 @@ pchar SIM868::LevelSignal()
 
 void Modem::SendMeasuremets(float meas[TypeMeasure::Count])
 {
-    Updater::SendMeasuremets(meas);
+    HTTP::SendMeasuremets(meas);
 }
