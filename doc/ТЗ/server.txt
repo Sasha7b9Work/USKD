@@ -2,3 +2,184 @@ https://dev.smartwrap.tech/
 Admin@m.com
 admin12345
 https://dev.smartwrap.tech/swagger/index.html 
+
+
+*************************************************************************************************
+Шаг 0 - получение конфигурации
+
+{{url}}:443/api/config/get
+
+{
+    "serialNumber": "test1"
+}
+
+получение списка конфигураций при запуске коробки
+
+Все поля обязательные
+
+Ответ:
+
+{
+    "status": "Success",
+    "configs": [
+        {
+            "id": 2,
+            "name": "Long",
+            "reportTime": 600,
+            "checkTime": 300,
+            "temperatureCondition": null,
+            "humidityCondition": null,
+            "externalTemperatureCondition": null
+        },
+        {
+            "id": 0,
+            "name": "Custom",
+            "reportTime": null,
+            "checkTime": null,
+            "temperatureCondition": null,
+            "humidityCondition": null,
+            "externalTemperatureCondition": null
+        },
+        {
+            "id": 1,
+            "name": "Стандарт",
+            "reportTime": 180,
+            "checkTime": 60,
+            "temperatureCondition": {
+                "max": 10,
+                "min": 4,
+                "deviation": 2
+            },
+            "humidityCondition": {
+                "max": 80,
+                "min": 10,
+                "deviation": 3
+            },
+            "externalTemperatureCondition": {
+                "max": 50,
+                "min": 10,
+                "deviation": null
+            }
+        }
+    ]
+}
+
+
+*************************************************************************************************
+Шаг 1 - начала маршрута
+
+{{url}}/api/route/start
+
+Начинаем движение, получаем сессионный токен
+
+{
+  "serialNumber": "test1",
+  "configId": 1,
+  "time": "2023-08-09T10:50:32.879Z"
+}
+
+Все поля обязательные
+
+Ответ: 
+
+{
+    "status": "existing token",
+    "sessionToken": "NRx8QItrrEiKz3KXMJDN-w-XwOtDgRrZ06gyDkxCN-AbA-fAStsHxFUE2v27psA1ENXA"
+}
+
+Пока поездка не завершена возвращается 1 и тот же сессионный токен
+
+
+*************************************************************************************************
+Шаг 2 - Отправка данных с датчиков с сервера
+
+{{url}}/api/route/addRecords
+
+отправляем 1 или более состояний датчиков на сервер
+
+{
+    "sessionToken": "y3vBy9mfykSWj5rueDK8rQ-GTLviziLsEqwFUUQCxIWgA-iBNTLUi8FkW7F22tiR8Lkg",
+    "recordsDataList": [
+        {
+            "time": "2023-08-09T09:09:11.295Z",
+            "latitude": 88.88,
+            "longitude": -179,
+            "temperature": 3.95,
+            "charge": 50,
+            "humidity": 30,
+            "otherSensors": {
+                "temperature2": 20,
+                "geiger": 888
+            }
+        }
+    ]
+}
+
+Обязательные поля: sessionToken, time
+
+Ответ:
+{
+    "status": "add"
+}
+
+
+*************************************************************************************************
+Шаг 2.5 - отправка инцидентов
+{{url}}/api/incident/add
+
+Инцидент событие генерируемое на нестандартного поведения бокса( нагрев, охлаждение, падение и т.д.)
+
+{
+  "sessionToken": "QCjSgInH6ke1PMF8evKMAg-9fXO8dWIbkWuUGPfdfB8pw-PKYL8BkheEiEZqOscpykmg",
+  "code": 0,
+  "description": "Test incident",
+  "time": "2023-08-01T10:33:42+03:00"
+}
+
+Это минимальная запись инцидента
+
+Также можно вместе с инцидентом отправить снятые показания с датчиков
+
+{
+  "sessionToken": "string",
+  "code": 0,
+  "description": "string",
+  "time": "string",
+  "record": {
+    "time": "string",
+    "latitude": 0,
+    "longitude": 0,
+    "temperature": 0,
+    "charge": 0,
+    "humidity": 0,
+    "otherSensors": {
+      "externalTemperature": 0,
+      "geiger": 0
+    }
+  }
+}
+
+
+Ответ:
+{
+    "status": "Add"
+}
+
+
+*************************************************************************************************
+Шаг 3 - окончание поездки
+{{url}}/api/route/stop
+
+Отправляется при завершении поездки, после него происходит уничтожение сессионного токена бокса 
+
+{
+  "sessionToken": "NRx8QItrrEiKz3KXMJDN-w-XwOtDgRrZ06gyDkxCN-AbA-fAStsHxFUE2v27psA1ENXA",
+  "time": "2023-08-15T10:50:32.879Z"
+}
+
+Ответ:
+
+{
+    "status": "delete"
+}
+
