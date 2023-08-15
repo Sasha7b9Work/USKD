@@ -89,6 +89,7 @@ namespace HTTP
             return true;
         }
 
+        Reset();
         Modem::Reset();
 
         return false;
