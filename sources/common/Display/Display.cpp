@@ -7,6 +7,7 @@
 #include "Hardware/Timer.h"
 #include "Modem/SIM868.h"
 #include "Hardware/DHT22/DHT22.h"
+#include "Storage.h"
 #include <cstring>
 #include <cstdio>
 #include <cstdlib>
@@ -65,15 +66,15 @@ void Display::Update()
 
     if ((Timer::TimeMS() / 5000) % 2)
     {
-        WriteFormatFloat(10, Y(1), "ALT = %f", Sender::GPRS::GetAltitude());
+        WriteFormatFloat(10, Y(1), "ALT = %f", Storage::Get(TypeMeasure::Altitude));
 
-        WriteFormatFloat(10, Y(2), "LON = %f", Sender::GPRS::GetLongitude());
+        WriteFormatFloat(10, Y(2), "LON = %f", Storage::Get(TypeMeasure::Longitude));
     }
     else
     {
-        WriteFormatFloat(10, Y(1), "Temp = %f", Sender::Environment::GetTemperature());
+        WriteFormatFloat(10, Y(1), "Temp = %f", Storage::Get(TypeMeasure::Temperature));
 
-        WriteFormatFloat(10, Y(2), "Hum = %f", Sender::Environment::GetHumidity());
+        WriteFormatFloat(10, Y(2), "Hum = %f", Storage::Get(TypeMeasure::Humidity));
     }
 
     if (Modem::Mode::Power())
@@ -84,13 +85,6 @@ void Display::Update()
     if (SIM868::IsRegistered())
     {
         WriteString(35, Y(0), "REG");
-    }
-
-    if (MQTT::InStateRunning())
-    {
-        WriteString(65, Y(0), "MQTT");
-
-        WriteString(100, Y(0), SIM868::LevelSignal());
     }
 
     SSD1306::WriteBuffer(buffer);

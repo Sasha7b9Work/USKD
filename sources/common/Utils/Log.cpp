@@ -54,7 +54,7 @@ void Log::Write(char *format, ...)
     std::vsprintf(message, format, args);
     va_end(args);
 
-    int size = (int)strlen(message) + 1;
+    int size = (int)std::strlen(message) + 1;
 
     if (pointer + size >= SIZE_BUFFER - 100)
     {

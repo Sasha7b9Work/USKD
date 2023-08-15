@@ -1,7 +1,7 @@
 #include "defines.h"
-#include "DHT22.h"
+#include "Hardware/DHT22/DHT22.h"
 #include "Hardware/Timer.h"
-#include "Modem/MQTT/Sender/Environment.h"
+#include "Storage.h"
 #include <gd32f30x.h>
 
 
@@ -78,7 +78,8 @@ void DHT::Update()
 
     DHT_data data = DHT_getData(&sensor);
 
-    Sender::Environment::SendMeasuremets(data.temp, data.hum);
+    Storage::Set(TypeMeasure::Temperature, data.temp);
+    Storage::Set(TypeMeasure::Humidity, data.hum);
 }
 
 

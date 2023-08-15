@@ -256,9 +256,6 @@ void Modem::Update()
     case State::IDLE:
         LOG_WRITE("Modem : State::IDLE");
         SIM868::Reset();
-#ifdef DEVICE
-        MQTT::Reset();
-#endif
         pinGSM_PWR.Set();
         GSM_PG::ToOutLow();
         State::Set(State::WAIT_DISCHARGE_CAPS);

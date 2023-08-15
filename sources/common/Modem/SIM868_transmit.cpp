@@ -8,11 +8,7 @@
 
 void SIM868::Transmit::With0D(pchar message)
 {
-    if (std::strlen(message) > 2
-#ifdef DEVICE
-        && MQTT::InStateIdle()
-#endif
-        )
+    if (std::strlen(message))
     {
         LOG_WRITE(">>> %s", message);
     }

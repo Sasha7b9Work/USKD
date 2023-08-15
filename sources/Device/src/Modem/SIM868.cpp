@@ -6,9 +6,8 @@
 #include "Hardware/HAL/HAL.h"
 #include "Modem/Parser.h"
 #include "Hardware/Bootloader.h"
-#include "Modem/MQTT/MQTT.h"
-#include "Modem/MQTT/Sender/Sender.h"
 #include "Device.h"
+#include "Storage.h"
 #include <cstring>
 #include <cstdio>
 
@@ -40,7 +39,7 @@ namespace SIM868
             WAIT_CIPHEAD,
             WAIT_CGNSPWR,           // Ожидание включения навигационной части
             WAIT_CGNSURC,           // Ожидание включения автоматической выдачи URC-сообщений
-            RUNNING_MQTT
+            RUNNING
         };
 
         static void Set(E);
@@ -133,7 +132,8 @@ bool SIM868::ProcessUnsolicited(pchar answer)
                 longitude = SymbolsToFloat(answer, position1, position2);
             }
 
-            Sender::GPRS::SendCoordinates(altitude, longitude);
+            Storage::Set(TypeMeasure::Altitude, altitude);
+            Storage::Set(TypeMeasure::Longitude, longitude);
         }
     }
     else if (strcmp(answer, "SEND OK") == 0)
@@ -149,13 +149,9 @@ bool SIM868::ProcessUnsolicited(pchar answer)
             {
                 HAL_FWDGT::ToUpgradeMode();
 
-                Sender::StringState::Send("Upgrade software", true);
-
                 Bootloader::Run();
             }
         }
-
-        MQTT::CallbackOnReceiveData(answer);
     }
 
     return false;
@@ -384,15 +380,13 @@ void SIM868::Update(pchar answer)
         {
             if (strcmp(answer, "OK") == 0)
             {
-                State::Set(State::RUNNING_MQTT);
+                State::Set(State::RUNNING);
             }
         }
 
         break;
 
-    case State::RUNNING_MQTT:
-
-        MQTT::Update(answer);
+    case State::RUNNING:
 
         if (meterCSQ.ElapsedTime() > 5000)
         {
