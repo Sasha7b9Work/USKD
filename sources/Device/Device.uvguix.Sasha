@@ -6,7 +6,7 @@
   <Header>### uVision Project, (C) Keil Software</Header>
 
   <PrjGuiSettings>
-    <LastAddFilePath>C:\My\GitHub\_work\USKD\sources\Device\src</LastAddFilePath>
+    <LastAddFilePath>C:\My\GitHub\_work\USKD\sources\common</LastAddFilePath>
   </PrjGuiSettings>
 
   <ViewPool/>
@@ -15,7 +15,7 @@
     <View>
       <WinId>38003</WinId>
       <ViewName>Registers</ViewName>
-      <TableColWidths>265 266</TableColWidths>
+      <TableColWidths>158 86</TableColWidths>
     </View>
     <View>
       <WinId>346</WinId>

@@ -409,3 +409,9 @@ pchar SIM868::LevelSignal()
 {
     return levelSignal;
 }
+
+
+void Modem::SendMeasuremets(float [TypeMeasure::Count])
+{
+
+}

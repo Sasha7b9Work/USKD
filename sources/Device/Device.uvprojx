@@ -522,12 +522,12 @@
             <File>
               <FileName>Storage.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\Storage.cpp</FilePath>
+              <FilePath>..\common\Storage.cpp</FilePath>
             </File>
             <File>
               <FileName>Storage.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\src\Storage.h</FilePath>
+              <FilePath>..\common\Storage.h</FilePath>
             </File>
           </Files>
         </Group>
