@@ -5,6 +5,7 @@
 #include "Modem/Modem.h"
 #include "Display/Display.h"
 #include "Hardware/DHT22/DHT22.h"
+#include "Storage.h"
 
 
 void Device::Init()
@@ -28,4 +29,6 @@ void Device::Update()
     Display::Update();
 
     Modem::Update();
+
+    Storage::Update();
 }
