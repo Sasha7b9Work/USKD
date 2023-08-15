@@ -8,7 +8,7 @@
 #include "Hardware/Bootloader.h"
 #include "Device.h"
 #include "Storage.h"
-#include "Modem/HTTP.h"
+#include "Modem/HTTP/HTTP.h"
 #include <cstring>
 #include <cstdio>
 
@@ -187,7 +187,7 @@ void SIM868::Update(pchar answer)
     case State::START:
         SIM868::Transmit::With0D("ATE0");
         State::Set(State::WAIT_ATE0);
-        strcpy(levelSignal, "0");
+        std::strcpy(levelSignal, "0");
         break;
 
     case State::WAIT_ATE0:

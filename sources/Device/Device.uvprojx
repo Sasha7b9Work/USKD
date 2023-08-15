@@ -789,15 +789,40 @@
               <FileType>8</FileType>
               <FilePath>..\common\Modem\SIM868_transmit.cpp</FilePath>
             </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Modem/HTTP</GroupName>
+          <Files>
+            <File>
+              <FileName>Answer.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Modem\HTTP\Answer.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Answer.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Modem\HTTP\Answer.h</FilePath>
+            </File>
             <File>
               <FileName>HTTP.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\Modem\HTTP.cpp</FilePath>
+              <FilePath>.\src\Modem\HTTP\HTTP.cpp</FilePath>
             </File>
             <File>
               <FileName>HTTP.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\src\Modem\HTTP.h</FilePath>
+              <FilePath>.\src\Modem\HTTP\HTTP.h</FilePath>
+            </File>
+            <File>
+              <FileName>Request.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Modem\HTTP\Request.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Request.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Modem\HTTP\Request.h</FilePath>
             </File>
           </Files>
         </Group>

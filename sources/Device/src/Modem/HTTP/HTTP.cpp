@@ -4,7 +4,7 @@
 #include "Hardware/HAL/HAL.h"
 #include "Hardware/Timer.h"
 #include "Modem/Parser.h"
-#include "Modem/HTTP.h"
+#include "Modem/HTTP/HTTP.h"
 #include "Modem/SIM868.h"
 #include "Utils/Math.h"
 #include <gd32f30x.h>
@@ -158,6 +158,7 @@ void HTTP::Update(pchar answer)
         break;
 
     case State::WAIT_COMMANDS:
+        SetState(State::NEED_SAPBR_2_1);
         break;
 
     case State::NEED_SEND:
@@ -199,6 +200,13 @@ void HTTP::Update(pchar answer)
         break;
 
     case State::NEED_HTTPPARA_URL:
+        if (MeterIsRunning(DEFAULT_TIME))
+        {
+            if (strcmp(answer, "OK") == 0)
+            {
+                SetS
+            }
+        }
         break;
 
     case State::NEED_HTTPPARA_CONTENT:
