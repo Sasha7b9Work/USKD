@@ -49,8 +49,19 @@ namespace Updater
             NEED_SAPBR_3_USER,
             NEED_SAPBR_3_PWD,
             WAIT_PASSWORD_OK,
-            WAIT_COMMANDS,
-            NEED_SAPBR_1_1
+            WAIT_COMMANDS,              // Ожидаем команды для передачи
+            NEED_SEND,                  // Нуждаемся в передаче команды
+            NEED_SAPBR_2_1,
+            NEED_HTTPINIT,
+            NEED_HTTPPARA_CID,
+            NEED_HTTPPARA_URL,
+            NEED_HTTPPARA_CONTENT,
+            NEED_HTTPDATA,
+            NEED_SEND_DATA,
+            NEED_HTTPACTION_1,
+            NEED_HTTPREAD,
+            NEED_TTTPTERM,
+            NEED_SAPBR_0_1
         };
     };
 
@@ -82,11 +93,15 @@ namespace Updater
 
         return false;
     }
+
+    static float measurements[TypeMeasure::Count];
 }
 
 
 void Updater::Update(pchar answer)
 {
+    const uint DEFAULT_TIME = 10000;
+
     switch (state)
     {
     case State::IDLE:
@@ -132,14 +147,89 @@ void Updater::Update(pchar answer)
         break;
 
     case State::WAIT_PASSWORD_OK:
+        if (MeterIsRunning(DEFAULT_TIME))
+        {
+            if (strcmp(answer, "OK") == 0)
+            {
+                SetState(State::WAIT_COMMANDS);
+            }
+        }
+        break;
 
-    case State::COMPLETED:
+    case State::WAIT_COMMANDS:
+        break;
+
+    case State::NEED_SEND:
+        SetState(State::NEED_SAPBR_2_1);
+        SIM868::Transmit::With0D("AT+SAPBR=1,1");
+        break;
+
+    case State::NEED_SAPBR_2_1:
+        if (MeterIsRunning(DEFAULT_TIME))
+        {
+            if (strcmp(answer, "OK") == 0)
+            {
+                SetState(State::NEED_HTTPINIT);
+                SIM868::Transmit::With0D("AT+SAPBR=2,1");
+            }
+        }
+        break;
+
+    case State::NEED_HTTPINIT:
+        if (MeterIsRunning(DEFAULT_TIME))
+        {
+            if (strcmp(answer, "OK") == 0)
+            {
+                SetState(State::NEED_HTTPPARA_CID);
+                SIM868::Transmit::With0D("AT + HTTPINIT");
+            }
+        }
+        break;
+
+    case State::NEED_HTTPPARA_CID:
+        if (MeterIsRunning(DEFAULT_TIME))
+        {
+            if (strcmp(answer, "OK") == 0)
+            {
+                SetState(State::NEED_HTTPPARA_URL);
+                SIM868::Transmit::With0D("AT+HTTPPARA=CID,1");
+            }
+        }
+        break;
+
+    case State::NEED_HTTPPARA_URL:
+        break;
+
+    case State::NEED_HTTPPARA_CONTENT:
+        break;
+
+    case State::NEED_HTTPDATA:
+        break;
+
+    case State::NEED_SEND_DATA:
+        break;
+
+    case State::NEED_HTTPACTION_1:
+        break;
+
+    case State::NEED_HTTPREAD:
+        break;
+
+    case State::NEED_TTTPTERM:
+        break;
+
+    case State::NEED_SAPBR_0_1:
         break;
     }
 }
 
 
-void Updater::SendMeasuremets(float[TypeMeasure::Count])
+void Updater::SendMeasuremets(float meas[TypeMeasure::Count])
 {
+    for (int i = 0; i < TypeMeasure::Count; i++)
+    {
+        measurements[i] = meas[i];
+    }
 
+    SetState(State::NEED_SEND);
 }
