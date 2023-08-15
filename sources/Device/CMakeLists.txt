@@ -48,7 +48,6 @@ file(GLOB HARDWARE_DHT22           ../common/Hardware/DHT22/*.*)
 file(GLOB HARDWARE_MPU6050         ../common/Hardware/MPU6050/*.*)
 file(GLOB MODEM                          src/Modem/*.*
                                    ../common/Modem/*.*)
-file(GLOB MODEM_HTTP               ../common/Modem/HTTP/*.*)
 file(GLOB MODEM_SENDER             ../common/Modem/Sender/*.*)
 file(GLOB UTILS                    ../common/Utils/*.*)
 
@@ -63,7 +62,6 @@ source_group(Hardware/HAL             FILES ${HARDWARE_HAL})
 source_group(Hardware/DHT22           FILES ${HARDWARE_DHT22})
 source_group(Hardware/MPU6050         FILES ${HARDWARE_MPU6050})
 source_group(Modem                    FILES ${MODEM})
-source_group(Modem/HTTP               FILES ${MODEM_HTTP})
 source_group(Utils                    FILES ${UTILS})
 
 set_source_files_properties(${STM32F3} ${HARDWARE_CMSIS} ${LIBS_CJSON} ../common/Hardware/HAL/systick.c
@@ -81,6 +79,5 @@ add_library(${PROJECT_NAME}
             ${HARDWARE_DHT22}
             ${HARDWARE_MPU6050}
             ${MODEM}
-            ${MODEM_HTTP}
             ${UTILS}
             )
