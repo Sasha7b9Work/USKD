@@ -6,7 +6,7 @@
   <Header>### uVision Project, (C) Keil Software</Header>
 
   <PrjGuiSettings>
-    <LastAddFilePath>C:\My\GitHub\_work\USKD\sources\common\libs\cJSON</LastAddFilePath>
+    <LastAddFilePath>C:\My\GitHub\_work\USKD\sources\common\Modem\HTTP</LastAddFilePath>
   </PrjGuiSettings>
 
   <ViewPool/>
@@ -15,7 +15,7 @@
     <View>
       <WinId>38003</WinId>
       <ViewName>Registers</ViewName>
-      <TableColWidths>158 86</TableColWidths>
+      <TableColWidths>158 78</TableColWidths>
     </View>
     <View>
       <WinId>346</WinId>

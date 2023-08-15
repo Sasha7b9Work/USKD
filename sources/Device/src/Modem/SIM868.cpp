@@ -8,6 +8,7 @@
 #include "Hardware/Bootloader.h"
 #include "Device.h"
 #include "Storage.h"
+#include "Modem/HTTP/HTTP.h"
 #include <cstring>
 #include <cstdio>
 
@@ -388,6 +389,8 @@ void SIM868::Update(pchar answer)
 
     case State::RUNNING:
 
+        HTTP::Update();
+
         if (meterCSQ.ElapsedTime() > 5000)
         {
             meterCSQ.Reset();
@@ -411,7 +414,7 @@ pchar SIM868::LevelSignal()
 }
 
 
-void Modem::SendMeasuremets(float [TypeMeasure::Count])
+void Modem::SendMeasuremets(float meas[TypeMeasure::Count])
 {
-
+    HTTP::SendMeasuremets(meas);
 }

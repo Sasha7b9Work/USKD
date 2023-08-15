@@ -792,6 +792,21 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>Modem/HTTP</GroupName>
+          <Files>
+            <File>
+              <FileName>HTTP.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\common\Modem\HTTP\HTTP.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>HTTP.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\common\Modem\HTTP\HTTP.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>Utils</GroupName>
           <Files>
             <File>
