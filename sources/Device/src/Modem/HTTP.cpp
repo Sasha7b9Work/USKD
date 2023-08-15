@@ -48,8 +48,9 @@ namespace Updater
             NEED_SAPBR_3_APN,
             NEED_SAPBR_3_USER,
             NEED_SAPBR_3_PWD,
-            NEED_SAPBR_1_1,
-            COMPLETED                   // В этом состоянии находися, если обновление завершено или не требуется
+            WAIT_PASSWORD_OK,
+            WAIT_COMMANDS,
+            NEED_SAPBR_1_1
         };
     };
 
@@ -124,13 +125,13 @@ void Updater::Update(pchar answer)
         {
             if (strcmp(answer, "OK") == 0)
             {
-                SetState(State::NEED_SAPBR_1_1);
+                SetState(State::WAIT_PASSWORD_OK);
                 SIM868::Transmit::With0D("AT+SAPBR=3,1,\"PWD\",\"\"");
             }
         }
         break;
 
-    case State::NEED_SAPBR_1_1:
+    case State::WAIT_PASSWORD_OK:
 
     case State::COMPLETED:
         break;
