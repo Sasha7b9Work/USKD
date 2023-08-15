@@ -532,6 +532,31 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>libs/cJSON</GroupName>
+          <Files>
+            <File>
+              <FileName>cJSON.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\common\libs\cJSON\cJSON.c</FilePath>
+            </File>
+            <File>
+              <FileName>cJSON_Utils.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\common\libs\cJSON\cJSON_Utils.c</FilePath>
+            </File>
+            <File>
+              <FileName>cJSON.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\common\libs\cJSON\cJSON.h</FilePath>
+            </File>
+            <File>
+              <FileName>cJSON_Utils.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\common\libs\cJSON\cJSON_Utils.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>Hardware</GroupName>
           <Files>
             <File>

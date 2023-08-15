@@ -35,6 +35,8 @@ file(GLOB GD32F3                   ../common/GD32F30x_Library/Firmware/GD32F30x_
 file(GLOB SRC                            src/*.*
                                    ../common/*.h
                                    ../common/*.cpp)
+file(GLOB LIBS_CJSON               ../common/libs/cJSON/cJSON.*
+                                   ../common/libs/cJSON/cJSON_Utils.*)
 file(GLOB DISPLAY                  ../common/Display/*.*)
 file(GLOB DISPLAY_FONT             ../common/Display/Font/*.*)
 file(GLOB HARDWARE                       src/Hardware/*.*
@@ -51,6 +53,7 @@ file(GLOB UTILS                    ../common/Utils/*.*)
 
 source_group(GD32F3                   FILES ${GD32F3})
 source_group(src                      FILES ${SRC})
+source_group(libs/cJSON               FILES ${LIBS_CJSON})
 source_group(Display                  FILES ${DISPLAY})
 source_group(Display/Font             FILES ${DISPLAY_FONT})
 source_group(Hardware                 FILES ${HARDWARE})
@@ -61,12 +64,13 @@ source_group(Hardware/MPU6050         FILES ${HARDWARE_MPU6050})
 source_group(Modem                    FILES ${MODEM})
 source_group(Utils                    FILES ${UTILS})
 
-set_source_files_properties(${STM32F3} ${HARDWARE_CMSIS} ../common/Hardware/HAL/systick.c
+set_source_files_properties(${STM32F3} ${HARDWARE_CMSIS} ${LIBS_CJSON} ../common/Hardware/HAL/systick.c
                             PROPERTIES HEADER_FILE_ONLY TRUE)
 
 add_library(${PROJECT_NAME}
             ${GD32F3}
             ${SRC}
+            ${LIBS_CJSON}
             ${DISPLAY}
             ${DISPLAY_FONT}
             ${HARDWARE}
