@@ -6,6 +6,7 @@
 #include "Hardware/Timer.h"
 #include "Modem/Parser.h"
 #include "Utils/Buffer.h"
+#include "Modem/MQTT/MQTT.h"
 #ifdef LOADER
 #include "Modem/Updater.h"
 #endif

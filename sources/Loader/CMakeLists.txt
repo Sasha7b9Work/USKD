@@ -39,7 +39,7 @@ file(GLOB MEASURER              ../common/Measurer/*.*)
 file(GLOB MODEM                       src/Modem/*.*
                                 ../common/Modem/Parser.*
                                 ../common/Modem/Modem.*
-                                ../common/Modem/SIM800*.*)
+                                ../common/Modem/SIM868*.*)
 file(GLOB UTILS                 ../common/Utils/Math.*)
 
 source_group(GD32F3             FILES ${GD32F3})

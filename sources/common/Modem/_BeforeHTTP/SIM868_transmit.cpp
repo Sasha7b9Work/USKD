@@ -2,6 +2,7 @@
 #include "defines.h"
 #include "Modem/SIM868.h"
 #include "Hardware/HAL/HAL.h"
+#include "Modem/MQTT/MQTT.h"
 #include <cstdio>
 #include <cstring>
 

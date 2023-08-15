@@ -186,7 +186,6 @@
             <RvdsVP>2</RvdsVP>
             <RvdsMve>0</RvdsMve>
             <RvdsCdeCp>0</RvdsCdeCp>
-            <nBranchProt>0</nBranchProt>
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
@@ -753,76 +752,6 @@
               <FileName>SIM868_transmit.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\common\Modem\SIM868_transmit.cpp</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>Modem/MQTT</GroupName>
-          <Files>
-            <File>
-              <FileName>MQTT.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\common\Modem\MQTT\MQTT.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>MQTT.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\common\Modem\MQTT\MQTT.h</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>Modem/MQTT/Sender</GroupName>
-          <Files>
-            <File>
-              <FileName>Counter.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\common\Modem\MQTT\Sender\Counter.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Counter.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\common\Modem\MQTT\Sender\Counter.h</FilePath>
-            </File>
-            <File>
-              <FileName>Sender.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\common\Modem\MQTT\Sender\Sender.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Sender.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\common\Modem\MQTT\Sender\Sender.h</FilePath>
-            </File>
-            <File>
-              <FileName>StringState.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\common\Modem\MQTT\Sender\StringState.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>StringState.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\common\Modem\MQTT\Sender\StringState.h</FilePath>
-            </File>
-            <File>
-              <FileName>GPRS.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\common\Modem\MQTT\Sender\GPRS.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>GPRS.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\common\Modem\MQTT\Sender\GPRS.h</FilePath>
-            </File>
-            <File>
-              <FileName>Environment.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\common\Modem\MQTT\Sender\Environment.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Environment.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\common\Modem\MQTT\Sender\Environment.h</FilePath>
             </File>
           </Files>
         </Group>
