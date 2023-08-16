@@ -121,9 +121,16 @@ void POST::Config::Update(pchar answer)
         {
             if (std::strcmp(answer, "OK") == 0)
             {
-                char message[64];
                 char uid[32];
-                std::sprintf(message, "POST /api/config/get HTTP/1.1\r\nAccept:application/json\r\nContent-Type:application/json\r\n{\r\n\"%s\":\"test1\"\r\n}", HAL::GetUID(uid));
+                static char request[64];
+                std::sprintf("{\r\n\"%s\":\"test1\"\r\n}", HAL::GetUID(uid));
+                char message[64];
+                std::sprintf(message, "POST /api/config/get HTTP/1.1\r\n"
+                    "Host: dev.smartwrap.tech"
+                    "Accept: application/json\r\n"
+                    "Content-Type:application/json\r\n"
+                    "Content-Length: %d\r\n"
+                    "%s", std::strlen(request), request);
                 Request::Set(message);
                 SetState(State::NEED_SEND_DATA);
                 std::sprintf(message, "AT+HTTPDATA=%d,10000", Request::Lenght());
