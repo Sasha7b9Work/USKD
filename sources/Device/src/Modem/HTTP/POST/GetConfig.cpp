@@ -126,7 +126,7 @@ void POST::Config::Update(pchar answer)
                 std::sprintf("{\"%s\":\"test1\"}", HAL::GetUID(uid));
                 char message[64];
                 std::sprintf(message, "POST /api/config/get HTTP/1.1\r\n"
-                    "Host: dev.smartwrap.tech"
+                    "Host: dev.smartwrap.tech\r\n"
                     "Accept: application/json\r\n"
                     "Content-Type:application/json\r\n"
                     "Content-Length: %d\r\n"
