@@ -28,6 +28,12 @@ void Request::Set(char *request)
 }
 
 
+char *Request::Get()
+{
+    return buffer;
+}
+
+
 int Request::Lenght()
 {
     return (int)std::strlen(buffer);
