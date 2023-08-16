@@ -111,7 +111,7 @@ void POST::Config::Update(pchar answer)
     case State::NEED_HTTPPARA_CID_1:    WaitSetSend(answer, "OK", State::NEED_HTTPPARA_URL, "AT+HTTPPARA=\"CID\",1");
         break;
 
-    case State::NEED_HTTPPARA_URL:      WaitSetSend(answer, "OK", State::NEED_HTTPPARA_CONTENT, "AT+HTTPPARA=\"URL\",\"dev.smartwrap.tech:443/api/config/get");
+    case State::NEED_HTTPPARA_URL:      WaitSetSend(answer, "OK", State::NEED_HTTPPARA_CONTENT, "AT+HTTPPARA=\"URL\",\"dev.smartwrap.tech:443\"");
 
     case State::NEED_HTTPPARA_CONTENT:  WaitSetSend(answer, "OK", State::NEED_HTTPDATA, "AT+HTTPPARA=\"CONTENT\",\"application/json\"");
         break;
@@ -123,7 +123,7 @@ void POST::Config::Update(pchar answer)
             {
                 char message[64];
                 char uid[32];
-                std::sprintf(message, "{\"%s\":\"test1\"}", HAL::GetUID(uid));
+                std::sprintf(message, "/api/config/get {\"%s\":\"test1\"}", HAL::GetUID(uid));
                 Request::Set(message);
                 SetState(State::NEED_SEND_DATA);
                 std::sprintf(message, "AT+HTTPDATA=%d,10000", Request::Lenght());
