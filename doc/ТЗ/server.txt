@@ -4,6 +4,10 @@ admin12345
 https://dev.smartwrap.tech/swagger/index.html 
 
 
+git
+a.shevchenko@smartwrap.tech
+changeme
+
 *************************************************************************************************
 Шаг 0 - получение конфигурации
 
