@@ -188,10 +188,10 @@ void POST::Config::Update(pchar answer)
                     SetState(State::NEED_HTTPREAD_DATA);
                     SIM868::Transmit::With0D("AT+HTTPTERM");
                 }
-            }
-            else
-            {
-                int i = 0;
+                else
+                {
+                    int i = 0;
+                }
             }
         }
         break;
