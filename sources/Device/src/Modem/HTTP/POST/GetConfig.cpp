@@ -149,32 +149,14 @@ void POST::Config::Update(pchar answer)
 
     case State::NEED_CONFIRM_HTTPACTION_1_OK:
         WaitSetSend(answer, "OK", State::NEED_CONFIRM_HTTPACTION_1_FULL);
-//        if (MeterIsRunning(1000))
-//        {
-//            if (answer[0])
-//            {
-//                if (std::strcmp(answer, "OK") == 0)
-//                {
-//                    int i = 0;
-//                }
-//                else
-//                {
-//                    int i = 0;
-//                }
-//            }
-//        }
         break;
 
     case State::NEED_CONFIRM_HTTPACTION_1_FULL:
-        if (MeterIsRunning(1000))
+        if (MeterIsRunning(5000))
         {
             if (answer[0])
             {
                 if (std::strcmp(GetWord(answer, 1, buffer), "+HTTPACTION") == 0)
-                {
-                    int i = 0;
-                }
-                else
                 {
                     int i = 0;
                 }
