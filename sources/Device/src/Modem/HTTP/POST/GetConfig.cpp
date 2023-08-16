@@ -33,9 +33,8 @@ namespace POST
                 NEED_CONFIRM_SEND_DATA,         // ∆дЄм подтверждени€ приЄма дынных
                 NEED_CONFIRM_HTTPACTION_1_OK,   // ∆дЄм ќ  от HTTPACTION=1
                 NEED_CONFIRM_HTTPACTION_1_FULL, // ∆дЄм +HTTPACTION от HTTPACTION=1
-//            NEED_HTTPREAD,
-//            NEED_TTTPTERM,
-//            NEED_SAPBR_0_1
+                NEED_HTTPTERM,
+                NEED_HTTPREAD_DATA
 
             };
         };
@@ -168,11 +167,50 @@ void POST::Config::Update(pchar answer)
             {
                 if (std::strcmp(GetWord(answer, 1, buffer), "+HTTPACTION") == 0)
                 {
+                    SetState(State::NEED_HTTPTERM);
+                    SIM868::Transmit::With0D("AT+HTTPREAD");
+                }
+                else
+                {
                     int i = 0;
                 }
             }
         }
         break;
+
+    case State::NEED_HTTPTERM:
+        if (MeterIsRunning(5000))
+        {
+            if (answer[0])
+            {
+                if (std::strcmp(answer, "OK") == 0)
+                {
+                    SetState(State::NEED_HTTPREAD_DATA);
+                    SIM868::Transmit::With0D("AT+HTTPTERM");
+                }
+            }
+            else
+            {
+                int i = 0;
+            }
+        }
+        break;
+
+    case State::NEED_HTTPREAD_DATA:
+        if (MeterIsRunning(5000))
+        {
+            if (answer[0])
+            {
+                if (std::strcmp(GetWord(answer, 1, buffer), "+HTTPREAD") == 0)
+                {
+                    int i = 0;
+                }
+            }
+            else
+            {
+                int i = 0;
+            }
+        }
     }
 }
 
