@@ -5,7 +5,7 @@ https://dev.smartwrap.tech/swagger/index.html
 
 
 git
-https://git.smartwrap.tech/user/login?redirect_to=%2fsmartwrap.tech%2fsw-controller.git
+https://git.smartwrap.tech/smartwrap.tech/sw-controller
 a.shevchenko@smartwrap.tech
 changeme
 
