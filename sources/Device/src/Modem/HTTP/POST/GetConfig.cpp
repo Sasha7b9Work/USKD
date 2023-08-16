@@ -30,7 +30,9 @@ namespace POST
                 NEED_HTTPPARA_CONTENT,
                 NEED_HTTPDATA,                  // Здесь устанавливаем количество засылаемых байт
                 NEED_SEND_DATA,                 // А здесь посылаем данные
-//            NEED_HTTPACTION_1,
+                NEED_CONFIRM_SEND_DATA,         // Ждём подтверждения приёма дынных
+                NEED_CONFIRM_HTTPACTION_1_OK,   // Ждём ОК от HTTPACTION=1
+                NEED_CONFIRM_HTTPACTION_1_FULL, // Ждём +HTTPACTION от HTTPACTION=1
 //            NEED_HTTPREAD,
 //            NEED_TTTPTERM,
 //            NEED_SAPBR_0_1
@@ -134,6 +136,25 @@ void POST::Config::Update(pchar answer)
         if (MeterIsRunning(DEFAULT_TIME))
         {
             if (std::strcmp(answer, "DOWNLOAD") == 0)
+            {
+                SIM868::Transmit::RAW(Request::Get());
+                SetState(State::NEED_CONFIRM_SEND_DATA);
+            }
+        }
+        break;
+
+    case State::NEED_CONFIRM_SEND_DATA:
+        WaitSetSend(answer, "OK", State::NEED_CONFIRM_HTTPACTION_1_OK, "AT+HTTPACTION=1");
+        break;
+
+    case State::NEED_CONFIRM_HTTPACTION_1_OK:
+        WaitSetSend(answer, "OK", State::NEED_CONFIRM_HTTPACTION_1_FULL);
+        break;
+
+    case State::NEED_CONFIRM_HTTPACTION_1_FULL:
+        if (MeterIsRunning(1000))
+        {
+            if (std::strcmp(GetWord(answer, 1, buffer), "+HTTPACTION") == 0)
             {
                 int i = 0;
             }

@@ -6,6 +6,8 @@ namespace Request
 {
     void Set(char *);
 
+    char *Get();
+
     int Lenght();
 
     bool Exist();
