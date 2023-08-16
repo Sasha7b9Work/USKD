@@ -85,7 +85,7 @@ void POST::Config::Update(pchar answer)
     switch (state)
     {
     case State::IDLE:           SetState(State::NEED_SAPBR_2_1);
-                                SIM868::Transmit::With0D("AT+SAPBR=1,1");
+        SIM868::Transmit::With0D("AT+SAPBR=1,1");
         break;
 
     case State::NEED_SAPBR_2_1: WaitSetSend(answer, "OK", State::NEED_HTTPINIT, "AT+SAPBR=2,1");
@@ -149,6 +149,20 @@ void POST::Config::Update(pchar answer)
 
     case State::NEED_CONFIRM_HTTPACTION_1_OK:
         WaitSetSend(answer, "OK", State::NEED_CONFIRM_HTTPACTION_1_FULL);
+        if (MeterIsRunning(1000))
+        {
+            if (answer[0])
+            {
+                if (std::strcmp(answer, "OK") == 0)
+                {
+                    int i = 0;
+                }
+                else
+                {
+                    int i = 0;
+                }
+            }
+        }
         break;
 
     case State::NEED_CONFIRM_HTTPACTION_1_FULL:
