@@ -205,10 +205,10 @@ void POST::Config::Update(pchar answer)
                 {
                     int i = 0;
                 }
-            }
-            else
-            {
-                int i = 0;
+                else
+                {
+                    int i = 0;
+                }
             }
         }
     }
