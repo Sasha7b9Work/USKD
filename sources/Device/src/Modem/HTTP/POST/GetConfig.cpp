@@ -128,7 +128,7 @@ void POST::Config::Update(pchar answer)
                 std::sprintf(message, "POST /api/config/get HTTP/1.1\r\n"
                     "Host: dev.smartwrap.tech:443\r\n"
                     "Accept: application/json\r\n"
-                    "Content-Type:application/json\r\n"
+                    "Content-Type: application/json\r\n"
                     "Content-Length: %d\r\n"
                     "%s", std::strlen(request), request);
                 Request::Set(message);
