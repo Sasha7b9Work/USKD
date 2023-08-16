@@ -22,9 +22,9 @@ namespace POST
                 IDLE,
                 NEED_SAPBR_2_1,
                 NEED_HTTPINIT,
-//            NEED_HTTPPARA_CID,
-//            NEED_HTTPPARA_URL,
-//            NEED_HTTPPARA_CONTENT,
+                NEED_HTTPPARA_CID_1,
+                NEED_HTTPPARA_URL,
+                NEED_HTTPPARA_CONTENT,
 //            NEED_HTTPDATA,
 //            NEED_SEND_DATA,
 //            NEED_HTTPACTION_1,
@@ -96,10 +96,19 @@ void POST::Config::Update(pchar answer)
 
                 if (first == 1 && second == 1)
                 {
-                    int i = 0;
+                    SetState(State::NEED_HTTPPARA_CID_1);
+                    SIM868::Transmit::With0D("AT+HTTPINIT");
                 }
             }
         }
+        break;
+
+    case State::NEED_HTTPPARA_CID_1:    WaitSetSend(answer, "OK", State::NEED_HTTPPARA_URL, "AT+HTTPPARA=\"CID\",1");
+        break;
+
+    case State::NEED_HTTPPARA_URL:      WaitSetSend(answer, "OK", State::NEED_HTTPPARA_CONTENT, "AT+HTTPPARA=\"URL\",\"https://dev.smartwrap.tech/:443\"");
+
+    case State::NEED_HTTPPARA_CONTENT:
         break;
     }
 }
