@@ -4,7 +4,11 @@
 #include "Hardware/Timer.h"
 #include "Modem/HTTP/HTTP.h"
 #include "Modem/SIM868.h"
+#include "Modem/Parser.h"
 #include <cstring>
+
+
+using namespace Parser;
 
 
 namespace POST
@@ -71,6 +75,8 @@ void POST::Config::Reset()
 
 void POST::Config::Update(pchar answer)
 {
+    char buffer[64];
+
     switch (state)
     {
     case State::IDLE:           SetState(State::NEED_SAPBR_2_1);
@@ -83,9 +89,15 @@ void POST::Config::Update(pchar answer)
     case State::NEED_HTTPINIT:
         if (MeterIsRunning(DEFAULT_TIME))
         {
-            if (answer[0])
+            if (std::strcmp(GetWord(answer, 1, buffer), "+SAPBR") == 0)
             {
-                int i = 0;
+                int first = GetWord(answer, 2, buffer)[0] & 0x0f;
+                int second = GetWord(answer, 3, buffer)[0] & 0x0f;
+
+                if (first == 1 && second == 1)
+                {
+                    int i = 0;
+                }
             }
         }
         break;
