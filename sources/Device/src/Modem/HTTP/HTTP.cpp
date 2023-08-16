@@ -110,33 +110,21 @@ void HTTP::Update(pchar answer)
 {
     switch (state)
     {
-    case State::IDLE:
-        state = State::NEED_SAPBR_3_GPRS;
+    case State::IDLE:                   state = State::NEED_SAPBR_3_GPRS;
         break;
 
-    case State::NEED_SAPBR_3_GPRS:
-        SetState(State::NEED_SAPBR_3_APN);
-        SIM868::Transmit::With0D("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\"");
+    case State::NEED_SAPBR_3_GPRS:      SetState(State::NEED_SAPBR_3_APN);
+                                        SIM868::Transmit::With0D("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\"");
         break;
-
-    case State::NEED_SAPBR_3_APN:
-        WaitSetSend(answer, "OK", State::NEED_SAPBR_3_USER, "AT+SAPBR=3,1,\"APN\",\"internet\"", 85000);
+    case State::NEED_SAPBR_3_APN:       WaitSetSend(answer, "OK", State::NEED_SAPBR_3_USER, "AT+SAPBR=3,1,\"APN\",\"internet\"", 85000);
         break;
-
-    case State::NEED_SAPBR_3_USER:
-        WaitSetSend(answer, "OK", State::NEED_SAPBR_3_PWD, "AT+SAPBR=3,1,\"USER\",\"\"", 85000);
+    case State::NEED_SAPBR_3_USER:      WaitSetSend(answer, "OK", State::NEED_SAPBR_3_PWD, "AT+SAPBR=3,1,\"USER\",\"\"", 85000);
         break;
-
-    case State::NEED_SAPBR_3_PWD:
-        WaitSetSend(answer, "OK", State::WAIT_PASSWORD_OK, "AT+SAPBR=3,1,\"PWD\",\"\"", 85000);
+    case State::NEED_SAPBR_3_PWD:       WaitSetSend(answer, "OK", State::WAIT_PASSWORD_OK, "AT+SAPBR=3,1,\"PWD\",\"\"", 85000);
         break;
-
-    case State::WAIT_PASSWORD_OK:
-        WaitSetSend(answer, "OK", State::POST_GET_CONFIG);
+    case State::WAIT_PASSWORD_OK:       WaitSetSend(answer, "OK", State::POST_GET_CONFIG);
         break;
-
-    case State::POST_GET_CONFIG:
-        POST::Config::Update(answer);
+    case State::POST_GET_CONFIG:        POST::Config::Update(answer);
         break;
     }
 }
