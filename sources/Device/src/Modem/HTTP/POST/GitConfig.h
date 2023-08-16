@@ -7,5 +7,7 @@ namespace POST
     namespace Config
     {
         void Update(pchar answer);
+
+        void Reset();
     }
 }

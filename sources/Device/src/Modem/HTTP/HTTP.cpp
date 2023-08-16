@@ -69,11 +69,6 @@ namespace HTTP
 
     static State::E state = State::IDLE;
 
-    void Reset()
-    {
-        state = State::IDLE;
-    }
-
     void Update(const pchar);
 
     static TimeMeterMS state_meter;
@@ -92,9 +87,15 @@ namespace HTTP
         }
 
         Reset();
-        Modem::Reset();
 
         return false;
+    }
+
+    void HTTP::Reset()
+    {
+        SetState(State::IDLE);
+        POST::Config::Reset();
+        Modem::Reset();
     }
 
     static float measurements[TypeMeasure::Count];
@@ -110,9 +111,8 @@ void HTTP::Update(pchar answer)
 {
     switch (state)
     {
-    case State::IDLE:                   state = State::NEED_SAPBR_3_GPRS;
+    case State::IDLE:                   SetState(State::NEED_SAPBR_3_GPRS);
         break;
-
     case State::NEED_SAPBR_3_GPRS:      SetState(State::NEED_SAPBR_3_APN);
                                         SIM868::Transmit::With0D("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\"");
         break;
