@@ -123,7 +123,7 @@ void POST::Config::Update(pchar answer)
             {
                 char uid[32];
                 static char request[64];
-                std::sprintf("{\"%s\":\"test1\"}", HAL::GetUID(uid));
+                std::sprintf(request, "{\"%s\":\"test1\"}", HAL::GetUID(uid));
                 char message[256];
                 std::sprintf(message, "/api/config/get HTTP/1.1\r\n"
                     "Host: dev.smartwrap.tech:443\r\n"
