@@ -7,6 +7,7 @@
 #include "Modem/HTTP/HTTP.h"
 #include "Modem/SIM868.h"
 #include "Utils/Math.h"
+#include "Modem/HTTP/POST/GitConfig.h"
 #include <gd32f30x.h>
 #include <cstdio>
 #include <cstring>
@@ -49,19 +50,20 @@ namespace HTTP
             NEED_SAPBR_3_USER,
             NEED_SAPBR_3_PWD,
             WAIT_PASSWORD_OK,
-            WAIT_COMMANDS,              // Ожидаем команды для передачи
-            NEED_SEND,                  // Нуждаемся в передаче команды
-            NEED_SAPBR_2_1,
-            NEED_HTTPINIT,
-            NEED_HTTPPARA_CID,
-            NEED_HTTPPARA_URL,
-            NEED_HTTPPARA_CONTENT,
-            NEED_HTTPDATA,
-            NEED_SEND_DATA,
-            NEED_HTTPACTION_1,
-            NEED_HTTPREAD,
-            NEED_TTTPTERM,
-            NEED_SAPBR_0_1
+            POST_GET_CONFIG             // Находимся в состоянии получения конфига
+//            WAIT_COMMANDS,              // Ожидаем команды для передачи
+//            NEED_SEND,                  // Нуждаемся в передаче команды
+//            NEED_SAPBR_2_1,
+//            NEED_HTTPINIT,
+//            NEED_HTTPPARA_CID,
+//            NEED_HTTPPARA_URL,
+//            NEED_HTTPPARA_CONTENT,
+//            NEED_HTTPDATA,
+//            NEED_SEND_DATA,
+//            NEED_HTTPACTION_1,
+//            NEED_HTTPREAD,
+//            NEED_TTTPTERM,
+//            NEED_SAPBR_0_1
         };
     };
 
@@ -96,13 +98,16 @@ namespace HTTP
     }
 
     static float measurements[TypeMeasure::Count];
+
+    // Ожидать ответ need,
+    // затем установить состояние state,
+    // и послать сообщение msg
+    void WaitSetSend(pchar answer, pchar need, State::E state, pchar msg = nullptr, uint time = 10000);
 }
 
 
 void HTTP::Update(pchar answer)
 {
-    const uint DEFAULT_TIME = 10000;
-
     switch (state)
     {
     case State::IDLE:
@@ -115,119 +120,23 @@ void HTTP::Update(pchar answer)
         break;
 
     case State::NEED_SAPBR_3_APN:
-        if (MeterIsRunning(85000))
-        {
-            if (strcmp(answer, "OK") == 0)
-            {
-                SetState(State::NEED_SAPBR_3_USER);
-                SIM868::Transmit::With0D("AT+SAPBR=3,1,\"APN\",\"internet\"");
-            }
-        }
+        WaitSetSend(answer, "OK", State::NEED_SAPBR_3_USER, "AT+SAPBR=3,1,\"APN\",\"internet\"", 85000);
         break;
 
     case State::NEED_SAPBR_3_USER:
-        if (MeterIsRunning(85000))
-        {
-            if (strcmp(answer, "OK") == 0)
-            {
-                SetState(State::NEED_SAPBR_3_PWD);
-                SIM868::Transmit::With0D("AT+SAPBR=3,1,\"USER\",\"\"");
-            }
-        }
+        WaitSetSend(answer, "OK", State::NEED_SAPBR_3_PWD, "AT+SAPBR=3,1,\"USER\",\"\"", 85000);
         break;
 
     case State::NEED_SAPBR_3_PWD:
-        if (MeterIsRunning(85000))
-        {
-            if (strcmp(answer, "OK") == 0)
-            {
-                SetState(State::WAIT_PASSWORD_OK);
-                SIM868::Transmit::With0D("AT+SAPBR=3,1,\"PWD\",\"\"");
-            }
-        }
+        WaitSetSend(answer, "OK", State::WAIT_PASSWORD_OK, "AT+SAPBR=3,1,\"PWD\",\"\"", 85000);
         break;
 
     case State::WAIT_PASSWORD_OK:
-        if (MeterIsRunning(DEFAULT_TIME))
-        {
-            if (strcmp(answer, "OK") == 0)
-            {
-                SetState(State::WAIT_COMMANDS);
-            }
-        }
+        WaitSetSend(answer, "OK", State::POST_GET_CONFIG);
         break;
 
-    case State::WAIT_COMMANDS:
-        SetState(State::NEED_SAPBR_2_1);
-        break;
-
-    case State::NEED_SEND:
-        SetState(State::NEED_SAPBR_2_1);
-        SIM868::Transmit::With0D("AT+SAPBR=1,1");
-        break;
-
-    case State::NEED_SAPBR_2_1:
-        if (MeterIsRunning(DEFAULT_TIME))
-        {
-            if (strcmp(answer, "OK") == 0)
-            {
-                SetState(State::NEED_HTTPINIT);
-                SIM868::Transmit::With0D("AT+SAPBR=2,1");
-            }
-        }
-        break;
-
-    case State::NEED_HTTPINIT:
-        if (MeterIsRunning(DEFAULT_TIME))
-        {
-            if (strcmp(answer, "OK") == 0)
-            {
-                SetState(State::NEED_HTTPPARA_CID);
-                SIM868::Transmit::With0D("AT + HTTPINIT");
-            }
-        }
-        break;
-
-    case State::NEED_HTTPPARA_CID:
-        if (MeterIsRunning(DEFAULT_TIME))
-        {
-            if (strcmp(answer, "OK") == 0)
-            {
-                SetState(State::NEED_HTTPPARA_URL);
-                SIM868::Transmit::With0D("AT+HTTPPARA=CID,1");
-            }
-        }
-        break;
-
-    case State::NEED_HTTPPARA_URL:
-        if (MeterIsRunning(DEFAULT_TIME))
-        {
-            if (strcmp(answer, "OK") == 0)
-            {
-                SetS
-            }
-        }
-        break;
-
-    case State::NEED_HTTPPARA_CONTENT:
-        break;
-
-    case State::NEED_HTTPDATA:
-        break;
-
-    case State::NEED_SEND_DATA:
-        break;
-
-    case State::NEED_HTTPACTION_1:
-        break;
-
-    case State::NEED_HTTPREAD:
-        break;
-
-    case State::NEED_TTTPTERM:
-        break;
-
-    case State::NEED_SAPBR_0_1:
+    case State::POST_GET_CONFIG:
+        POST::Config::Update(answer);
         break;
     }
 }
@@ -240,8 +149,25 @@ void HTTP::SendMeasuremets(float meas[TypeMeasure::Count])
         measurements[i] = meas[i];
     }
 
-    if (state == State::WAIT_COMMANDS)
+//    if (state == State::WAIT_COMMANDS)
+//    {
+//        SetState(State::NEED_SEND);
+//    }
+}
+
+
+void HTTP::WaitSetSend(pchar answer, pchar need, State::E _state, pchar msg, uint time)
+{
+    if (MeterIsRunning(time))
     {
-        SetState(State::NEED_SEND);
+        if (strcmp(answer, need) == 0)
+        {
+            SetState(_state);
+
+            if (msg)
+            {
+                SIM868::Transmit::With0D(msg);
+            }
+        }
     }
 }
