@@ -1,6 +1,6 @@
 // 2023/08/15 21:06:58 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
-#include "Modem/HTTP/Request.h"
+#include "Modem/HTTP/POST/Request.h"
 #include <cstring>
 
 
@@ -22,8 +22,13 @@ namespace Request
 }
 
 
-void Request::Configuration()
+void Request::Set(char *request)
 {
-    Write::Begin();
-    Write::String("/api/config/get");
+    std::strcpy(buffer, request);
+}
+
+
+int Request::Lenght()
+{
+    return (int)std::strlen(buffer);
 }

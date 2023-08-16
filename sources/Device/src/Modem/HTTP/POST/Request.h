@@ -6,8 +6,7 @@ namespace Request
 {
     void Set(char *);
 
-    // Запрос конфигурации
-    void Configuration();
+    int Lenght();
 
     bool Exist();
 }

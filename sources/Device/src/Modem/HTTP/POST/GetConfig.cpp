@@ -5,7 +5,10 @@
 #include "Modem/HTTP/HTTP.h"
 #include "Modem/SIM868.h"
 #include "Modem/Parser.h"
+#include "Hardware/HAL/HAL.h"
+#include "Modem/HTTP/POST/Request.h"
 #include <cstring>
+#include <cstdio>
 
 
 using namespace Parser;
@@ -25,8 +28,8 @@ namespace POST
                 NEED_HTTPPARA_CID_1,
                 NEED_HTTPPARA_URL,
                 NEED_HTTPPARA_CONTENT,
-//            NEED_HTTPDATA,
-//            NEED_SEND_DATA,
+                NEED_HTTPDATA,                  // «десь устанавливаем количество засылаемых байт
+                NEED_SEND_DATA,                 // ј здесь посылаем данные
 //            NEED_HTTPACTION_1,
 //            NEED_HTTPREAD,
 //            NEED_TTTPTERM,
@@ -108,7 +111,33 @@ void POST::Config::Update(pchar answer)
 
     case State::NEED_HTTPPARA_URL:      WaitSetSend(answer, "OK", State::NEED_HTTPPARA_CONTENT, "AT+HTTPPARA=\"URL\",\"https://dev.smartwrap.tech/:443\"");
 
-    case State::NEED_HTTPPARA_CONTENT:
+    case State::NEED_HTTPPARA_CONTENT:  WaitSetSend(answer, "OK", State::NEED_HTTPDATA, "AT+HTTPPARA=\"CONTENT\",\"application/json\"");
+        break;
+
+    case State::NEED_HTTPDATA:
+        if (MeterIsRunning(DEFAULT_TIME))
+        {
+            if (std::strcmp(answer, "OK") == 0)
+            {
+                char message[64];
+                char uid[32];
+                std::sprintf(message, "/api/config/get{\"%s\":\"test1\"}", HAL::GetUID(uid));
+                Request::Set(message);
+                SetState(State::NEED_SEND_DATA);
+                std::sprintf(message, "AT+HTTPDATA=%d,10000", Request::Lenght());
+                SIM868::Transmit::With0D(message);
+            }
+        }
+        break;
+
+    case State::NEED_SEND_DATA:
+        if (MeterIsRunning(DEFAULT_TIME))
+        {
+            if (std::strcmp(answer, "DOWNLOAD") == 0)
+            {
+                int i = 0;
+            }
+        }
         break;
     }
 }

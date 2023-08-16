@@ -794,16 +794,6 @@
           <GroupName>Modem/HTTP</GroupName>
           <Files>
             <File>
-              <FileName>Answer.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Modem\HTTP\Answer.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Answer.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Modem\HTTP\Answer.h</FilePath>
-            </File>
-            <File>
               <FileName>HTTP.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\Modem\HTTP\HTTP.cpp</FilePath>
@@ -812,16 +802,6 @@
               <FileName>HTTP.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Modem\HTTP\HTTP.h</FilePath>
-            </File>
-            <File>
-              <FileName>Request.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Modem\HTTP\Request.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Request.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Modem\HTTP\Request.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -837,6 +817,26 @@
               <FileName>GitConfig.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Modem\HTTP\POST\GitConfig.h</FilePath>
+            </File>
+            <File>
+              <FileName>Answer.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Modem\HTTP\POST\Answer.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Answer.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Modem\HTTP\POST\Answer.h</FilePath>
+            </File>
+            <File>
+              <FileName>Request.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Modem\HTTP\POST\Request.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Request.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Modem\HTTP\POST\Request.h</FilePath>
             </File>
           </Files>
         </Group>
