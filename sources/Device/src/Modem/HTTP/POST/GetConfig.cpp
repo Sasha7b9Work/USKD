@@ -123,7 +123,7 @@ void POST::Config::Update(pchar answer)
             {
                 char message[64];
                 char uid[32];
-                std::sprintf(message, "POST /api/config/get HTTP/1.1\nAccept: application/json\nContent-Type: application/json\n{\n\"%s\":\"test1\"n}", HAL::GetUID(uid));
+                std::sprintf(message, "POST /api/config/get HTTP/1.1\r\nAccept:application/json\r\nContent-Type:application/json\r\n{\r\n\"%s\":\"test1\"\r\n}", HAL::GetUID(uid));
                 Request::Set(message);
                 SetState(State::NEED_SEND_DATA);
                 std::sprintf(message, "AT+HTTPDATA=%d,10000", Request::Lenght());
