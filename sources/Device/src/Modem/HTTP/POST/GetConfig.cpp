@@ -124,15 +124,18 @@ void POST::Config::Update(pchar answer)
                 char uid[32];
                 static char request[64];
                 std::sprintf(request, "{\"%s\":\"test1\"}", HAL::GetUID(uid));
+
                 char message[256];
                 std::sprintf(message, "POST /api/config/get HTTP/1.1\r\n"
                     "Host: dev.smartwrap.tech:443\r\n"
                     "Accept: application/json\r\n"
                     "Content-Type: application/json\r\n"
-                    "Content-Length: %d\r\n"
+                    "Content-Length: %d\r\n\r\n"
                     "%s", std::strlen(request), request);
+
                 Request::Set(message);
                 SetState(State::NEED_SEND_DATA);
+
                 std::sprintf(message, "AT+HTTPDATA=%d,10000", std::strlen(message));
                 SIM868::Transmit::With0D(message);
             }
