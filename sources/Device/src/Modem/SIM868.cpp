@@ -108,6 +108,10 @@ bool SIM868::ProcessUnsolicited(pchar answer)
         GetWord(answer, 2, levelSignal);
         return true;
     }
+    else if (strcmp(first_word, "+CGNSPWR") == 0)           // GNSS power control
+    {
+        return true;
+    }
     else if (strcmp(first_word, "+UGNSINF") == 0)
     {
         int number_commas = NumberSymbols(answer, ',');
