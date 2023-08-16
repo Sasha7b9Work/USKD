@@ -123,7 +123,7 @@ void POST::Config::Update(pchar answer)
             {
                 char message[64];
                 char uid[32];
-                std::sprintf(message, "/api/config/get{\"%s\":\"test1\"}", HAL::GetUID(uid));
+                std::sprintf(message, "/api/config/get {\"%s\":\"test1\"}", HAL::GetUID(uid));
                 Request::Set(message);
                 SetState(State::NEED_SEND_DATA);
                 std::sprintf(message, "AT+HTTPDATA=%d,10000", Request::Lenght());
