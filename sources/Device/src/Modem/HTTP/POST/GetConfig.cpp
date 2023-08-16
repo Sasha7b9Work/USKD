@@ -136,7 +136,7 @@ void POST::Config::Update(pchar answer)
                 Request::Set(message);
                 SetState(State::NEED_SEND_DATA);
 
-                std::sprintf(message, "AT+HTTPDATA=%d,10000", std::strlen(message));
+                std::sprintf(message, "AT+HTTPDATA=%d,10000", Request::Lenght());
                 SIM868::Transmit::With0D(message);
             }
         }
