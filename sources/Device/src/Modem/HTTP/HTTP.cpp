@@ -51,19 +51,6 @@ namespace HTTP
             NEED_SAPBR_3_PWD,
             WAIT_PASSWORD_OK,
             POST_GET_CONFIG             // Находимся в состоянии получения конфига
-//            WAIT_COMMANDS,              // Ожидаем команды для передачи
-//            NEED_SEND,                  // Нуждаемся в передаче команды
-//            NEED_SAPBR_2_1,
-//            NEED_HTTPINIT,
-//            NEED_HTTPPARA_CID,
-//            NEED_HTTPPARA_URL,
-//            NEED_HTTPPARA_CONTENT,
-//            NEED_HTTPDATA,
-//            NEED_SEND_DATA,
-//            NEED_HTTPACTION_1,
-//            NEED_HTTPREAD,
-//            NEED_TTTPTERM,
-//            NEED_SAPBR_0_1
         };
     };
 

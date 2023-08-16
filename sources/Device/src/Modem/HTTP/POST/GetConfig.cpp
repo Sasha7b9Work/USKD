@@ -15,7 +15,19 @@ namespace POST
         {
             enum E
             {
-                IDLE
+                IDLE,
+                NEED_SAPBR_2_1,
+                NEED_HTTPINIT,
+//            NEED_HTTPPARA_CID,
+//            NEED_HTTPPARA_URL,
+//            NEED_HTTPPARA_CONTENT,
+//            NEED_HTTPDATA,
+//            NEED_SEND_DATA,
+//            NEED_HTTPACTION_1,
+//            NEED_HTTPREAD,
+//            NEED_TTTPTERM,
+//            NEED_SAPBR_0_1
+
             };
         };
 
@@ -41,10 +53,12 @@ namespace POST
             return false;
         }
 
+        static const uint DEFAULT_TIME = 10000;
+
         // Ожидать ответ need,
         // затем установить состояние state,
         // и послать сообщение msg
-        void WaitSetSend(pchar answer, pchar need, State::E state, pchar msg = nullptr, uint time = 10000);
+        void WaitSetSend(pchar answer, pchar need, State::E state, pchar msg = nullptr, uint time = DEFAULT_TIME);
     }
 }
 
@@ -55,9 +69,27 @@ void POST::Config::Reset()
 }
 
 
-void POST::Config::Update(pchar)
+void POST::Config::Update(pchar answer)
 {
+    switch (state)
+    {
+    case State::IDLE:           SetState(State::NEED_SAPBR_2_1);
+                                SIM868::Transmit::With0D("AT+SAPBR=1,1");
+        break;
 
+    case State::NEED_SAPBR_2_1: WaitSetSend(answer, "OK", State::NEED_HTTPINIT, "AT+SAPBR=2,1");
+        break;
+
+    case State::NEED_HTTPINIT:
+        if (MeterIsRunning(DEFAULT_TIME))
+        {
+            if (answer[0])
+            {
+                int i = 0;
+            }
+        }
+        break;
+    }
 }
 
 
