@@ -9,20 +9,41 @@
 class String
 {
 public:
-    String()
+    String() : buffer(nullptr)
     {
-        buffer[0] = '\0';
     }
+
+    void Clear()
+    {
+        if (buffer)
+        {
+            delete buffer;
+            buffer = nullptr;
+        }
+    }
+
     void Set(pchar string)
     {
+        if (Size())
+        {
+            Clear();
+        }
+
+        buffer = new char[std::strlen(string) + 1];
+
         std::strcpy(buffer, string);
     }
-    String(char *format, ...)
+
+    String(char *format, ...) : buffer(nullptr)
     {
+        char data[2048];
+
         std::va_list args;
         va_start(args, format);
-        std::vsprintf(buffer, format, args);
+        std::vsprintf(data, format, args);
         va_end(args);
+
+        Set(data);
     }
 
     pchar c_str() const
@@ -41,5 +62,5 @@ public:
     }
 
 private:
-    char buffer[1024];
+    char *buffer;
 };
