@@ -279,6 +279,9 @@ void Modem::Init()
 
 void Modem::Reset(char *file, int line)
 {
+    (void)file;
+    (void)line;
+
     State::Set(State::IDLE);
 
     LOG_WRITE("Modem::Reset from %s : %d", file, line);

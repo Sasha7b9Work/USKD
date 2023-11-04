@@ -56,6 +56,22 @@ void Display::Init()
 }
 
 
+void Display::Update2()
+{
+    Fill(0);
+
+    SSD1306::WriteBuffer(buffer);
+
+    Fill(1);
+
+    SSD1306::WriteBuffer(buffer);
+
+    Fill(2);
+
+    SSD1306::WriteBuffer(buffer);
+}
+
+
 void Display::Update()
 {
     BeginScene();

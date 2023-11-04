@@ -42,8 +42,8 @@ void HAL::Init()
     rcu_periph_clock_enable(RCU_AF);
     rcu_periph_clock_enable(RCU_TIMER5);
 
-    gpio_pin_remap_config(GPIO_I2C0_REMAP, ENABLE);
-    gpio_pin_remap_config(GPIO_USART0_REMAP, ENABLE);
+//    gpio_pin_remap_config(GPIO_I2C0_REMAP, ENABLE);
+//    gpio_pin_remap_config(GPIO_USART0_REMAP, ENABLE);
 
     GL::_RCU_RSTSCK = *((uint *)(0x40021000 + 0x24)); //-V566
 
@@ -54,11 +54,11 @@ void HAL::Init()
 
     rcu_periph_clock_enable(RCU_WWDGT);
 
-    HAL_USART_GPRS::Init();
+//    HAL_USART_GPRS::Init();
 
-    HAL_USART_LOG::Init();
+//    HAL_USART_LOG::Init();
 
-    i2cDisplay.Init(GPIOB, GPIO_PIN_8, GPIO_PIN_9, HAL_I2C::PERIPH_DISPLAY, (0x3c << 1));
+    i2cDisplay.Init(GPIOB, GPIO_PIN_6, GPIO_PIN_7, HAL_I2C::PERIPH_DISPLAY, (0x3c << 1));
 
 //    i2cMPU6050.Init(GPIOB, GPIO_PIN_10, GPIO_PIN_11, HAL_I2C::PERIPH_MPU6050, (0x68 << 1));
 
