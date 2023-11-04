@@ -65,10 +65,12 @@ void HAL_I2C::Init(uint _port, uint _pinSCL, uint _pinSDA, uint _periph, uint _a
 
     i2c_ack_config(periph, I2C_ACK_ENABLE);
 
-//    nvic_priority_group_set(NVIC_PRIGROUP_PRE1_SUB3);
-//    nvic_irq_enable(I2C0_ER_IRQn, 0, 1);
-//
-//    i2c_software_reset_config(periph, I2C_CTL0_SRESET);
+#ifndef HOME_VERSION
+    nvic_priority_group_set(NVIC_PRIGROUP_PRE1_SUB3);
+    nvic_irq_enable(I2C0_ER_IRQn, 0, 1);
+
+    i2c_software_reset_config(periph, I2C_CTL0_SRESET);
+#endif
 }
 
 
