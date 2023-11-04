@@ -96,11 +96,13 @@ bool SIM868::ProcessUnsolicited(pchar answer)
 
     if (std::strcmp(answer, "ERROR") == 0)
     {
+        LOG_ERROR("ERROR");
 //        Modem::Reset();
         return true;
     }
     else if (std::strcmp(answer, "CLOSED") == 0)
     {
+        LOG_WRITE("                  CLOSED");
         Modem::Reset(__FILE__, __LINE__);
         return true;
     }

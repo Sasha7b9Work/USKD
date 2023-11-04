@@ -70,6 +70,8 @@ protected:
 
     Dumper dump;
 
+    uint time_send;
+
     // Посылает информацию
     virtual void Send() = 0;
 

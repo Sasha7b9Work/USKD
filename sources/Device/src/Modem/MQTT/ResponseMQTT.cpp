@@ -306,7 +306,7 @@ ResponsePUBLISH::ResponsePUBLISH(const Buffer<1024> &_buffer) :
 
         buffer.ReadString(message, rem_length, &rem_length);
 
-        LOG_WRITE_TRACE("%s : %s", name_topic, message);
+        LOG_WRITE("Response %s : %s", name_topic, message);
     }
 }
 

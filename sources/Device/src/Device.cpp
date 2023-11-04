@@ -40,13 +40,16 @@ void Device::Init()
 
 void Device::Update()
 {
-//    if (meter.ElapsedTime() > 1000)
-//    {
-//        meter.Reset();
-//
-//        MQTT::GET::Time();
-//    }
-//
+    if (MQTT::IsConnected())
+    {
+        if (meter.ElapsedTime() > 100)
+        {
+            meter.Reset();
+
+            MQTT::GET::Time();
+        }
+    }
+
     Display::Update();
 
     Modem::Update();

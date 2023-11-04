@@ -20,7 +20,7 @@ namespace MQTT
 {
     namespace Queue
     {
-        static const int MAX_REQUESTS = 20;
+        static const int MAX_REQUESTS = 5;
         static int num_requests = 0;
         static RequestMQTT *requests[MAX_REQUESTS];
         static RequestMQTT *current = nullptr;
@@ -43,6 +43,8 @@ namespace MQTT
 
         void Append(RequestMQTT *request)
         {
+            LOG_WRITE("In queue %d requests", num_requests);
+
             while (num_requests == MAX_REQUESTS)
             {
                 Modem::Update();
@@ -172,21 +174,7 @@ void MQTT::Callback::OnConnect(bool connect)
 {
     is_connected = connect;
 
-//    Send(new RequestSUBSCRIBE("test"));
-
-//    Send(new RequestSUBSCRIBE("trash"));
-
-//    Send(new RequestSUBSCRIBE("server/request/route"));
-
-//    Send(new RequestSUBSCRIBE("server/request/incident"));
-
-//    Send(new RequestSUBSCRIBE("server/request/config"));
-
-//  Send(new RequestSUBSCRIBE("devices/allbox"));
-
     Send(new RequestSUBSCRIBE(String<128>("devices/box/%s/config/getTime", HAL::GetUID())));
-
-    MQTT::GET::Time();
 }
 
 
