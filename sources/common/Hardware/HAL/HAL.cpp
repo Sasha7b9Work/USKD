@@ -37,7 +37,12 @@ void HAL::Init()
     rcu_periph_clock_enable(RCU_I2C0);      // Display
     rcu_periph_clock_enable(RCU_I2C1);      // MPU6050
     rcu_periph_clock_enable(RCU_TIMER0);    // ADC
+
+#ifdef HOME_VERSION
+    rcu_periph_clock_enable(RCU_USART1);    // Log
+#else
     rcu_periph_clock_enable(RCU_USART0);    // Log
+#endif
     rcu_periph_clock_enable(RCU_UART3);     // GPRS
     rcu_periph_clock_enable(RCU_AF);
     rcu_periph_clock_enable(RCU_TIMER5);
@@ -58,9 +63,9 @@ void HAL::Init()
 
 #ifndef HOME_VERSION
     HAL_USART_GPRS::Init();
+#endif
 
     HAL_USART_LOG::Init();
-#endif
 
 #ifdef HOME_VERSION
     i2cDisplay.Init(GPIOB, GPIO_PIN_6, GPIO_PIN_7, HAL_I2C::PERIPH_DISPLAY, (0x3c << 1));

@@ -42,6 +42,8 @@ void Device::Update()
 {
     Display::Update2();
 
+    LOG_WRITE("Test message");
+
 //    if (meter.ElapsedTime() > 1000)
 //    {
 //        meter.Reset();
