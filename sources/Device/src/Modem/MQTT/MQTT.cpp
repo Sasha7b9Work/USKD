@@ -20,7 +20,7 @@ namespace MQTT
 {
     namespace Queue
     {
-        static const int MAX_REQUESTS = 1;
+        static const int MAX_REQUESTS = 2;
         static int num_requests = 0;
         static RequestMQTT *requests[MAX_REQUESTS];
         static RequestMQTT *current = nullptr;

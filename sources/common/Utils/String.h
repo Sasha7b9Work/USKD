@@ -12,6 +12,10 @@ public:
     String() : buffer(nullptr)
     {
     }
+    ~String()
+    {
+        Clear();
+    }
 
     void Clear()
     {
