@@ -248,5 +248,5 @@ FlagStatus exti_interrupt_flag_get(exti_line_enum linex)
 */
 void exti_interrupt_flag_clear(exti_line_enum linex)
 {
-    EXTI_PD = (uint32_t)linex;
+    EXTI_PD = ((uint32_t)linex);
 }

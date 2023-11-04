@@ -60,11 +60,11 @@ public:
     // Óäàëèòü ïåğâûõ n ıëåìåíòîâ
     void RemoveFirst(int n)
     {
-        std::memmove(buffer, buffer + n, (uint)(size - n));
         size -= n;
+        std::memmove(buffer, buffer + n, (uint)size);
     }
 
-    char &operator[](uint i)
+    char operator[](uint i) const
     {
         if ((int)i >= 0 && (int)i < Size())
         {
@@ -76,7 +76,7 @@ public:
         return null;
     }
 
-    char &operator[](int i)
+    char operator[](int i) const
     {
         if (i >= 0 && i < Size())
         {

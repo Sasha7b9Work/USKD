@@ -10,73 +10,34 @@
 PinADC pinBAT(GPIOA, GPIO_PIN_1, ADC_CHANNEL_1);
 
 const uint USART_GPRS_ADDR = UART3;
-PinUSART_TX pinUSART_GPRS_TX;
-PinUSART_RX pinUSART_GPRS_RX;
+PinUSART_TX pinUSART_GPRS_TX(GPIOC, GPIO_PIN_10);
+PinUSART_RX pinUSART_GPRS_RX(GPIOC, GPIO_PIN_11);
 
-const uint I2C_ADDR = I2C0;
-PinI2C pinI2C_SCL;
-PinI2C pinI2C_SDA;
+const uint USART_LOG_ADDR = USART0;
+PinUSART_TX pinUSART_LOG_TX(GPIOB, GPIO_PIN_6);
+PinUSART_RX pinUSART_LOG_RX(GPIOB, GPIO_PIN_7);
 
-PinOUT pinGSM_PWR;
-PinOUT pinGSM_PWRKEY;
-PinIN  pinGSM_STATUS;
+PinOUT pinGSM_PWR(GPIOA, GPIO_PIN_12);
+PinOUT pinGSM_PWRKEY(GPIOA, GPIO_PIN_11);
+PinIN  pinGSM_STATUS(GPIOA, GPIO_PIN_10, GPIO_MODE_IPD);
+
+PinIN pinGC777(GPIOC, GPIO_PIN_9, GPIO_MODE_IN_FLOATING);
 
 
-struct ObservedPin : public PinIN
+void PinUSART_TX::Init()
 {
-    ObservedPin() : PinIN(), state(false) { }
-
-    bool IsHi()
-    {
-        prev_state = state;
-        state = PinIN::IsHi();
-        return state;
-    }
-
-    bool IsSwitched() const
-    {
-        return state != prev_state;
-    }
-
-    void ResetSwitch()
-    {
-        prev_state = state;
-    }
-
-    bool GetState() const
-    {
-        return state;
-    }
-
-private:
-    bool state;
-    bool prev_state;
-};
-
-
-void PinUSART_TX::Init(uint _port, uint _pin)
-{
-    port = _port;
-    pin = _pin;
-
     gpio_init(port, GPIO_MODE_AF_PP, GPIO_OSPEED_50MHZ, pin);
 }
 
 
-void PinUSART_RX::Init(uint _port, uint _pin)
+void PinUSART_RX::Init()
 {
-    port = _port;
-    pin = _pin;
-
     gpio_init(port, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_50MHZ, pin);
 }
 
 
-void PinOUT::Init(uint _port, uint _pin)
+void PinOUT::Init()
 {
-    port = _port;
-    pin = _pin;
-
     gpio_init(port, GPIO_MODE_OUT_PP, GPIO_OSPEED_50MHZ, pin);
 }
 
@@ -99,12 +60,9 @@ void PinOUT::SetState(bool state)
 }
 
 
-void PinIN::Init(uint _port, uint _pin, uint input_mode)
+void PinIN::Init()
 {
-    port = _port;
-    pin = _pin;
-
-    gpio_init(port, input_mode, GPIO_OSPEED_50MHZ, pin);
+    gpio_init(port, mode, GPIO_OSPEED_50MHZ, pin);
 }
 
 
@@ -112,7 +70,7 @@ void PinIN::DeInit()
 {
     gpio_init(port, GPIO_MODE_OUT_PP, GPIO_OSPEED_MAX, pin);
 
-    // Переводим в ноль
+     // Переводим в ноль
     GPIO_BC(port) = pin;
 }
 
@@ -129,14 +87,12 @@ bool PinIN::IsHi()
 }
 
 
-void PinI2C::Init(uint _port, uint _pin)
+void PinI2C::Init(uint _port, uint _pin, uint _mode)
 {
     port = _port;
     pin = _pin;
 
-    gpio_pin_remap_config(GPIO_I2C0_REMAP, ENABLE);
-
-    gpio_init(port, GPIO_MODE_AF_OD, GPIO_OSPEED_50MHZ, pin);
+    gpio_init(port, _mode, GPIO_OSPEED_50MHZ, pin);
 }
 
 

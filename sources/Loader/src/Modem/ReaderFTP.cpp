@@ -70,19 +70,19 @@ void ReaderFTP::AppendByte(char symbol)
         {
             if (pointer_command)
             {
-                char buffer[32];
+                BufferParser buffer;
 
                 buffer_command[pointer_command++] = 0;
 
-                pchar first_word = GetWord(buffer_command, 1, buffer);
+                pchar first_word = GetWord(buffer_command, 1, &buffer);
 
                 if (strcmp(first_word, "+FTPGET") == 0)
                 {
-                    pchar second_word = GetWord(buffer_command, 2, buffer);
+                    pchar second_word = GetWord(buffer_command, 2, &buffer);
 
                     if (second_word[0] == '1')
                     {
-                        pchar third_word = GetWord(buffer_command, 3, buffer);
+                        pchar third_word = GetWord(buffer_command, 3, &buffer);
                         if (third_word[0] == '1')
                         {
                             SIM868::Transmit::Format("AT+FTPGET=2,%d", need_bytes);
@@ -95,7 +95,7 @@ void ReaderFTP::AppendByte(char symbol)
                     }
                     else if (second_word[0] == '2')
                     {
-                        pchar num_readed_bytes = GetWord(buffer_command, 3, buffer);
+                        pchar num_readed_bytes = GetWord(buffer_command, 3, &buffer);
 
                         bytes_from_FTP = atoi(num_readed_bytes);
 

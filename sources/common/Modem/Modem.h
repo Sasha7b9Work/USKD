@@ -1,11 +1,14 @@
 ﻿// 2023/03/16 16:31:47 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #pragma once
-#include "Storage.h"
+
+#ifdef DEVICE
+    #include "Storage/Storage.h"
+#endif
 
 
 namespace Modem
 {
-    void Reset();
+    void Reset(char *file, int line);
 
     void Init();
 
@@ -16,11 +19,16 @@ namespace Modem
 
     void CallbackOnReceive(char);
 
-    void SendMeasuremets(float [TypeMeasure::Count]);
-
     namespace Mode
     {
         // Возвращает true, если напряжение подано
         bool Power();
     }
+
+#ifdef DEVICE
+
+    // Заслать измерения на сервера
+    void SendMeasures(const Measurements &);
+
+#endif
 }

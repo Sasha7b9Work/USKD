@@ -9,6 +9,7 @@ sources/Device/Listings/*
 sources/Device/Listings-Debug/*
 sources/Device/Objects/*
 sources/Device/Objects-Debug/*
+sources/Device/Device.out
 
 sources/Device/USKD.bin
 

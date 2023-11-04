@@ -83,9 +83,9 @@ namespace SIM868
 
 bool SIM868::ProcessUnsolicited(pchar answer)
 {
-    char buffer[32];
+    BufferParser buffer;
 
-    pchar first_word = Parser::GetWord(answer, 1, buffer);
+    pchar first_word = Parser::GetWord(answer, 1, &buffer);
 
     if (strcmp(answer, "CLOSED") == 0)
     {
@@ -94,7 +94,7 @@ bool SIM868::ProcessUnsolicited(pchar answer)
     }
     else if (strcmp(first_word, "+CSQ") == 0)
     {
-        strcpy(levelSignal, Parser::GetWord(answer, 2, buffer));
+        strcpy(levelSignal, Parser::GetWord(answer, 2, &buffer));
         return true;
     }
     else if (strcmp(answer, "SEND FAIL") == 0)
@@ -124,7 +124,7 @@ void SIM868::Update(pchar answer)
 
     const uint DEFAULT_TIME = 10000;
 
-    char buffer[32];
+    BufferParser buffer;
 
     switch (state)
     {
@@ -181,9 +181,9 @@ void SIM868::Update(pchar answer)
     case State::WAIT_REGISTRATION:
         if (MeterIsRunning(60000))
         {
-            if (strcmp(GetWord(answer, 1, buffer), "+CREG") == 0)
+            if (strcmp(GetWord(answer, 1, &buffer), "+CREG") == 0)
             {
-                int stat = GetWord(answer, 2, buffer)[0] & 0x0f;
+                int stat = GetWord(answer, 2, &buffer)[0] & 0x0f;
 
                 if (stat == 1 ||    // Registered, home network
                     stat == 5)      // Registered, roaming
@@ -198,7 +198,7 @@ void SIM868::Update(pchar answer)
     case State::WAIT_IP_INITIAL:
         if (MeterIsRunning(DEFAULT_TIME))
         {
-            if (strcmp(GetWord(answer, 3, buffer), "INITIAL") == 0)
+            if (strcmp(GetWord(answer, 3, &buffer), "INITIAL") == 0)
             {
                 state = State::RUNNING_UPDATER;
             }

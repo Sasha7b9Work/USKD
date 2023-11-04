@@ -6,11 +6,16 @@
 #include "Hardware/Timer.h"
 #include "Modem/Parser.h"
 #include "Utils/Buffer.h"
+#include "Modem/ProcessorBinaryData.h"
+#ifdef DEVICE
+#include "Modem/MQTT/MQTT.h"
+#endif
 #ifdef LOADER
 #include "Modem/Updater.h"
 #endif
 #include <gd32f30x.h>
 #include <cstring>
+#include <cstdlib>
 
 
 /*
@@ -76,16 +81,9 @@ namespace Modem
     // Данные, получаемые от SIM868
     namespace InData
     {
-        static Buffer<512> main;
-        static Buffer<512> addit;
-        static Buffer<512> buffer;
-
-//        static void Clear()
-//        {
-//            main.Clear();
-//            addit.Clear();
-//            buffer.Clear();
-//        }
+        static Buffer<2048> main;
+        static Buffer<2048> addit;
+        static Buffer<2048> buffer;
 
         void Update()
         {
@@ -95,7 +93,7 @@ namespace Modem
             {
                 for (int i = 0; i < main.Size(); i++)
                 {
-                    Log::ReceiveFromSIM800(main[i]);
+//                    Log::ReceiveFromSIM800(main[i]);
                 }
                 if (!buffer.Append(main.Data(), main.Size()))
                 {
@@ -112,9 +110,11 @@ namespace Modem
             }
             else
             {
-                Buffer<512> answer;
+                Buffer<2048> answer;
 
                 bool answer_exist = false;
+
+                static int binary_bytes_left = 0;
 
                 do
                 {
@@ -124,6 +124,14 @@ namespace Modem
                     for (int i = 0; i < buffer.Size(); i++)
                     {
                         char symbol = buffer[i];
+
+                        if (binary_bytes_left)
+                        {
+//                            LOG_WRITE_TRACE("byte %02X", (uint8)symbol);
+                            PBD::AppendByte((uint8)symbol);
+                            binary_bytes_left--;
+                            continue;
+                        }
 
                         if (symbol == 0x0a)
                         {
@@ -154,6 +162,41 @@ namespace Modem
                         else
                         {
                             answer.Append(symbol);
+
+                            if (answer.Size() > 5 && answer[3] == 'D')
+                            {
+                                if (answer[answer.Size() - 1] == ':')
+                                {
+                                    if (std::memcmp(answer.Data(), "+IPD", 4) == 0)
+                                    {
+                                        char *pointer = answer.Data() + 5;
+
+                                        char buf_number[32];
+                                        char *p_buffer = buf_number;
+
+                                        while (*pointer != ':')
+                                        {
+                                            *p_buffer++ = *pointer++;
+                                        }
+
+                                        *p_buffer = '\0';
+
+                                        binary_bytes_left = (int)std::strtoul(buf_number, nullptr, 10);
+
+                                        i = -1;
+                                        while (buffer[0] < 0x20)
+                                        {
+                                            buffer.RemoveFirst(1);
+                                        }
+                                        buffer.RemoveFirst(answer.Size());
+                                        answer.Clear();
+
+//                                        LOG_WRITE_TRACE("received %d bytes", binary_bytes_left);
+
+                                        continue;
+                                    }
+                                }
+                            }
                         }
                     }
 
@@ -190,13 +233,6 @@ void Modem::CallbackOnReceive(char symbol)
     }
 #endif
 
-//     Log::ReceiveFromSIM800(symbol);
-    
-    if (symbol == 0)
-    {
-        return;
-    }
-
     if (!InData::main.mutex.IsBusy())
     {
         if (InData::addit.Size())
@@ -225,13 +261,13 @@ void Modem::CallbackOnReceive(char symbol)
 
 void Modem::Init()
 {
-    pinGSM_PWR.Init(GPIOA, GPIO_PIN_12);
+    pinGSM_PWR.Init();
     pinGSM_PWR.Set();
 
-    pinGSM_PWRKEY.Init(GPIOA, GPIO_PIN_11);
+    pinGSM_PWRKEY.Init();
     pinGSM_PWRKEY.Reset();
 
-    pinGSM_STATUS.Init(GPIOA, GPIO_PIN_10, GPIO_MODE_IPD);
+    pinGSM_STATUS.Init();
 
     pinGSM_STATUS.DeInit();
 
@@ -241,9 +277,16 @@ void Modem::Init()
 }
 
 
-void Modem::Reset()
+void Modem::Reset(char *file, int line)
 {
     State::Set(State::IDLE);
+
+    LOG_WRITE("Modem::Reset from %s : %d", file, line);
+
+//    while (true)
+//    {
+//        // Здесь сработает watchdog       \todo не соединяется с сервером MQTT в этом случае
+//    }
 }
 
 
@@ -251,11 +294,23 @@ void Modem::Update()
 {
     static TimeMeterMS meter;
 
+    static int prev_state = -1;
+
+    if (State::Current() != prev_state)
+    {
+        prev_state = State::Current();
+
+//        LOG_WRITE("State modem : %d", prev_state);
+    }
+
     switch (State::Current())
     {
     case State::IDLE:
-        LOG_WRITE("Modem : State::IDLE");
+        LOG_WRITE("Device::IDLE");
         SIM868::Reset();
+#ifdef DEVICE
+        MQTT::Reset();
+#endif
         pinGSM_PWR.Set();
         GSM_PG::ToOutLow();
         State::Set(State::WAIT_DISCHARGE_CAPS);
@@ -263,7 +318,6 @@ void Modem::Update()
         break;
 
     case State::WAIT_DISCHARGE_CAPS:
-        LOG_WRITE("Modem : State::WAIT_DISCHARGE_CAPS");
         if (meter.ElapsedTime() > 3000)
         {
             GSM_PG::ToInPullDown();
@@ -274,17 +328,16 @@ void Modem::Update()
         break;
 
     case State::WAIT_HI_GSM_PG:
-        LOG_WRITE("Modem : State::WAIT_HI_GSM_PG");
         if (GSM_PG::ReadInput())
         {
             meter.Reset();
             State::Set(State::WAIT_500_MS);
-            pinGSM_STATUS.Init(GPIOA, GPIO_PIN_10, GPIO_MODE_IPD);
+            pinGSM_STATUS.Init();
             HAL_USART_GPRS::Init();
         }
         if (meter.ElapsedTime() > 100)
         {
-            LOG_WRITE("!!! ERROR !!! Reset to state idle");
+            LOG_ERROR("Reset to state idle");
             State::Set(State::IDLE);
         }
 
@@ -357,3 +410,11 @@ bool Modem::GSM_PG::ReadInput()
 {
     return gpio_input_bit_get(PortPG(), GPIO_PIN_2) == SET;
 }
+
+
+#ifdef DEVICE
+void Modem::SendMeasures(const Measurements &/*meas*/)
+{
+//    Swagger::SendMeasuremets(meas);
+}
+#endif

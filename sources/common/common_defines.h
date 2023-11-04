@@ -1,8 +1,4 @@
-#define VERSION 1
-
-
-// Сообщения лога записываются в буфер
-//#define SOFTWARE_LOG
+#define VERSION 292
 
 
 typedef unsigned char uint8;
@@ -36,9 +32,16 @@ typedef unsigned char uchar;
 
 union BitSet32
 {
-    BitSet32(uint _word) : word(_word) { }
+    BitSet32(uint _word = 0) : word(_word) { }
+    BitSet32(uint8 byte0, uint8 byte1, uint8 byte2, uint8 byte3)
+    {
+        bytes[0] = byte0;
+        bytes[1] = byte1;
+        bytes[2] = byte2;
+        bytes[3] = byte3;
+    }
     uint   word;
-    uint8  byte[4];
+    uint8  bytes[4];
 };
 
 

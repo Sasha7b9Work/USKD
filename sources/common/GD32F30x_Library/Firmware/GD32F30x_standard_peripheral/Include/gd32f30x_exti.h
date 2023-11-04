@@ -40,6 +40,11 @@ OF SUCH DAMAGE.
 
 #include "gd32f30x.h"
 
+#ifdef __cplusplus
+ extern "C" {
+#endif
+
+
 /* EXTI definitions */
 #define EXTI                         EXTI_BASE
 
@@ -254,5 +259,10 @@ void exti_flag_clear(exti_line_enum linex);
 FlagStatus exti_interrupt_flag_get(exti_line_enum linex);
 /* clear EXTI line x interrupt pending flag */
 void exti_interrupt_flag_clear(exti_line_enum linex);
+
+#ifdef __cplusplus
+}
+#endif
+
 
 #endif /* GD32F30X_EXTI_H */

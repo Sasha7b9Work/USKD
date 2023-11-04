@@ -1,2 +1,2 @@
 @echo on
-start ..\..\generated\Keil\USKD.sln
+start ..\..\generated\Keil\sw-controller.sln

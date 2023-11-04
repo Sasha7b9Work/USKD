@@ -358,8 +358,10 @@ FlagStatus i2c_interrupt_flag_get(uint32_t i2c_periph, i2c_interrupt_flag_enum i
 /* clear I2C interrupt flag status */
 void i2c_interrupt_flag_clear(uint32_t i2c_periph, i2c_interrupt_flag_enum int_flag);
 
+
 #ifdef __cplusplus
 }
 #endif
+
 
 #endif /* GD32F30X_I2C_H */

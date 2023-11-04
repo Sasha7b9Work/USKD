@@ -4,18 +4,20 @@
 #include "Modem/Modem.h"
 #include <gd32f30x.h>
 #include <cstring>
+#include <cctype>
+#include <cstdio>
+#include <cstdarg>
+#include <cstdlib>
 
 
 void HAL_USART_GPRS::Init()
 {
-    pinUSART_GPRS_TX.Init(GPIOC, GPIO_PIN_10);
-    pinUSART_GPRS_RX.Init(GPIOC, GPIO_PIN_11);
+    pinUSART_GPRS_TX.Init();
+    pinUSART_GPRS_RX.Init();
 
-//    gpio_pin_remap_config(GPIO_USART1_REMAP, ENABLE);
+    nvic_irq_enable(UART3_IRQn, 1, 1);
 
-    nvic_irq_enable(UART3_IRQn, 0, 0);
-
-    NVIC_SetPriority(UART3_IRQn, 0);
+    NVIC_SetPriority(UART3_IRQn, 1);
 
     usart_deinit(USART_GPRS_ADDR);
     usart_baudrate_set(USART_GPRS_ADDR, 115200);
@@ -73,4 +75,78 @@ void HAL_USART_GPRS::Transmit(void *buffer, int size)
 void HAL_USART_GPRS::CallbackOnReceive(char symbol)
 {
     Modem::CallbackOnReceive(symbol);
+}
+
+
+void HAL_USART_LOG::Init()
+{
+    if (!HAL::IsLayout())
+    {
+        return;
+    }
+
+    pinUSART_LOG_TX.Init();
+    pinUSART_LOG_RX.Init();
+
+    nvic_irq_enable(USART0_IRQn, 1, 1);
+ 
+    NVIC_SetPriority(USART0_IRQn, 1);
+
+    usart_deinit(USART_LOG_ADDR);
+    usart_baudrate_set(USART_LOG_ADDR, 115200);
+    usart_receive_config(USART_GPRS_ADDR, USART_RECEIVE_ENABLE);
+    usart_transmit_config(USART_LOG_ADDR, USART_TRANSMIT_ENABLE);
+
+    usart_interrupt_enable(USART_LOG_ADDR, USART_INT_RBNE);
+
+    usart_enable(USART_LOG_ADDR);
+}
+
+
+void HAL_USART_LOG::Transmit(pchar format, ...)
+{
+    if (!HAL::IsLayout())
+    {
+        return;
+    }
+
+    char message[2048];
+    std::va_list args;
+    va_start(args, format);
+    vsprintf(message, format, args);
+    va_end(args);
+
+    uint size = std::strlen(message);
+
+    if (size < 2 || (message[size - 2] != 0x0d && message[size - 1] != 0x0a))
+    {
+        std::strcat(message, "\r\n");
+    }
+
+    TransmitRAW(message);
+}
+
+
+void HAL_USART_LOG::TransmitRAW(pchar message)
+{
+    if (!HAL::IsLayout())
+    {
+        return;
+    }
+
+    if (message[0] == 0x0D && message[1] == 0x0A)
+    {
+        message += 2;
+    }
+
+    int size = (int)std::strlen(message);
+
+    for (int i = 0; i < size; i++)
+    {
+        while (RESET == usart_flag_get(USART_LOG_ADDR, USART_FLAG_TBE)) {};
+
+        usart_data_transmit(USART_LOG_ADDR, (uint16)message[i]);
+
+        while (RESET == usart_flag_get(USART_LOG_ADDR, USART_FLAG_TBE)) {};
+    }
 }

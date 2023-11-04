@@ -3,11 +3,11 @@
 #include "Display/Display.h"
 #include "Display/SSD1306.h"
 #include "Modem/Modem.h"
+#include "Modem/MQTT/MQTT.h"
 #include "Hardware/HAL/HAL.h"
 #include "Hardware/Timer.h"
 #include "Modem/SIM868.h"
-#include "Hardware/DHT22/DHT22.h"
-#include "Storage.h"
+#include "Utils/String.h"
 #include <cstring>
 #include <cstdio>
 #include <cstdlib>
@@ -60,21 +60,26 @@ void Display::Update()
 {
     BeginScene();
 
-    char message[32];
+    WriteString(70, Y(4), HAL::GetUID());
 
-    WriteString(70, Y(4), HAL::GetUID(message));
+    Measurements meas;
 
-    if ((Timer::TimeMS() / 5000) % 2)
+    if (Storage::GetMeasurements(meas))
     {
-        WriteFormatFloat(10, Y(1), "ALT = %f", Storage::Get(TypeMeasure::Altitude));
+        if ((Timer::TimeMS() / 5000) % 2)
+        {
+            WriteFormatFloat(10, Y(1), "LAT = %f", meas.GetLatitude());
 
-        WriteFormatFloat(10, Y(2), "LON = %f", Storage::Get(TypeMeasure::Longitude));
-    }
-    else
-    {
-        WriteFormatFloat(10, Y(1), "Temp = %f", Storage::Get(TypeMeasure::Temperature));
+            WriteFormatFloat(10, Y(2), "LON = %f", meas.GetLongitude());
+        }
+        else
+        {
+            WriteFormatFloat(10, Y(1), "Temp = %.2f", meas.GetTemperature());
 
-        WriteFormatFloat(10, Y(2), "Hum = %f", Storage::Get(TypeMeasure::Humidity));
+            WriteFormatFloat(10, Y(2), "Hum = %.2f", meas.GetHumidity());
+
+            WriteFormatFloat(10, Y(3), "Bat = %.2f", meas.GetCharge());
+        }
     }
 
     if (Modem::Mode::Power())
@@ -87,17 +92,20 @@ void Display::Update()
         WriteString(35, Y(0), "REG");
     }
 
+    if (MQTT::IsConnected())
+    {
+        WriteString(65, Y(0), "MQTT");
+
+        WriteString(100, Y(0), SIM868::LevelSignal());
+    }
+
     SSD1306::WriteBuffer(buffer);
 }
 
 
 void Display::WriteFormatFloat(int x, int y, char *format, float value)
 {
-    char message[64];
-
-    std::sprintf(message, format, value);
-
-    WriteString(x, y, message);
+    WriteString(x, y, String<64>(format, value));
 }
 
 

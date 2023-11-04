@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.14)
 
-project (USKD)
+project (sw-controller)
 
 set (TARGET_NAME )
 

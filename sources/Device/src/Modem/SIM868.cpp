@@ -6,9 +6,8 @@
 #include "Hardware/HAL/HAL.h"
 #include "Modem/Parser.h"
 #include "Hardware/Bootloader.h"
+#include "Modem/MQTT/MQTT.h"
 #include "Device.h"
-#include "Storage.h"
-#include "Modem/HTTP/HTTP.h"
 #include <cstring>
 #include <cstdio>
 
@@ -40,7 +39,7 @@ namespace SIM868
             WAIT_CIPHEAD,
             WAIT_CGNSPWR,           // Ожидание включения навигационной части
             WAIT_CGNSURC,           // Ожидание включения автоматической выдачи URC-сообщений
-            RUNNING
+            RUNNING_MQTT
         };
 
         static void Set(E);
@@ -71,7 +70,7 @@ namespace SIM868
             return true;
         }
 
-        Modem::Reset();
+        Modem::Reset(__FILE__, __LINE__);
 
         return false;
     }
@@ -82,51 +81,53 @@ bool SIM868::ProcessUnsolicited(pchar answer)
 {
     if (answer[0])
     {
-        LOG_WRITE("<<< %s", answer);
+//        LOG_WRITE("<<<                                     %s", answer);
     }
     else
     {
         return false;
     }
 
-    char first_word[32];
+    BufferParser first_word;
 
-    GetWord(answer, 1, first_word);
+    GetWord(answer, 1, &first_word);
 
-    if (strcmp(answer, "CLOSED") == 0)
+    if (std::strcmp(answer, "ERROR") == 0)
     {
-        Modem::Reset();
+//        Modem::Reset();
         return true;
     }
-    else if (strcmp(answer, "SEND FAIL") == 0)
+    else if (std::strcmp(answer, "CLOSED") == 0)
     {
-        Modem::Reset();
+        Modem::Reset(__FILE__, __LINE__);
         return true;
     }
-    else if (strcmp(first_word, "+CSQ") == 0)               // Получили ответ на запрос об уровне сигнала
+    else if (std::strcmp(answer, "SEND FAIL") == 0)
     {
-        GetWord(answer, 2, levelSignal);
+        Modem::Reset(__FILE__, __LINE__);
         return true;
     }
-    else if (strcmp(first_word, "+CGNSPWR") == 0)           // GNSS power control
+    else if (std::strcmp(first_word.data, "+CSQ") == 0)               // Получили ответ на запрос об уровне сигнала
     {
+        BufferParser buffer;
+        GetWord(answer, 2, &buffer);
+        std::strcpy(levelSignal, buffer.data); //-V512
         return true;
     }
-    else if (strcmp(first_word, "+UGNSINF") == 0)
+    else if (std::strcmp(first_word.data, "+UGNSINF") == 0)
     {
         int number_commas = NumberSymbols(answer, ',');
 
         if (number_commas > 4)
         {
-            float altitude = 0.0f;
-            float longitude = 0.0f;
+            DataGPRS data;
 
             int position1 = PositionSymbol(answer, ',', 3) + 1;
             int position2 = PositionSymbol(answer, ',', 4);
 
             if (position2 - position1 > 1)
             {
-                altitude = SymbolsToFloat(answer, position1, position2);
+                data.latitude = SymbolsToFloat(answer, position1, position2);
             }
 
             position1 = PositionSymbol(answer, ',', 4) + 1;
@@ -134,29 +135,15 @@ bool SIM868::ProcessUnsolicited(pchar answer)
 
             if (position2 - position1 > 1)
             {
-                longitude = SymbolsToFloat(answer, position1, position2);
+                data.longitude = SymbolsToFloat(answer, position1, position2);
             }
 
-            Storage::Set(TypeMeasure::Altitude, altitude);
-            Storage::Set(TypeMeasure::Longitude, longitude);
+            Storage::SetCoordinates(data);
         }
     }
-    else if (strcmp(answer, "SEND OK") == 0)
+    else if (std::strcmp(answer, "SEND OK") == 0)
     {
         return true;
-    }
-    else if (strcmp(first_word, "+IPD") == 0)
-    {
-        char buffer[32];
-        if (strcmp(GetWord(answer, 2, buffer), "13") == 0)
-        {
-            if (answer[18] == 1 && answer[17] == 'e' && answer[16] == 't' && answer[15] == 'a')
-            {
-                HAL_FWDGT::ToUpgradeMode();
-
-                Bootloader::Run();
-            }
-        }
     }
 
     return false;
@@ -184,7 +171,7 @@ void SIM868::Update(pchar answer)
         state = State::START;
     }
 
-    char buffer[32];
+    BufferParser buffer;
 
     switch (state)
     {
@@ -197,7 +184,7 @@ void SIM868::Update(pchar answer)
     case State::WAIT_ATE0:
         if (MeterIsRunning(DEFAULT_TIME))
         {
-            if (strcmp(answer, "OK") == 0)
+            if (std::strcmp(answer, "OK") == 0)
             {
                 State::Set(State::WAIT_BAUDRADE);
                 SIM868::Transmit::With0D("AT+IPR=115200");
@@ -209,7 +196,7 @@ void SIM868::Update(pchar answer)
 
         if (MeterIsRunning(DEFAULT_TIME))
         {
-            if (strcmp(answer, "RDY") == 0)
+            if (std::strcmp(answer, "RDY") == 0)
             {
                 State::Set(State::WAIT_GSMBUSY);
                 SIM868::Transmit::With0D("AT+GSMBUSY=1");
@@ -220,7 +207,7 @@ void SIM868::Update(pchar answer)
     case State::WAIT_GSMBUSY:
         if (MeterIsRunning(DEFAULT_TIME))
         {
-            if (strcmp(answer, "OK") == 0)
+            if (std::strcmp(answer, "OK") == 0)
             {
                 State::Set(State::WAIT_CREG_INIT);
                 SIM868::Transmit::With0D("AT+CREG=1");
@@ -231,7 +218,7 @@ void SIM868::Update(pchar answer)
     case State::WAIT_CREG_INIT:
         if (MeterIsRunning(DEFAULT_TIME))
         {
-            if (strcmp(answer, "OK") == 0)
+            if (std::strcmp(answer, "OK") == 0)
             {
                 State::Set(State::WAIT_REGISTRATION);
             }
@@ -241,9 +228,9 @@ void SIM868::Update(pchar answer)
     case State::WAIT_REGISTRATION:
         if (MeterIsRunning(60000))
         {
-            if (strcmp(GetWord(answer, 1, buffer), "+CREG") == 0)
+            if (std::strcmp(GetWord(answer, 1, &buffer), "+CREG") == 0)
             {
-                int stat = GetWord(answer, 2, buffer)[0] & 0x0f;
+                int stat = GetWord(answer, 2, &buffer)[0] & 0x0f;
 
                 if (stat == 1 ||    // Registered, home network
                     stat == 5)      // Registered, roaming
@@ -258,7 +245,7 @@ void SIM868::Update(pchar answer)
     case State::WAIT_IP_INITIAL:
         if (MeterIsRunning(DEFAULT_TIME))
         {
-            if (strcmp(GetWord(answer, 3, buffer), "INITIAL") == 0)
+            if (std::strcmp(GetWord(answer, 3, &buffer), "INITIAL") == 0)
             {
                 State::Set(State::WAIT_CSTT);
                 SIM868::Transmit::With0D("AT+CSTT=\"internet\",\"\",\"\"");
@@ -269,14 +256,10 @@ void SIM868::Update(pchar answer)
     case State::WAIT_CSTT:
         if (MeterIsRunning(DEFAULT_TIME))
         {
-            if (strcmp(GetWord(answer, 1, buffer), "OK") == 0)
+            if (std::strcmp(GetWord(answer, 1, &buffer), "OK") == 0)
             {
                 State::Set(State::WAIT_IP_START);
                 SIM868::Transmit::With0D("AT+CIPSTATUS");
-            }
-            else if (strcmp(GetWord(answer, 1, buffer), "ERROR") == 0)
-            {
-                Modem::Reset();
             }
         }
         break;
@@ -284,7 +267,7 @@ void SIM868::Update(pchar answer)
     case State::WAIT_IP_START:
         if (MeterIsRunning(DEFAULT_TIME))
         {
-            if (strcmp(GetWord(answer, 3, buffer), "START") == 0)
+            if (std::strcmp(GetWord(answer, 3, &buffer), "START") == 0)
             {
                 State::Set(State::WAIT_CIICR);
                 SIM868::Transmit::With0D("AT+CIICR");
@@ -295,7 +278,7 @@ void SIM868::Update(pchar answer)
     case State::WAIT_CIICR:
         if (MeterIsRunning(DEFAULT_TIME))
         {
-            if (strcmp(GetWord(answer, 1, buffer), "OK") == 0)
+            if (std::strcmp(GetWord(answer, 1, &buffer), "OK") == 0)
             {
                 State::Set(State::WAIT_IP_GPRSACT);
                 SIM868::Transmit::With0D("AT+CIPSTATUS");
@@ -306,7 +289,7 @@ void SIM868::Update(pchar answer)
     case State::WAIT_IP_GPRSACT:
         if (MeterIsRunning(DEFAULT_TIME))
         {
-            if (strcmp(GetWord(answer, 3, buffer), "GPRSACT") == 0)
+            if (std::strcmp(GetWord(answer, 3, &buffer), "GPRSACT") == 0)
             {
                 State::Set(State::WAIT_CIFSR);
                 SIM868::Transmit::With0D("AT+CIFSR");
@@ -317,7 +300,7 @@ void SIM868::Update(pchar answer)
     case State::WAIT_CIFSR:
         if (MeterIsRunning(DEFAULT_TIME))
         {
-            if (strcmp(GetWord(answer, 1, buffer), "OK") != 0)
+            if (std::strcmp(GetWord(answer, 1, &buffer), "OK") != 0)
             {
                 // Здесь получаем IP-адрес
                 State::Set(State::WAIT_IP_STATUS);
@@ -329,10 +312,10 @@ void SIM868::Update(pchar answer)
     case State::WAIT_IP_STATUS:
         if (MeterIsRunning(DEFAULT_TIME))
         {
-            if (strcmp(GetWord(answer, 3, buffer), "STATUS") == 0)
+            if (std::strcmp(GetWord(answer, 3, &buffer), "STATUS") == 0)
             {
                 State::Set(State::WAIT_TCP_CONNECT);
-                SIM868::Transmit::With0D("AT+CIPSTART=\"TCP\",\"dev.rightech.io\",\"1883\"");
+                SIM868::Transmit::With0D("AT+CIPSTART=\"TCP\",\"85.143.167.242\",\"1883\"");
             }
         }
         break;
@@ -340,15 +323,15 @@ void SIM868::Update(pchar answer)
     case State::WAIT_TCP_CONNECT:
         if (MeterIsRunning(160000))
         {
-            if (strcmp(GetWord(answer, 1, buffer), "ALREADY") == 0 ||
-                strcmp(GetWord(answer, 2, buffer), "OK") == 0)
+            if (std::strcmp(GetWord(answer, 1, &buffer), "ALREADY") == 0 ||
+                std::strcmp(GetWord(answer, 2, &buffer), "OK") == 0)
             {
                 State::Set(State::WAIT_CIPHEAD);
                 SIM868::Transmit::With0D("AT+CIPHEAD=1");
             }
-            else if (strcmp(GetWord(answer, 2, buffer), "FAIL") == 0)
+            else if (std::strcmp(GetWord(answer, 2, &buffer), "FAIL") == 0)
             {
-                Modem::Reset();
+                Modem::Reset(__FILE__, __LINE__);
             }
         }
         break;
@@ -356,14 +339,10 @@ void SIM868::Update(pchar answer)
     case State::WAIT_CIPHEAD:
         if (MeterIsRunning(DEFAULT_TIME))
         {
-            if (strcmp(answer, "OK") == 0)
+            if (std::strcmp(answer, "OK") == 0)
             {
                 SIM868::Transmit::With0D("AT+CGNSPWR=1");
                 State::Set(State::WAIT_CGNSPWR);
-            }
-            else if (strcmp(answer, "ERROR") == 0)
-            {
-                Modem::Reset();
             }
         }
         break;
@@ -371,7 +350,7 @@ void SIM868::Update(pchar answer)
     case State::WAIT_CGNSPWR:
         if (MeterIsRunning(DEFAULT_TIME))
         {
-            if (strcmp(answer, "OK") == 0)
+            if (std::strcmp(answer, "OK") == 0)
             {
                 SIM868::Transmit::With0D("AT+CGNSURC=5");
                 State::Set(State::WAIT_CGNSURC);
@@ -383,17 +362,17 @@ void SIM868::Update(pchar answer)
     case State::WAIT_CGNSURC:
         if (MeterIsRunning(DEFAULT_TIME))
         {
-            if (strcmp(answer, "OK") == 0)
+            if (std::strcmp(answer, "OK") == 0)
             {
-                State::Set(State::RUNNING);
+                State::Set(State::RUNNING_MQTT);
             }
         }
 
         break;
 
-    case State::RUNNING:
+    case State::RUNNING_MQTT:
 
-        HTTP::Update(answer);
+        MQTT::Update(answer);
 
         if (meterCSQ.ElapsedTime() > 5000)
         {
@@ -415,10 +394,4 @@ bool SIM868::IsRegistered()
 pchar SIM868::LevelSignal()
 {
     return levelSignal;
-}
-
-
-void Modem::SendMeasuremets(float meas[TypeMeasure::Count])
-{
-    HTTP::SendMeasuremets(meas);
 }

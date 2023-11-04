@@ -4,9 +4,14 @@ namespace std
 {
     unsigned int  strlen(const char *);
     float   atof(char *);
-    void *memmove(void *destptr, const void *srcptr, size_t num);
+    void   *memmove(void *destptr, const void *srcptr, size_t num);
     void    memcpy(void *dest, const void *src, unsigned int);
-    char *strcpy(void *dest, const char *src);
+    int     strcmp(const void *, const void *);
+    char   *strcpy(void *dest, const char *src);
+    void    memset(void *, int value, unsigned int size);
+    char   *strstr(const char *strB, const char *strA);
+    char   *strcat(char *, const char *);
+    int     memcmp(const void *lhs, const void *rhs, unsigned int count);
 
-    #include "string.h"
+//    #include "string.h"
 }

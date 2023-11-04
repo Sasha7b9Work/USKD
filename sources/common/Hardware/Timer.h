@@ -19,16 +19,23 @@ struct TimeMeterMS
     {
         Reset();
     }
+
     void Reset();
-    uint ElapsedTime();
+
+    uint ElapsedTime() const;
+
     void Wait(uint);
 
     // Теймер "сработает" через time ms (Значение IsFinished() будет true)
     void SetResponseTime(uint time);
+
     // Вернёт true, когда закончится промежуток time из функции SetResponseTime
     bool IsFinished() const;
+
 private:
+
     uint time_reset;
+
     // После этого времени нужно вернуть true в IsFinished()
     uint time_response;
 };

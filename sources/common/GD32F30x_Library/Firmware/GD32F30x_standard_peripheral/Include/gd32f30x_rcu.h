@@ -1076,4 +1076,5 @@ void rcu_interrupt_disable(rcu_int_enum interrupt);
 }
 #endif
 
+
 #endif /* GD32F30X_RCU_H */

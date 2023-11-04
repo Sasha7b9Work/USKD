@@ -1,22 +1,19 @@
 // (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #pragma once
+#include "Hardware/HAL/HAL.h"
 
 
-#define LOG_WRITE(...)
+#define LOG_WRITE(...)          HAL_USART_LOG::Transmit(__VA_ARGS__)
+#define LOG_WRITE_TRACE(...)    Log::WriteTrace(__FILE__, __LINE__, __VA_ARGS__)
 #define LOG_FUNC_ENTER()
-#define LOG_ERROR(...)
-
-
-#ifdef SOFTWARE_LOG
-    extern char log_buffer[8192];
-#endif
+#define LOG_ERROR(...)          Log::Error(__FILE__, __LINE__, __VA_ARGS__)
 
 
 namespace Log
 {
-    void Init();
-
     void Write(char *format, ...);
 
-    void ReceiveFromSIM800(char symbol);
+    void WriteTrace(char *file, int line, char *format, ...);
+
+    void Error(char *file, int line, char *format, ...);
 };

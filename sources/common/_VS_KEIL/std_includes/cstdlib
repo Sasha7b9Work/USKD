@@ -2,9 +2,8 @@
 
 namespace std
 {
-
-    #include "stdlib.h"
-    
+    unsigned long int strtoul(const char *str, char **endptr, int base);
     char *itoa(int num, char *str, int radix);
 
+    #include "stdlib.h"
 }

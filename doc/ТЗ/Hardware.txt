@@ -1,5 +1,8 @@
-Level1 - кнопка
-Level2 - красный led
-Level3 - желтый led
-Level4 - зеленый led
+Level1 - кнопка         37 : PC6
+Level2 - красный led    38 : PC7
+Level3 - желтый led     39 : PC8
+Level4 - зеленый led    40 : PC9
+
 Акселерометр MPU-6050
+PB10/нога 29/I2C1_SCL
+PB11/нога 30/I2C1_SDA

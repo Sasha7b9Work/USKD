@@ -36,7 +36,6 @@ OF SUCH DAMAGE.
 */
 
 #include "gd32f30x_adc.h"
-#include "gd32f30x_rcu.h"
 
 /*!
     \brief      reset ADC 

@@ -380,4 +380,5 @@ fmc_state_enum fmc_bank1_ready_wait(uint32_t timeout);
 }
 #endif
 
+
 #endif /* GD32F30X_FMC_H */

@@ -389,15 +389,3 @@ void ctc_interrupt_flag_clear(uint32_t int_flag)
     }
 }
 
-
-void rcu_periph_reset_disable(rcu_periph_reset_enum periph_reset)
-{
-    RCU_REG_VAL(periph_reset) &= ~BIT(RCU_BIT_POS(periph_reset));
-}
-
-
-void rcu_periph_reset_enable(rcu_periph_reset_enum periph_reset)
-{
-    RCU_REG_VAL(periph_reset) |= BIT(RCU_BIT_POS(periph_reset));
-}
-

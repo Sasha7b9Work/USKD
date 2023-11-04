@@ -106,74 +106,73 @@ void rcu_deinit(void)
 #endif /* GD32F30X_HD and GD32F30X_XD */
 }
 
-///*!
-//    \brief      enable the peripherals clock
-//    \param[in]  periph: RCU peripherals, refer to rcu_periph_enum
-//                only one parameter can be selected which is shown as below:
-//      \arg        RCU_GPIOx (x = A,B,C,D,E,F,G): GPIO ports clock
-//      \arg        RCU_AF : alternate function clock
-//      \arg        RCU_CRC: CRC clock
-//      \arg        RCU_DMAx (x = 0,1): DMA clock
-//      \arg        RCU_ENET: ENET clock(CL series available)
-//      \arg        RCU_ENETTX: ENETTX clock(CL series available)
-//      \arg        RCU_ENETRX: ENETRX clock(CL series available)
-//      \arg        RCU_USBD: USBD clock(HD,XD series available)
-//      \arg        RCU_USBFS: USBFS clock(CL series available)
-//      \arg        RCU_EXMC: EXMC clock
-//      \arg        RCU_TIMERx (x = 0,1,2,3,4,5,6,7,8,9,10,11,12,13,TIMER8..13 are not available for HD series): TIMER clock
-//      \arg        RCU_WWDGT: WWDGT clock
-//      \arg        RCU_SPIx (x = 0,1,2): SPI clock
-//      \arg        RCU_USARTx (x = 0,1,2): USART clock
-//      \arg        RCU_UARTx (x = 3,4): UART clock
-//      \arg        RCU_I2Cx (x = 0,1): I2C clock
-//      \arg        RCU_CANx (x = 0,1,CAN1 is only available for CL series): CAN clock
-//      \arg        RCU_PMU: PMU clock
-//      \arg        RCU_DAC: DAC clock
-//      \arg        RCU_RTC: RTC clock
-//      \arg        RCU_ADCx (x = 0,1,2,ADC2 is not available for CL series): ADC clock
-//      \arg        RCU_SDIO: SDIO clock(not available for CL series)
-//      \arg        RCU_CTC: CTC clock
-//      \arg        RCU_BKPI: BKP interface clock
-//    \param[out] none
-//    \retval     none
-//*/
+/*!
+    \brief      enable the peripherals clock
+    \param[in]  periph: RCU peripherals, refer to rcu_periph_enum
+                only one parameter can be selected which is shown as below:
+      \arg        RCU_GPIOx (x = A,B,C,D,E,F,G): GPIO ports clock
+      \arg        RCU_AF : alternate function clock
+      \arg        RCU_CRC: CRC clock
+      \arg        RCU_DMAx (x = 0,1): DMA clock
+      \arg        RCU_ENET: ENET clock(CL series available)
+      \arg        RCU_ENETTX: ENETTX clock(CL series available)
+      \arg        RCU_ENETRX: ENETRX clock(CL series available)
+      \arg        RCU_USBD: USBD clock(HD,XD series available)
+      \arg        RCU_USBFS: USBFS clock(CL series available)
+      \arg        RCU_EXMC: EXMC clock
+      \arg        RCU_TIMERx (x = 0,1,2,3,4,5,6,7,8,9,10,11,12,13,TIMER8..13 are not available for HD series): TIMER clock
+      \arg        RCU_WWDGT: WWDGT clock
+      \arg        RCU_SPIx (x = 0,1,2): SPI clock
+      \arg        RCU_USARTx (x = 0,1,2): USART clock
+      \arg        RCU_UARTx (x = 3,4): UART clock
+      \arg        RCU_I2Cx (x = 0,1): I2C clock
+      \arg        RCU_CANx (x = 0,1,CAN1 is only available for CL series): CAN clock
+      \arg        RCU_PMU: PMU clock
+      \arg        RCU_DAC: DAC clock
+      \arg        RCU_RTC: RTC clock
+      \arg        RCU_ADCx (x = 0,1,2,ADC2 is not available for CL series): ADC clock
+      \arg        RCU_SDIO: SDIO clock(not available for CL series)
+      \arg        RCU_CTC: CTC clock
+      \arg        RCU_BKPI: BKP interface clock
+    \param[out] none
+    \retval     none
+*/
 void rcu_periph_clock_enable(rcu_periph_enum periph)
 {
     RCU_REG_VAL(periph) |= BIT(RCU_BIT_POS(periph));
 }
 
-///*!
-//    \brief      disable the peripherals clock
-//    \param[in]  periph: RCU peripherals, refer to rcu_periph_enum
-//                only one parameter can be selected which is shown as below:
-//      \arg        RCU_GPIOx (x = A,B,C,D,E,F,G): GPIO ports clock
-//      \arg        RCU_AF: alternate function clock
-//      \arg        RCU_CRC: CRC clock
-//      \arg        RCU_DMAx (x = 0,1): DMA clock
-//      \arg        RCU_ENET: ENET clock(CL series available)
-//      \arg        RCU_ENETTX: ENETTX clock(CL series available)
-//      \arg        RCU_ENETRX: ENETRX clock(CL series available)
-//      \arg        RCU_USBD: USBD clock(HD,XD series available)
-//      \arg        RCU_USBFS: USBFS clock(CL series available)
-//      \arg        RCU_EXMC: EXMC clock
-//      \arg        RCU_TIMERx (x = 0,1,2,3,4,5,6,7,8,9,10,11,12,13,TIMER8..13 are not available for HD series): TIMER clock
-//      \arg        RCU_WWDGT: WWDGT clock
-//      \arg        RCU_SPIx (x = 0,1,2): SPI clock
-//      \arg        RCU_USARTx (x = 0,1,2): USART clock
-//      \arg        RCU_UARTx (x = 3,4): UART clock
-//      \arg        RCU_I2Cx (x = 0,1): I2C clock
-//      \arg        RCU_CANx (x = 0,1,CAN1 is only available for CL series): CAN clock
-//      \arg        RCU_PMU: PMU clock
-//      \arg        RCU_DAC: DAC clock
-//      \arg        RCU_RTC: RTC clock
-//      \arg        RCU_ADCx (x = 0,1,2,ADC2 is not available for CL series): ADC clock
-//      \arg        RCU_SDIO: SDIO clock(not available for CL series)
-//      \arg        RCU_CTC: CTC clock
-//      \arg        RCU_BKPI: BKP interface clock
-//    \param[out] none
-//    \retval     none
-//*/
-
+/*!
+    \brief      disable the peripherals clock
+    \param[in]  periph: RCU peripherals, refer to rcu_periph_enum
+                only one parameter can be selected which is shown as below:
+      \arg        RCU_GPIOx (x = A,B,C,D,E,F,G): GPIO ports clock
+      \arg        RCU_AF: alternate function clock
+      \arg        RCU_CRC: CRC clock
+      \arg        RCU_DMAx (x = 0,1): DMA clock
+      \arg        RCU_ENET: ENET clock(CL series available)
+      \arg        RCU_ENETTX: ENETTX clock(CL series available)
+      \arg        RCU_ENETRX: ENETRX clock(CL series available)
+      \arg        RCU_USBD: USBD clock(HD,XD series available)
+      \arg        RCU_USBFS: USBFS clock(CL series available)
+      \arg        RCU_EXMC: EXMC clock
+      \arg        RCU_TIMERx (x = 0,1,2,3,4,5,6,7,8,9,10,11,12,13,TIMER8..13 are not available for HD series): TIMER clock
+      \arg        RCU_WWDGT: WWDGT clock
+      \arg        RCU_SPIx (x = 0,1,2): SPI clock
+      \arg        RCU_USARTx (x = 0,1,2): USART clock
+      \arg        RCU_UARTx (x = 3,4): UART clock
+      \arg        RCU_I2Cx (x = 0,1): I2C clock
+      \arg        RCU_CANx (x = 0,1,CAN1 is only available for CL series): CAN clock
+      \arg        RCU_PMU: PMU clock
+      \arg        RCU_DAC: DAC clock
+      \arg        RCU_RTC: RTC clock
+      \arg        RCU_ADCx (x = 0,1,2,ADC2 is not available for CL series): ADC clock
+      \arg        RCU_SDIO: SDIO clock(not available for CL series)
+      \arg        RCU_CTC: CTC clock
+      \arg        RCU_BKPI: BKP interface clock
+    \param[out] none
+    \retval     none
+*/
 void rcu_periph_clock_disable(rcu_periph_enum periph)
 {
     RCU_REG_VAL(periph) &= ~BIT(RCU_BIT_POS(periph));

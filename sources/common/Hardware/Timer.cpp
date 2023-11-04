@@ -23,7 +23,7 @@ void TimeMeterMS::Reset()
 }
 
 
-uint TimeMeterMS::ElapsedTime()
+uint TimeMeterMS::ElapsedTime() const
 {
     return timer_counter - time_reset;
 }

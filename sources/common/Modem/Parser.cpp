@@ -1,6 +1,7 @@
 // 2023/4/30 18:04:35 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
 #include "Modem/Parser.h"
+#include "Utils/StringUtils.h"
 #include <cstring>
 #include <cstdlib>
 
@@ -11,6 +12,12 @@ using namespace std;
 namespace Parser
 {
     int NumSeparators(pchar, int pos[10]);
+}
+
+
+uint BufferParser::ToUINT() const
+{
+    return (uint)std::atoi(data);
 }
 
 
@@ -54,17 +61,17 @@ int Parser::PositionSymbol(pchar string, char symbol, int num)
 }
 
 
-pchar Parser::GetWord(pchar string, int pos_start, int pos_end, char out[32])
+pchar Parser::GetWord(pchar string, int pos_start, int pos_end, BufferParser *out)
 {
     if (pos_end - pos_start <= 0)
     {
         LOG_ERROR("Wrong arguments");
 
-        out[0] = '\0';
+        out->data[0] = '\0';
     }
     else
     {
-        char *p = out;
+        char *p = out->data;
 
         for (int i = pos_start + 1; i < pos_end; i++)
         {
@@ -74,11 +81,11 @@ pchar Parser::GetWord(pchar string, int pos_start, int pos_end, char out[32])
         *p = '\0';
     }
 
-    return out;
+    return out->data;
 }
 
 
-pchar Parser::GetWordInQuotes(pchar string, int num, char out[32])
+pchar Parser::GetWordInQuotes(pchar string, int num, BufferParser *out)
 {
     int size = (int)std::strlen(string);
     const char *buffer = string;
@@ -112,7 +119,7 @@ pchar Parser::GetWordInQuotes(pchar string, int num, char out[32])
 
     if (pos_quote1 >= 0 && pos_quote2 >= 0)
     {
-        char *pointer = out;
+        char *pointer = out->data;
 
         for (int i = pos_quote1 + 1; i < pos_quote2; i++)
         {
@@ -121,16 +128,16 @@ pchar Parser::GetWordInQuotes(pchar string, int num, char out[32])
 
         *pointer = '\0';
 
-        return out;
+        return out->data;
     }
 
     return "";
 }
 
 
-pchar Parser::GetWord(pchar string, int num, char out[32])
+pchar Parser::GetWord(pchar string, int num, BufferParser *out)
 {
-    out[0] = '\0';
+    out->data[0] = '\0';
 
     int pos_start = 0;
     int pos_end = 0;
@@ -231,3 +238,49 @@ float Parser::SymbolsToFloat(pchar string, int pos_start, int pos_end)
 
     return std::atof(buffer);
 }
+
+
+#ifdef DEVICE
+
+pchar Parser::ParseConfigField(pchar string, pchar name, ConfigField &field)
+{
+    pchar entry = SU::AfterSubString(string, name, 0);
+
+    if (entry)
+    {
+        entry = SU::AfterSubString(entry, "max\":", 0);
+
+        if (entry)
+        {
+            BufferParser buffer;
+
+            GetWord(entry, 1, &buffer);
+
+            field.max = (float)buffer.ToUINT();
+
+            entry = SU::AfterSubString(entry, "min\":", 0);
+
+            if (entry)
+            {
+                GetWord(entry, 1, &buffer);
+
+                field.min = (float)buffer.ToUINT();
+
+                entry = SU::AfterSubString(entry, "deviation\":", 0);
+
+                if (entry)
+                {
+                    GetWord(entry, 1, &buffer);
+
+                    field.deviation = (float)buffer.ToUINT();
+
+                    return entry;
+                }
+            }
+        }
+    }
+
+    return nullptr;
+}
+
+#endif

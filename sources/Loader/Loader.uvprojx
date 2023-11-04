@@ -186,6 +186,7 @@
             <RvdsVP>2</RvdsVP>
             <RvdsMve>0</RvdsMve>
             <RvdsCdeCp>0</RvdsCdeCp>
+            <nBranchProt>0</nBranchProt>
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
@@ -468,6 +469,16 @@
               <FileType>1</FileType>
               <FilePath>..\common\GD32F30x_Library\Firmware\GD32F30x_standard_peripheral\Source\gd32f30x_fwdgt.c</FilePath>
             </File>
+            <File>
+              <FileName>gd32f30x_exti.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\common\GD32F30x_Library\Firmware\GD32F30x_standard_peripheral\Include\gd32f30x_exti.h</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f30x_exti.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\common\GD32F30x_Library\Firmware\GD32F30x_standard_peripheral\Source\gd32f30x_exti.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -564,11 +575,6 @@
           <GroupName>Hardware/HAL</GroupName>
           <Files>
             <File>
-              <FileName>HAL_ROM.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL_ROM.cpp</FilePath>
-            </File>
-            <File>
               <FileName>HAL_PINS.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\common\Hardware\HAL\HAL_PINS.cpp</FilePath>
@@ -627,6 +633,11 @@
               <FileName>HAL_ADC.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\common\Hardware\HAL\HAL_ADC.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>HAL_ROM.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\common\Hardware\HAL\HAL_ROM.cpp</FilePath>
             </File>
           </Files>
         </Group>
@@ -687,6 +698,16 @@
               <FileName>SIM868.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\Modem\SIM868.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>ProcessorBinaryData.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Modem\ProcessorBinaryData.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>ProcessorBinaryData.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Modem\ProcessorBinaryData.h</FilePath>
             </File>
           </Files>
         </Group>

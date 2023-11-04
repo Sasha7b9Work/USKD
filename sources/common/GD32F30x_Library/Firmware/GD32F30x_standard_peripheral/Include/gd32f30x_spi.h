@@ -40,10 +40,6 @@ OF SUCH DAMAGE.
 
 #include "gd32f30x.h"
 
-#ifdef __cplusplus
- extern "C" {
-#endif
-
 /* SPIx(x=0,1,2) definitions */
 #define SPI0                            (SPI_BASE + 0x0000F800U)
 #define SPI1                            SPI_BASE
@@ -368,9 +364,5 @@ void spi_i2s_interrupt_disable(uint32_t spi_periph, uint8_t interrupt);
 FlagStatus spi_i2s_interrupt_flag_get(uint32_t spi_periph, uint8_t interrupt);
 /* get SPI and I2S flag status */
 FlagStatus spi_i2s_flag_get(uint32_t spi_periph, uint32_t flag);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif /* GD32F30X_SPI_H */

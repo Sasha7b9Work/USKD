@@ -94,7 +94,7 @@ void Programmer::CloseSession()
     {
         while (num_bytes % 4)
         {
-            bytes[num_bytes++] = (uint8)0xFF;
+            bytes[num_bytes++] = (uint8)0xFF; //-V569
         }
 
         Write(bytes, num_bytes);

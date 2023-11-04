@@ -2,6 +2,14 @@
 #pragma once
 
 
+struct DataGPRS
+{
+    DataGPRS(float lat = 0.0f, float lon = 0.0f) : latitude(lat), longitude(lon) { }
+    float latitude;
+    float longitude;
+};
+
+
 namespace SIM868
 {
     void Reset();

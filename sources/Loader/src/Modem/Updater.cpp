@@ -140,7 +140,7 @@ void Updater::Update(pchar answer)
 {
     const uint DEFAULT_TIME = 10000;
 
-    char buffer[32];
+    BufferParser buffer;
 
     switch (state)
     {
@@ -277,7 +277,7 @@ void Updater::Update(pchar answer)
     case State::NEED_WAIT_CONNECT:
         if (MeterIsRunning(75000))
         {
-            if (strcmp(Parser::GetWord(answer, 1, buffer), "+FTPGET") == 0)
+            if (strcmp(Parser::GetWord(answer, 1, &buffer), "+FTPGET") == 0)
             {
                 if (strcmp(answer, "+FTPGET: 1,1") == 0)
                 {
@@ -299,7 +299,7 @@ void Updater::Update(pchar answer)
         {
             if (ReaderFTP::requested_bytes_received)
             {
-                memcpy(&version, ReaderFTP::buffer_data, 4);
+                memcpy(&version, ReaderFTP::buffer_data, 4); //-V1086
 
                 // \todo здесь сверяем нужную версию с уже имеющейся
 
@@ -314,7 +314,7 @@ void Updater::Update(pchar answer)
         {
             if (ReaderFTP::requested_bytes_received)
             {
-                memcpy(&source_crc, ReaderFTP::buffer_data, 4);
+                memcpy(&source_crc, ReaderFTP::buffer_data, 4); //-V1086
 
                 Programmer::Prepare(HAL_ROM::ADDR_STORAGE);
 

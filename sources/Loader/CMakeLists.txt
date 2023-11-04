@@ -2,7 +2,7 @@
 
 project (Loader)
 
-set(CMAKE_UNITY_BUILD ON)
+#set(CMAKE_UNITY_BUILD OFF)
 
 message("------------------------------------------------------------------------ ${PROJECT_NAME}")
 
@@ -22,6 +22,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -MP -Wall")
 add_compile_options(/wd4127)
 add_compile_options(/wd4514)    # 'function' : unreferenced inline function has been removed
 add_compile_options(/wd4626)    # assignment operator was implicitly defined as deleted
+add_compile_options(/wd4710)    # 'xxx' : function not inlined
 add_compile_options(/wd4820)    # 'xxx': '4' bytes padding added after data member 'yyy'
 add_compile_options(/wd5027)    # move assignment operator was implicitly defined as deleted
 add_compile_options(/wd5045)    # Compiler will insert Spectre mitigation for memory load if /Qspectre switch specified
@@ -33,8 +34,7 @@ file(GLOB SRC                   src/*.*
 file(GLOB HARDWARE                    src/Hardware/*.*
                                 ../comm)
 file(GLOB HARDWARE_CMSIS              src/Hardware/CMSIS/*.*)
-file(GLOB HARDWARE_HAL                src/Hardware/HAL/*.*
-                                ../common/Hardware/HAL/*.*)
+file(GLOB HARDWARE_HAL          ../common/Hardware/HAL/*.*)
 file(GLOB MEASURER              ../common/Measurer/*.*)
 file(GLOB MODEM                       src/Modem/*.*
                                 ../common/Modem/Parser.*
