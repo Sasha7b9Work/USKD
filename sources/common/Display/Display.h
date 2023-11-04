@@ -12,6 +12,8 @@ namespace Display
 
     void Update();
 
+    void Update2();
+
     void BeginScene();
 
     void DrawPixel(int x, int y, int color);

@@ -6,24 +6,48 @@
 #include <cstring>
 
 
-template<int capacity>
 class String
 {
 public:
-    String()
+    String() : buffer(nullptr)
     {
-        buffer[0] = '\0';
     }
+    ~String()
+    {
+        Clear();
+    }
+
+    void Clear()
+    {
+        if (buffer)
+        {
+            delete buffer;
+            buffer = nullptr;
+        }
+    }
+
     void Set(pchar string)
     {
+        if (Size())
+        {
+            Clear();
+        }
+
+        buffer = new char[std::strlen(string) + 1];
+
         std::strcpy(buffer, string);
     }
-    String(char *format, ...)
+
+    String(char *format, ...) : buffer(nullptr)
     {
+        char data[2048];
+
         std::va_list args;
         va_start(args, format);
-        std::vsprintf(buffer, format, args);
+        std::vsprintf(data, format, args);
         va_end(args);
+
+        Set(data);
     }
 
     pchar c_str() const
@@ -36,15 +60,11 @@ public:
         return &buffer[0];
     }
 
-    operator char *() const
-    {
-        return &buffer[0];
-    }
     int Size() const
     {
         return (int)std::strlen(buffer);
     }
 
 private:
-    char buffer[capacity];
+    char *buffer;
 };

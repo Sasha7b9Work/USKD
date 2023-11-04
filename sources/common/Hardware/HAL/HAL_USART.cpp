@@ -82,22 +82,23 @@ void HAL_USART_LOG::Init()
 {
     if (!HAL::IsLayout())
     {
+#ifndef HOME_VERSION
         return;
+#endif
     }
 
     pinUSART_LOG_TX.Init();
     pinUSART_LOG_RX.Init();
 
-    nvic_irq_enable(USART0_IRQn, 1, 1);
- 
-    NVIC_SetPriority(USART0_IRQn, 1);
+#ifdef HOME_VERSION
+
+    gpio_pin_remap_config(GPIO_USART1_REMAP, ENABLE);
+
+#endif
 
     usart_deinit(USART_LOG_ADDR);
     usart_baudrate_set(USART_LOG_ADDR, 115200);
-    usart_receive_config(USART_GPRS_ADDR, USART_RECEIVE_ENABLE);
     usart_transmit_config(USART_LOG_ADDR, USART_TRANSMIT_ENABLE);
-
-    usart_interrupt_enable(USART_LOG_ADDR, USART_INT_RBNE);
 
     usart_enable(USART_LOG_ADDR);
 }
@@ -107,7 +108,9 @@ void HAL_USART_LOG::Transmit(pchar format, ...)
 {
     if (!HAL::IsLayout())
     {
+#ifndef HOME_VERSION
         return;
+#endif
     }
 
     char message[2048];
@@ -131,7 +134,9 @@ void HAL_USART_LOG::TransmitRAW(pchar message)
 {
     if (!HAL::IsLayout())
     {
+#ifndef HOME_VERSION
         return;
+#endif
     }
 
     if (message[0] == 0x0D && message[1] == 0x0A)

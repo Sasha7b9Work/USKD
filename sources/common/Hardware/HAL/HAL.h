@@ -18,7 +18,7 @@ struct PackedTime
 
     uint ToSecs() const;      // Переводит в секунды после 2000-го года
 
-    String<64> ToString() const;
+    String ToString() const;
 
     static PackedTime FromSecs(uint);       // Из секунд после 1 января 2000-го года
 

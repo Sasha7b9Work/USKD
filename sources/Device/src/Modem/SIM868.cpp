@@ -63,14 +63,16 @@ namespace SIM868
 
     static char levelSignal[16] = { '0', '\0' };
 
-    static bool MeterIsRunning(uint time)
+#define METER_IS_RUNNING(t) MeterIsRunning(t, __FILE__, __LINE__)
+
+    static bool MeterIsRunning(uint time, char *file, int line)
     {
         if (state_meter.ElapsedTime() <= time)
         {
             return true;
         }
 
-        Modem::Reset(__FILE__, __LINE__);
+        Modem::Reset(file, line);
 
         return false;
     }
@@ -94,11 +96,13 @@ bool SIM868::ProcessUnsolicited(pchar answer)
 
     if (std::strcmp(answer, "ERROR") == 0)
     {
+        LOG_ERROR("ERROR");
 //        Modem::Reset();
         return true;
     }
     else if (std::strcmp(answer, "CLOSED") == 0)
     {
+        LOG_WRITE("                  CLOSED");
         Modem::Reset(__FILE__, __LINE__);
         return true;
     }
@@ -176,13 +180,14 @@ void SIM868::Update(pchar answer)
     switch (state)
     {
     case State::START:
+        LOG_WRITE("SIM868::IDLE");
         SIM868::Transmit::With0D("ATE0");
         State::Set(State::WAIT_ATE0);
         std::strcpy(levelSignal, "0");
         break;
 
     case State::WAIT_ATE0:
-        if (MeterIsRunning(DEFAULT_TIME))
+        if (METER_IS_RUNNING(DEFAULT_TIME))
         {
             if (std::strcmp(answer, "OK") == 0)
             {
@@ -194,7 +199,7 @@ void SIM868::Update(pchar answer)
 
     case State::WAIT_BAUDRADE:
 
-        if (MeterIsRunning(DEFAULT_TIME))
+        if (METER_IS_RUNNING(DEFAULT_TIME))
         {
             if (std::strcmp(answer, "RDY") == 0)
             {
@@ -205,7 +210,7 @@ void SIM868::Update(pchar answer)
         break;
 
     case State::WAIT_GSMBUSY:
-        if (MeterIsRunning(DEFAULT_TIME))
+        if (METER_IS_RUNNING(DEFAULT_TIME))
         {
             if (std::strcmp(answer, "OK") == 0)
             {
@@ -216,7 +221,7 @@ void SIM868::Update(pchar answer)
         break;
 
     case State::WAIT_CREG_INIT:
-        if (MeterIsRunning(DEFAULT_TIME))
+        if (METER_IS_RUNNING(DEFAULT_TIME))
         {
             if (std::strcmp(answer, "OK") == 0)
             {
@@ -226,7 +231,7 @@ void SIM868::Update(pchar answer)
         break;
 
     case State::WAIT_REGISTRATION:
-        if (MeterIsRunning(60000))
+        if (METER_IS_RUNNING(60000))
         {
             if (std::strcmp(GetWord(answer, 1, &buffer), "+CREG") == 0)
             {
@@ -243,7 +248,7 @@ void SIM868::Update(pchar answer)
         break;
 
     case State::WAIT_IP_INITIAL:
-        if (MeterIsRunning(DEFAULT_TIME))
+        if (METER_IS_RUNNING(DEFAULT_TIME))
         {
             if (std::strcmp(GetWord(answer, 3, &buffer), "INITIAL") == 0)
             {
@@ -254,7 +259,7 @@ void SIM868::Update(pchar answer)
         break;
 
     case State::WAIT_CSTT:
-        if (MeterIsRunning(DEFAULT_TIME))
+        if (METER_IS_RUNNING(DEFAULT_TIME))
         {
             if (std::strcmp(GetWord(answer, 1, &buffer), "OK") == 0)
             {
@@ -265,7 +270,7 @@ void SIM868::Update(pchar answer)
         break;
 
     case State::WAIT_IP_START:
-        if (MeterIsRunning(DEFAULT_TIME))
+        if (METER_IS_RUNNING(DEFAULT_TIME))
         {
             if (std::strcmp(GetWord(answer, 3, &buffer), "START") == 0)
             {
@@ -276,7 +281,7 @@ void SIM868::Update(pchar answer)
         break;
 
     case State::WAIT_CIICR:
-        if (MeterIsRunning(DEFAULT_TIME))
+        if (METER_IS_RUNNING(DEFAULT_TIME))
         {
             if (std::strcmp(GetWord(answer, 1, &buffer), "OK") == 0)
             {
@@ -287,7 +292,7 @@ void SIM868::Update(pchar answer)
         break;
 
     case State::WAIT_IP_GPRSACT:
-        if (MeterIsRunning(DEFAULT_TIME))
+        if (METER_IS_RUNNING(DEFAULT_TIME))
         {
             if (std::strcmp(GetWord(answer, 3, &buffer), "GPRSACT") == 0)
             {
@@ -298,7 +303,7 @@ void SIM868::Update(pchar answer)
         break;
 
     case State::WAIT_CIFSR:
-        if (MeterIsRunning(DEFAULT_TIME))
+        if (METER_IS_RUNNING(DEFAULT_TIME))
         {
             if (std::strcmp(GetWord(answer, 1, &buffer), "OK") != 0)
             {
@@ -310,7 +315,7 @@ void SIM868::Update(pchar answer)
         break;
 
     case State::WAIT_IP_STATUS:
-        if (MeterIsRunning(DEFAULT_TIME))
+        if (METER_IS_RUNNING(DEFAULT_TIME))
         {
             if (std::strcmp(GetWord(answer, 3, &buffer), "STATUS") == 0)
             {
@@ -321,7 +326,7 @@ void SIM868::Update(pchar answer)
         break;
 
     case State::WAIT_TCP_CONNECT:
-        if (MeterIsRunning(160000))
+        if (METER_IS_RUNNING(160000))
         {
             if (std::strcmp(GetWord(answer, 1, &buffer), "ALREADY") == 0 ||
                 std::strcmp(GetWord(answer, 2, &buffer), "OK") == 0)
@@ -337,18 +342,22 @@ void SIM868::Update(pchar answer)
         break;
 
     case State::WAIT_CIPHEAD:
-        if (MeterIsRunning(DEFAULT_TIME))
+        if (METER_IS_RUNNING(DEFAULT_TIME))
         {
             if (std::strcmp(answer, "OK") == 0)
             {
                 SIM868::Transmit::With0D("AT+CGNSPWR=1");
+#ifdef HOME_VERSION
+                State::Set(State::RUNNING_MQTT);
+#else
                 State::Set(State::WAIT_CGNSPWR);
+#endif
             }
         }
         break;
 
     case State::WAIT_CGNSPWR:
-        if (MeterIsRunning(DEFAULT_TIME))
+        if (METER_IS_RUNNING(DEFAULT_TIME))
         {
             if (std::strcmp(answer, "OK") == 0)
             {
@@ -360,7 +369,7 @@ void SIM868::Update(pchar answer)
         break;
 
     case State::WAIT_CGNSURC:
-        if (MeterIsRunning(DEFAULT_TIME))
+        if (METER_IS_RUNNING(DEFAULT_TIME))
         {
             if (std::strcmp(answer, "OK") == 0)
             {

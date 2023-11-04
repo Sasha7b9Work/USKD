@@ -30,33 +30,36 @@ void Device::Init()
 
     Modem::Init();
 
-    Button::Init();
+//    Button::Init();
 
-    ledRED.Init();
-    ledGREEN.Init();
-    ledYELLOW.Init();
+//    ledRED.Init();
+//    ledGREEN.Init();
+//    ledYELLOW.Init();
 }
 
 
 void Device::Update()
 {
-    if (meter.ElapsedTime() > 1000)
+    if (MQTT::IsConnected())
     {
-        meter.Reset();
+        if (meter.ElapsedTime() > 1000)
+        {
+            meter.Reset();
 
-        MQTT::GET::Time();
+            MQTT::GET::Time();
+        }
     }
 
     Display::Update();
 
     Modem::Update();
-
-    Storage::Update();
-
-    Measurements measurements;
-
-    if (Storage::GetMeasurements(measurements))
-    {
-        Modem::SendMeasures(measurements);
-    }
+//
+//    Storage::Update();
+//
+//    Measurements measurements;
+//
+//    if (Storage::GetMeasurements(measurements))
+//    {
+//        Modem::SendMeasures(measurements);
+//    }
 }

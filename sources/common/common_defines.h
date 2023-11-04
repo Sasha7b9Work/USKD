@@ -1,4 +1,8 @@
-#define VERSION 292
+﻿#define VERSION 292
+
+
+// Если определено - это моя плата без датчиков и с другой распиновкой
+#define HOME_VERSION
 
 
 typedef unsigned char uint8;

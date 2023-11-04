@@ -66,6 +66,7 @@ void RequestMQTT::Update(pchar answer)
         else if(std::strcmp(answer, ">") == 0)
         {
             Send();
+            time_send = TIME_MS;
 //            LOG_WRITE_TRACE("Call \"Send()\" for request \"%s\"", RequestMQTT::Type::Name(type));
             SIM868::Transmit::UINT8(0x1A);
             meter.SetResponseTime(5000);
@@ -82,6 +83,7 @@ void RequestMQTT::Update(pchar answer)
         {
             if (ProcessAnswer(answer))
             {
+                LOG_WRITE("                 From send to answer %d ms", TIME_MS - time_send);
 //                LOG_WRITE_TRACE("Call \"ProcessAnswer()\" for request \"%s\"", RequestMQTT::Type::Name(type));
                 state = State::FINISHED;
             }
@@ -202,7 +204,7 @@ void RequestSUBSCRIBE::FailMessage()
 
 void RequestPUBLISH::Send()
 {
-    LOG_WRITE_TRACE("PUBLISH %s %s %s", topic.c_str(), message.c_str(), response.c_str());
+    LOG_WRITE("PUBLISH %s %s %s", topic.c_str(), message.c_str(), response.c_str());
 
     if (response.Size())
     {

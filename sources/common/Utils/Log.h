@@ -3,6 +3,14 @@
 #include "Hardware/HAL/HAL.h"
 
 
+/*
+#define LOG_WRITE(...)
+#define LOG_WRITE_TRACE(...)
+#define LOG_FUNC_ENTER()
+#define LOG_ERROR(...)
+*/
+
+
 #define LOG_WRITE(...)          HAL_USART_LOG::Transmit(__VA_ARGS__)
 #define LOG_WRITE_TRACE(...)    Log::WriteTrace(__FILE__, __LINE__, __VA_ARGS__)
 #define LOG_FUNC_ENTER()

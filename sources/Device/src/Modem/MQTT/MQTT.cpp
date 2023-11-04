@@ -20,13 +20,16 @@ namespace MQTT
 {
     namespace Queue
     {
-        static const int MAX_REQUESTS = 20;
+        static const int MAX_REQUESTS = 2;
         static int num_requests = 0;
         static RequestMQTT *requests[MAX_REQUESTS];
         static RequestMQTT *current = nullptr;
+        static int all_requests = 0;
 
         void Clear()
         {
+            all_requests = 0;
+
             if (current)
             {
                 delete current;
@@ -43,6 +46,8 @@ namespace MQTT
 
         void Append(RequestMQTT *request)
         {
+            LOG_WRITE("Requests in queue %d, all %d", num_requests, all_requests++);
+
             while (num_requests == MAX_REQUESTS)
             {
                 Modem::Update();
@@ -118,7 +123,7 @@ void MQTT::Update(pchar answer)
 
         if (!is_connected && !Queue::current)
         {
-            Queue::Append(new RequestCONNECT(String<32>("-uskd----%s", HAL::GetUID()), "mqttusr", "tgsdj9e5dc"));
+            Queue::Append(new RequestCONNECT(String("-uskd----%s", HAL::GetUID()), "mqttusr", "tgsdj9e5dc"));
 
             Queue::current = Queue::Get();
         }
@@ -172,21 +177,7 @@ void MQTT::Callback::OnConnect(bool connect)
 {
     is_connected = connect;
 
-//    Send(new RequestSUBSCRIBE("test"));
-
-//    Send(new RequestSUBSCRIBE("trash"));
-
-//    Send(new RequestSUBSCRIBE("server/request/route"));
-
-//    Send(new RequestSUBSCRIBE("server/request/incident"));
-
-//    Send(new RequestSUBSCRIBE("server/request/config"));
-
-//  Send(new RequestSUBSCRIBE("devices/allbox"));
-
-    Send(new RequestSUBSCRIBE(String<128>("devices/box/%s/config/getTime", HAL::GetUID())));
-
-    MQTT::GET::Time();
+    Send(new RequestSUBSCRIBE(String("devices/box/%s/config/getTime", HAL::GetUID())));
 }
 
 

@@ -56,6 +56,22 @@ void Display::Init()
 }
 
 
+void Display::Update2()
+{
+    Fill(0);
+
+    SSD1306::WriteBuffer(buffer);
+
+    Fill(1);
+
+    SSD1306::WriteBuffer(buffer);
+
+    Fill(2);
+
+    SSD1306::WriteBuffer(buffer);
+}
+
+
 void Display::Update()
 {
     BeginScene();
@@ -105,7 +121,7 @@ void Display::Update()
 
 void Display::WriteFormatFloat(int x, int y, char *format, float value)
 {
-    WriteString(x, y, String<64>(format, value));
+    WriteString(x, y, String(format, value));
 }
 
 

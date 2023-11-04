@@ -211,7 +211,11 @@ namespace Modem
     {
         static uint PortPG()
         {
+#ifdef HOME_VERSION
+            return GPIOE;
+#else
             return GPIOD;
+#endif
         }
 
         static void ToOutLow();
@@ -279,6 +283,9 @@ void Modem::Init()
 
 void Modem::Reset(char *file, int line)
 {
+    (void)file;
+    (void)line;
+
     State::Set(State::IDLE);
 
     LOG_WRITE("Modem::Reset from %s : %d", file, line);
@@ -306,7 +313,7 @@ void Modem::Update()
     switch (State::Current())
     {
     case State::IDLE:
-        LOG_WRITE("Device::IDLE");
+        LOG_WRITE("Modem::IDLE");
         SIM868::Reset();
 #ifdef DEVICE
         MQTT::Reset();
