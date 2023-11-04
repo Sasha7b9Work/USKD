@@ -211,7 +211,11 @@ namespace Modem
     {
         static uint PortPG()
         {
+#ifdef HOME_VERSION
+            return GPIOE;
+#else
             return GPIOD;
+#endif
         }
 
         static void ToOutLow();
