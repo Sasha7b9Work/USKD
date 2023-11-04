@@ -109,9 +109,9 @@ protected:
 
 private:
 
-    String<32> CID;
-    String<32> user;
-    String<32> password;
+    String CID;
+    String user;
+    String password;
 };
 
 
@@ -136,7 +136,7 @@ protected:
 
 private:
 
-    String<128> topic;
+    String topic;
 };
 
 
@@ -163,7 +163,7 @@ protected:
 
 private:
 
-    String<128> topic;
-    String<1024> message;
-    String<128> response;
+    String topic;
+    String message;
+    String response;
 };

@@ -121,7 +121,7 @@ void Display::Update()
 
 void Display::WriteFormatFloat(int x, int y, char *format, float value)
 {
-    WriteString(x, y, String<64>(format, value));
+    WriteString(x, y, String(format, value));
 }
 
 

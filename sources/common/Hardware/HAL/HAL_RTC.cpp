@@ -90,9 +90,9 @@ void HAL_RTC::SetDateTime(pchar string)
 }
 
 
-String<64> PackedTime::ToString() const
+String PackedTime::ToString() const
 {
-    return String<64>("%04u-%02u-%02uT%02u:%02u:%02u.000Z", year + 2000, month, day, hours, minutes, seconds);
+    return String("%04u-%02u-%02uT%02u:%02u:%02u.000Z", year + 2000, month, day, hours, minutes, seconds);
 }
 
 

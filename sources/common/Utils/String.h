@@ -6,7 +6,6 @@
 #include <cstring>
 
 
-template<int capacity>
 class String
 {
 public:
@@ -36,15 +35,11 @@ public:
         return &buffer[0];
     }
 
-    operator char *() const
-    {
-        return &buffer[0];
-    }
     int Size() const
     {
         return (int)std::strlen(buffer);
     }
 
 private:
-    char buffer[capacity];
+    char buffer[1024];
 };

@@ -9,11 +9,11 @@
 
 void MQTT::GET::Time()
 {
-    String<64> data("{\"serialNumber\":\"%s\"}", HAL::GetUID());
+    String data("{\"serialNumber\":\"%s\"}", HAL::GetUID());
 
-    String<128> message("{\"request\":\"getTime\",\"data\":%s}", data.c_str());
+    String message("{\"request\":\"getTime\",\"data\":%s}", data.c_str());
 
-    String<128> response("devices/box/%s/config/getTime", HAL::GetUID());
+    String response("devices/box/%s/config/getTime", HAL::GetUID());
 
     MQTT::Send(new RequestPUBLISH("server/request/config", message, response));
 }

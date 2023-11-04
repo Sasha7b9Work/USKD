@@ -120,7 +120,7 @@ void MQTT::Update(pchar answer)
 
         if (!is_connected && !Queue::current)
         {
-            Queue::Append(new RequestCONNECT(String<32>("-uskd----%s", HAL::GetUID()), "mqttusr", "tgsdj9e5dc"));
+            Queue::Append(new RequestCONNECT(String("-uskd----%s", HAL::GetUID()), "mqttusr", "tgsdj9e5dc"));
 
             Queue::current = Queue::Get();
         }
@@ -174,7 +174,7 @@ void MQTT::Callback::OnConnect(bool connect)
 {
     is_connected = connect;
 
-    Send(new RequestSUBSCRIBE(String<128>("devices/box/%s/config/getTime", HAL::GetUID())));
+    Send(new RequestSUBSCRIBE(String("devices/box/%s/config/getTime", HAL::GetUID())));
 }
 
 
