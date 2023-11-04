@@ -191,7 +191,7 @@ namespace Modem
                                         buffer.RemoveFirst(answer.Size());
                                         answer.Clear();
 
-//                                        LOG_WRITE_TRACE("received %d bytes", binary_bytes_left);
+                                        LOG_WRITE_TRACE("received %d bytes it %d ms", binary_bytes_left, TIME_MS);
 
                                         continue;
                                     }

@@ -3,6 +3,7 @@
 #include "Modem/MQTT/ResponseMQTT.h"
 #include "Modem/MQTT/MQTT.h"
 #include "Modem/Modem.h"
+#include "Hardware/Timer.h"
 
 
 ResponseMQTT::ResponseMQTT(const Buffer<1024> &) :
@@ -306,7 +307,7 @@ ResponsePUBLISH::ResponsePUBLISH(const Buffer<1024> &_buffer) :
 
         buffer.ReadString(message, rem_length, &rem_length);
 
-        LOG_WRITE("Response %s : %s", name_topic, message);
+        LOG_WRITE("Response %s : %s in %d ms", name_topic, message, TIME_MS);
     }
 }
 
