@@ -20,13 +20,16 @@ namespace MQTT
 {
     namespace Queue
     {
-        static const int MAX_REQUESTS = 5;
+        static const int MAX_REQUESTS = 1;
         static int num_requests = 0;
         static RequestMQTT *requests[MAX_REQUESTS];
         static RequestMQTT *current = nullptr;
+        static int all_requests = 0;
 
         void Clear()
         {
+            all_requests = 0;
+
             if (current)
             {
                 delete current;
@@ -43,7 +46,7 @@ namespace MQTT
 
         void Append(RequestMQTT *request)
         {
-            LOG_WRITE("In queue %d requests", num_requests);
+            LOG_WRITE("Requests in queue %d, all %d", num_requests, all_requests++);
 
             while (num_requests == MAX_REQUESTS)
             {

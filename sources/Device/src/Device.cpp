@@ -42,7 +42,7 @@ void Device::Update()
 {
     if (MQTT::IsConnected())
     {
-        if (meter.ElapsedTime() > 10000)
+        if (meter.ElapsedTime() > 1000)
         {
             meter.Reset();
 
