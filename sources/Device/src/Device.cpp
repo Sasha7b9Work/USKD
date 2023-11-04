@@ -28,7 +28,7 @@ void Device::Init()
 
     Display::Init();
 
-//    Modem::Init();
+    Modem::Init();
 
 //    Button::Init();
 
@@ -42,8 +42,6 @@ void Device::Update()
 {
     Display::Update2();
 
-    LOG_WRITE("Test message");
-
 //    if (meter.ElapsedTime() > 1000)
 //    {
 //        meter.Reset();
@@ -53,7 +51,7 @@ void Device::Update()
 //
 //    Display::Update();
 //
-//    Modem::Update();
+    Modem::Update();
 //
 //    Storage::Update();
 //

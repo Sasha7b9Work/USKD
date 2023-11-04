@@ -61,9 +61,7 @@ void HAL::Init()
 
     rcu_periph_clock_enable(RCU_WWDGT);
 
-#ifndef HOME_VERSION
     HAL_USART_GPRS::Init();
-#endif
 
     HAL_USART_LOG::Init();
 

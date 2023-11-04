@@ -309,7 +309,7 @@ void Modem::Update()
     switch (State::Current())
     {
     case State::IDLE:
-        LOG_WRITE("Device::IDLE");
+        LOG_WRITE("Modem::IDLE");
         SIM868::Reset();
 #ifdef DEVICE
         MQTT::Reset();
